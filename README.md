@@ -27,7 +27,7 @@
 
 <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
 
-## 🌌 `cat /home/naveen/about.txt`
+## `cat /home/naveen/about.txt`
 
 ```yaml
 ─────────────────────────────────────────────────────────────────────────
@@ -47,7 +47,7 @@
 
 <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
 
-## 🚀 `./view_projects.sh --gui`
+## `./view_projects.sh --gui`
 
 <table bordercolor="#00C9FF">
   <tr>
@@ -104,7 +104,7 @@
 
 <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
 
-## 🛠️ `./show_stack.sh --render-icons`
+## `./show_stack.sh --render-icons`
 
 <div align="center">
   <h3>Programming Languages</h3>
@@ -139,7 +139,7 @@
 
 <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
 
-## 🌍 `./fetch_contributions.sh --org=GSSoC`
+## `./fetch_contributions.sh --org=GSSoC`
 
 | 🗄️ Repository | 💡 Impact & Stack |
 | :--- | :--- |
@@ -152,23 +152,36 @@
 
 <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
 
-## 📈 `top -u naveen`
+## `top -u naveen`
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td width="50%" align="center">
+      <a href="https://github.com/YOUR-USERNAME">
+        <img src="https://github-readme-stats.vercel.app/api?username=YOUR-USERNAME&show_icons=true&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&icon_color=92FE9D&text_color=ffffff&theme=react&ring_color=00C9FF" width="100%" />
+      </a>
+    </td>
+    <td width="50%" align="center">
+      <a href="https://github.com/YOUR-USERNAME">
+        <img src="https://streak-stats.demolab.com/?user=YOUR-USERNAME&theme=dark&hide_border=true&background=0a0a0a&ring=00C9FF&fire=92FE9D&currStreakLabel=00C9FF" width="100%" />
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <a href="https://github.com/YOUR-USERNAME">
+        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR-USERNAME&layout=compact&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&text_color=ffffff&langs_count=8" width="100%" />
+      </a>
+    </td>
+    <td width="50%" align="center">
+      <a href="https://github.com/YOUR-USERNAME">
+        <img src="https://github-profile-trophy.vercel.app/?username=YOUR-USERNAME&theme=radical&no-bg=true&row=1&column=4&margin-w=8&margin-h=8" width="100%" />
+      </a>
+    </td>
+  </tr>
+</table>
 
 <div align="center">
-  <a href="https://github.com/YOUR-USERNAME">
-    <img src="https://github-readme-stats.vercel.app/api?username=YOUR-USERNAME&show_icons=true&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&icon_color=92FE9D&text_color=ffffff&theme=react&ring_color=00C9FF" width="49%" />
-  </a>
-  <a href="https://github.com/YOUR-USERNAME">
-    <img src="https://streak-stats.demolab.com/?user=YOUR-USERNAME&theme=dark&hide_border=true&background=0a0a0a&ring=00C9FF&fire=92FE9D&currStreakLabel=00C9FF" width="49%" />
-  </a>
-  <br/><br/>
-  <a href="https://github.com/YOUR-USERNAME">
-    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR-USERNAME&layout=compact&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&text_color=ffffff&langs_count=8" width="49%" />
-  </a>
-  <a href="https://github.com/YOUR-USERNAME">
-    <img src="https://github-profile-trophy.vercel.app/?username=YOUR-USERNAME&theme=radical&no-bg=true&row=1&column=4&margin-w=8&margin-h=8" width="49%" />
-  </a>
-  <br/><br/>
   <a href="https://github.com/YOUR-USERNAME">
     <img src="https://github-readme-activity-graph.vercel.app/graph?username=YOUR-USERNAME&theme=react-dark&hide_border=true&bg_color=0a0a0a&color=00C9FF&line=92FE9D&point=ffffff" width="100%" />
   </a>
@@ -182,7 +195,7 @@
 
 <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
 
-## 🐍 `python train_snake.py`
+## `python train_snake.py`
 
 <div align="center">
   <picture>
@@ -198,7 +211,7 @@
 
 <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
 
-## 🌐 `ping -c 4 network`
+## `ping -c 4 network`
 
 <div align="center">
   <a href="https://linkedin.com/in/YOUR-LINKEDIN-ID">
