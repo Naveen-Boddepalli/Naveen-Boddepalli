@@ -6,24 +6,29 @@
   4. Update the "Explore Repository ➔" links in the Projects section.
   5. Setup the GitHub Action for the snake graph in `.github/workflows/snake.yml`.
 -->
+
 <div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:00C9FF,100:92FE9D&height=220&section=header&text=Hello%20World,%20I'm%20Naveen!&fontSize=50&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Full-Stack%20Architect%20%7C%20AI/ML%20Alchemist&descAlignY=62&descAlign=50" width="100%"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:00C9FF,100:92FE9D&height=220&section=header&text=Hello%20World,%20I'm%20Naveen!&fontSize=50&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Full-Stack%20Architect%20%7C%20AI/ML%20Alchemist&descAlignY=62&descAlign=50" width="100%" />
 </div>
+
 <h3 align="center">
   <a href="https://git.io/typing-svg">
     <img src="https://readme-typing-svg.herokuapp.com/?font=Fira+Code&weight=600&size=24&pause=1000&color=00C9FF&center=true&vCenter=true&width=750&height=50&lines=%E2%9A%A1+B.Tech+CS+%40+VIT+Vellore;%F0%9F%9A%80+Building+Tessera+%26+AutoML+Studio;%F0%9F%94%A5+300%2B+LeetCode+Problems+Conquered;%F0%9F%8C%90+GSSoC+Open-Source+Contributor" alt="Typing SVG" />
   </a>
 </h3>
+
 <div align="center">
   <a href="#"><img alt="Status" src="https://img.shields.io/badge/STATUS-Open_to_Internships-00C9FF?style=for-the-badge&logo=rocket&logoColor=white&labelColor=1a1a1a" /></a>
   <a href="#"><img alt="Focus" src="https://img.shields.io/badge/FOCUS-Full--Stack_%26_ML-92FE9D?style=for-the-badge&logo=target&logoColor=1a1a1a&labelColor=1a1a1a" /></a>
   <a href="#"><img alt="Location" src="https://img.shields.io/badge/BASE-VIT_Vellore-00C9FF?style=for-the-badge&logo=googlemaps&logoColor=white&labelColor=1a1a1a" /></a>
 </div>
-<br>
-<div align="center">
-  <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%">
-</div>
+
+<br />
+
+<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
+
 ## 🌌 `cat /home/naveen/about.txt`
+
 ```zsh
 naveen@vit-vellore:~$ sysinfo
 ─────────────────────────────────────────────────────────────────────────
@@ -36,11 +41,15 @@ naveen@vit-vellore:~$ sysinfo
 🏆 Milestones    : 300+ LeetCode Solutions, GSSoC Open Source Contributor
 ─────────────────────────────────────────────────────────────────────────
 ```
+
 > I'm a second-year Computer Science student who believes software should solve real-world problems. Whether it's turning dense institutional research into an interactive market brief or teaching a pipeline to train its own forecasting models, I love building from 0 to 1. My latest obsession? Open-source contributions through GSSoC and diving deep into the intersection of electrical engineering and CS—because debouncing a noisy signal and debugging a flaky API have more in common than you'd think!
-<div align="center">
-  <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%">
-</div>
+
+<br />
+
+<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
+
 ## 🚀 `ls -la ~/featured_projects`
+
 <table bordercolor="#00C9FF">
   <tr>
     <td width="50%" valign="top">
@@ -91,10 +100,13 @@ naveen@vit-vellore:~$ sysinfo
     </td>
   </tr>
 </table>
-<div align="center">
-  <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%">
-</div>
+
+<br />
+
+<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
+
 ## 🛠️ `chmod +x my_skills.sh`
+
 <div align="center">
   <h3>Programming Languages</h3>
   <p>
@@ -123,96 +135,26 @@ naveen@vit-vellore:~$ sysinfo
     <img src="https://img.shields.io/badge/FAISS-1a1a1a?style=for-the-badge&logo=meta&logoColor=00C9FF" />
   </p>
 </div>
-<div align="center">
-  <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%">
-</div>
+
+<br />
+
+<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
+
 ## 🌍 `./gssoc_contributions.exe`
-|
- 🗄️ Repository 
-|
- 💡 Impact & Stack 
-|
-|
-:---
-|
-:---
-|
-|
-**
-[
-arnio
-](
-https://github.com/arnio
-)
-**
-|
- Built custom validator registration system, UUID/IPv4/MAC-address semantic validators, and a redaction-aware HTML export. Extended 
-`cast_types()`
- with structured error handling across C++ ↔ Python. 
-<
-br
-/>
-`Python`
-`C++`
-`pybind11`
-|
-|
-**
-[
-DevTrack
-](
-https://github.com/DevTrack
-)
-**
-|
- Patched SSRF vulnerability (incl. IPv6 bypass), integrated Supabase Realtime sync via custom 
-`useRealtimeSync`
- hook, and fortified CI for secure fork PR runs. 
-<
-br
-/>
-`TypeScript`
-`Supabase`
-`GitHub Actions`
-|
-|
-**
-[
-Eventra
-](
-https://github.com/Eventra
-)
-**
-|
- Debugged and resolved service worker lifecycle issues, restoring seamless offline reliability. 
-<
-br
-/>
-`JavaScript`
-`PWA`
-|
-|
-**
-[
-withfig/autocomplete
-](
-https://github.com/withfig/autocomplete
-)
-**
-|
- Contributed terminal CLI completion spec for the 
-`xattr`
- command. 
-<
-br
-/>
-`TypeScript`
-`Fig`
-|
-<div align="center">
-  <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%">
-</div>
+
+| 🗄️ Repository | 💡 Impact & Stack |
+| :--- | :--- |
+| **[arnio](https://github.com/arnio)** | Built custom validator registration system, UUID/IPv4/MAC-address semantic validators, and a redaction-aware HTML export. Extended `cast_types()` with structured error handling across C++ ↔ Python. <br/> `Python` `C++` `pybind11` |
+| **[DevTrack](https://github.com/DevTrack)** | Patched SSRF vulnerability (incl. IPv6 bypass), integrated Supabase Realtime sync via custom `useRealtimeSync` hook, and fortified CI for secure fork PR runs. <br/> `TypeScript` `Supabase` `GitHub Actions` |
+| **[Eventra](https://github.com/Eventra)** | Debugged and resolved service worker lifecycle issues, restoring seamless offline reliability. <br/> `JavaScript` `PWA` |
+| **[withfig/autocomplete](https://github.com/withfig/autocomplete)** | Contributed terminal CLI completion spec for the `xattr` command. <br/> `TypeScript` `Fig` |
+
+<br />
+
+<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
+
 ## 📈 `top -u naveen`
+
 <div align="center">
   <a href="https://github.com/YOUR-USERNAME">
     <img src="https://github-readme-stats.vercel.app/api?username=YOUR-USERNAME&show_icons=true&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&icon_color=92FE9D&text_color=ffffff&theme=react&ring_color=00C9FF" width="49%" />
@@ -236,23 +178,29 @@ br
     <img src="https://leetcard.jacoblin.cool/YOUR-LEETCODE-USERNAME?theme=dark&font=Fira%20Code&ext=heatmap" />
   </a>
 </div>
-<div align="center">
-  <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%">
-</div>
+
+<br />
+
+<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
+
 ## 🐍 `python train_snake.py`
+
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-USERNAME/output/github-contribution-grid-snake-dark.svg" />
     <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-USERNAME/output/github-contribution-grid-snake.svg" />
-    <img alt="A snake eating my contribution graph" src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-USERNAME/output/github-contribution-grid-snake.svg" width="100%"/>
+    <img alt="A snake eating my contribution graph" src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-USERNAME/output/github-contribution-grid-snake.svg" width="100%" />
   </picture>
   <br/>
   <sub><i>Hovering through the GitHub matrix, one green tile at a time.</i></sub>
 </div>
-<div align="center">
-  <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%">
-</div>
+
+<br />
+
+<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
+
 ## 🌐 `ping -c 4 network`
+
 <div align="center">
   <a href="https://linkedin.com/in/YOUR-LINKEDIN-ID">
     <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
@@ -270,11 +218,13 @@ br
     <img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white" />
   </a>
 </div>
+
 <br/>
+
 <div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:92FE9D,100:00C9FF&height=120&section=footer&animation=fadeIn" width="100%" alt="footer"/>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:92FE9D,100:00C9FF&height=120&section=footer&animation=fadeIn" width="100%" alt="footer" />
   <br/>
   <sub>Thanks for stopping by — I'm probably debugging a segmentation fault or a memory leak right now. ⚡</sub>
   <br/><br/>
-  <img src="https://komarev.com/ghpvc/?username=YOUR-USERNAME&label=Profile%20Views&color=00C9FF&style=for-the-badge" alt="Profile Views"/>
+  <img src="https://komarev.com/ghpvc/?username=YOUR-USERNAME&label=Profile%20Views&color=00C9FF&style=for-the-badge" alt="Profile Views" />
 </div>
