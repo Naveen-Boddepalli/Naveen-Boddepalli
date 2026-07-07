@@ -1,7 +1,7 @@
 <!--
   ⚙️ QUICK SETUP — do this before publishing:
-  1. This repository must be named exactly YOUR-USERNAME (e.g. github.com/torvalds/torvalds) for it to appear on your profile.
-  2. Find & replace "YOUR-USERNAME" everywhere below with your real GitHub username.
+  1. This repository must be named exactly Naveen-Boddepalli (e.g. github.com/torvalds/torvalds) for it to appear on your profile.
+  2. Find & replace "Naveen-Boddepalli" everywhere below with your real GitHub username.
   3. In the "network" section near the bottom, swap in your real LinkedIn, portfolio URL, email, LeetCode, and X handle.
   4. Update the "Explore Repository ➔" links in the Projects section.
   5. Setup the GitHub Action for the snake graph in `.github/workflows/snake.yml`.
@@ -60,7 +60,7 @@
         <img src="https://img.shields.io/badge/MDX-black?style=flat-square&logo=markdown&logoColor=white" />
         <img src="https://img.shields.io/badge/Prompt_Engineering-00C9FF?style=flat-square&logo=openai&logoColor=white" />
       </p>
-      <p align="center"><b><a href="https://github.com/YOUR-USERNAME/fintel-web">Explore Repository ➔</a></b></p>
+      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/fintel-web">Explore Repository ➔</a></b></p>
     </td>
     <td width="50%" valign="top">
       <h3 align="center">🤖 Time-Series AutoML</h3>
@@ -71,7 +71,7 @@
         <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" />
         <img src="https://img.shields.io/badge/AutoML-92FE9D?style=flat-square&logo=python&logoColor=black" />
       </p>
-      <p align="center"><b><a href="https://github.com/YOUR-USERNAME/automl-studio">Explore Repository ➔</a></b></p>
+      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/automl-studio">Explore Repository ➔</a></b></p>
     </td>
   </tr>
   <tr>
@@ -84,7 +84,7 @@
         <img src="https://img.shields.io/badge/FAISS-000000?style=flat-square&logo=meta&logoColor=white" />
         <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=flat-square&logo=mongodb&logoColor=white" />
       </p>
-      <p align="center"><b><a href="https://github.com/YOUR-USERNAME/shadow-network">Explore Repository ➔</a></b></p>
+      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/shadow-network">Explore Repository ➔</a></b></p>
     </td>
     <td width="50%" valign="top">
       <h3 align="center">🎧 AI Support Auto</h3>
@@ -95,7 +95,7 @@
         <img src="https://img.shields.io/badge/Groq-F55036?style=flat-square&logo=groq&logoColor=white" />
         <img src="https://img.shields.io/badge/LangChain-121212?style=flat-square&logo=chainlink&logoColor=white" />
       </p>
-      <p align="center"><b><a href="https://github.com/YOUR-USERNAME/ai-support-automation">Explore Repository ➔</a></b></p>
+      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/ai-support-automation">Explore Repository ➔</a></b></p>
     </td>
   </tr>
 </table>
@@ -157,33 +157,33 @@
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
     <td width="50%" align="center">
-      <a href="https://github.com/YOUR-USERNAME">
-        <img src="https://github-readme-stats.vercel.app/api?username=YOUR-USERNAME&show_icons=true&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&icon_color=92FE9D&text_color=ffffff&theme=react&ring_color=00C9FF" width="100%" />
+      <a href="https://github.com/Naveen-Boddepalli">
+        <img src="https://github-readme-stats.vercel.app/api?username=Naveen-Boddepalli&show_icons=true&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&icon_color=92FE9D&text_color=ffffff&theme=react&ring_color=00C9FF" width="100%" />
       </a>
     </td>
     <td width="50%" align="center">
-      <a href="https://github.com/YOUR-USERNAME">
-        <img src="https://streak-stats.demolab.com/?user=YOUR-USERNAME&theme=dark&hide_border=true&background=0a0a0a&ring=00C9FF&fire=92FE9D&currStreakLabel=00C9FF" width="100%" />
+      <a href="https://github.com/Naveen-Boddepalli">
+        <img src="https://streak-stats.demolab.com/?user=Naveen-Boddepalli&theme=dark&hide_border=true&background=0a0a0a&ring=00C9FF&fire=92FE9D&currStreakLabel=00C9FF" width="100%" />
       </a>
     </td>
   </tr>
   <tr>
     <td width="50%" align="center">
-      <a href="https://github.com/YOUR-USERNAME">
-        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=YOUR-USERNAME&layout=compact&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&text_color=ffffff&langs_count=8" width="100%" />
+      <a href="https://github.com/Naveen-Boddepalli">
+        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Naveen-Boddepalli&layout=compact&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&text_color=ffffff&langs_count=8" width="100%" />
       </a>
     </td>
     <td width="50%" align="center">
-      <a href="https://github.com/YOUR-USERNAME">
-        <img src="https://github-profile-trophy.vercel.app/?username=YOUR-USERNAME&theme=radical&no-bg=true&row=1&column=4&margin-w=8&margin-h=8" width="100%" />
+      <a href="https://github.com/Naveen-Boddepalli">
+        <img src="https://github-profile-trophy.vercel.app/?username=Naveen-Boddepalli&theme=radical&no-bg=true&row=1&column=4&margin-w=8&margin-h=8" width="100%" />
       </a>
     </td>
   </tr>
 </table>
 
 <div align="center">
-  <a href="https://github.com/YOUR-USERNAME">
-    <img src="https://github-readme-activity-graph.vercel.app/graph?username=YOUR-USERNAME&theme=react-dark&hide_border=true&bg_color=0a0a0a&color=00C9FF&line=92FE9D&point=ffffff" width="100%" />
+  <a href="https://github.com/Naveen-Boddepalli">
+    <img src="https://github-readme-activity-graph.vercel.app/graph?username=Naveen-Boddepalli&theme=react-dark&hide_border=true&bg_color=0a0a0a&color=00C9FF&line=92FE9D&point=ffffff" width="100%" />
   </a>
   <br/><br/>
   <a href="https://leetcode.com/YOUR-LEETCODE-USERNAME">
@@ -199,9 +199,9 @@
 
 <div align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-USERNAME/output/github-contribution-grid-snake-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-USERNAME/output/github-contribution-grid-snake.svg" />
-    <img alt="A snake eating my contribution graph" src="https://raw.githubusercontent.com/YOUR-USERNAME/YOUR-USERNAME/output/github-contribution-grid-snake.svg" width="100%" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Naveen-Boddepalli/Naveen-Boddepalli/output/github-contribution-grid-snake-dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Naveen-Boddepalli/Naveen-Boddepalli/output/github-contribution-grid-snake.svg" />
+    <img alt="A snake eating my contribution graph" src="https://raw.githubusercontent.com/Naveen-Boddepalli/Naveen-Boddepalli/output/github-contribution-grid-snake.svg" width="100%" />
   </picture>
   <br/>
   <sub><i>Hovering through the GitHub matrix, one green tile at a time.</i></sub>
@@ -238,5 +238,5 @@
   <br/>
   <sub>Thanks for stopping by — I'm probably debugging a segmentation fault or a memory leak right now. ⚡</sub>
   <br/><br/>
-  <img src="https://komarev.com/ghpvc/?username=YOUR-USERNAME&label=Profile%20Views&color=00C9FF&style=for-the-badge" alt="Profile Views" />
+  <img src="https://komarev.com/ghpvc/?username=Naveen-Boddepalli&label=Profile%20Views&color=00C9FF&style=for-the-badge" alt="Profile Views" />
 </div>
