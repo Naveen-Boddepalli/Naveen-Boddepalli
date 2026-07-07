@@ -29,8 +29,7 @@
 
 ## 🌌 `cat /home/naveen/about.txt`
 
-```zsh
-naveen@vit-vellore:~$ sysinfo
+```yaml
 ─────────────────────────────────────────────────────────────────────────
 🧠 Role          : Full-Stack Developer & ML/AI Engineer (Year 2)
 🎓 Education     : B.Tech Computer Science @ VIT Vellore, Chennai
@@ -48,7 +47,7 @@ naveen@vit-vellore:~$ sysinfo
 
 <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
 
-## 🚀 `ls -la ~/featured_projects`
+## 🚀 `./view_projects.sh --gui`
 
 <table bordercolor="#00C9FF">
   <tr>
@@ -105,7 +104,7 @@ naveen@vit-vellore:~$ sysinfo
 
 <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
 
-## 🛠️ `chmod +x my_skills.sh`
+## 🛠️ `./show_stack.sh --render-icons`
 
 <div align="center">
   <h3>Programming Languages</h3>
@@ -140,7 +139,7 @@ naveen@vit-vellore:~$ sysinfo
 
 <img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
 
-## 🌍 `./gssoc_contributions.exe`
+## 🌍 `./fetch_contributions.sh --org=GSSoC`
 
 | 🗄️ Repository | 💡 Impact & Stack |
 | :--- | :--- |
