@@ -156,7 +156,7 @@
   <tr>
     <td width="50%" align="center">
       <a href="https://github.com/Naveen-Boddepalli">
-        <img src="https://github-readme-stats.vercel.app/api?username=Naveen-Boddepalli&show_icons=true&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&icon_color=92FE9D&text_color=ffffff&theme=react&ring_color=00C9FF" width="100%" />
+        <img src="https://github-readme-stats-eight-theta.vercel.app/api?username=Naveen-Boddepalli&show_icons=true&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&icon_color=92FE9D&text_color=ffffff&theme=react&ring_color=00C9FF" width="100%" />
       </a>
     </td>
     <td width="50%" align="center">
@@ -168,12 +168,12 @@
   <tr>
     <td width="50%" align="center">
       <a href="https://github.com/Naveen-Boddepalli">
-        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Naveen-Boddepalli&layout=compact&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&text_color=ffffff&langs_count=8" width="100%" />
+        <img src="https://github-readme-stats-eight-theta.vercel.app/api/top-langs/?username=Naveen-Boddepalli&layout=compact&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&text_color=ffffff&langs_count=8" width="100%" />
       </a>
     </td>
     <td width="50%" align="center">
-      <a href="https://github.com/Naveen-Boddepalli">
-        <img src="https://github-profile-trophy.vercel.app/?username=Naveen-Boddepalli&theme=radical&no-bg=true&row=1&column=4&margin-w=8&margin-h=8" width="100%" />
+      <a href="https://github.com/Naveen-Boddepalli/Resume-Analyser">
+        <img src="https://github-readme-stats-eight-theta.vercel.app/api/pin/?username=Naveen-Boddepalli&repo=Resume-Analyser&show_icons=true&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&icon_color=92FE9D&text_color=ffffff&theme=react" width="100%" />
       </a>
     </td>
   </tr>
