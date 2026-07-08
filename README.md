@@ -197,9 +197,9 @@
 
 <div align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Naveen-Boddepalli/Naveen-Boddepalli/output/github-contribution-grid-snake-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Naveen-Boddepalli/Naveen-Boddepalli/output/github-contribution-grid-snake.svg" />
-    <img alt="A snake eating my contribution graph" src="https://raw.githubusercontent.com/Naveen-Boddepalli/Naveen-Boddepalli/output/github-contribution-grid-snake.svg" width="100%" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Naveen-Boddepalli/Naveen-Boddepalli/blob/output/github-contribution-grid-snake-dark.svg?raw=true" />
+    <source media="(prefers-color-scheme: light)" srcset="https://github.com/Naveen-Boddepalli/Naveen-Boddepalli/blob/output/github-contribution-grid-snake.svg?raw=true" />
+    <img alt="A snake eating my contribution graph" src="https://github.com/Naveen-Boddepalli/Naveen-Boddepalli/blob/output/github-contribution-grid-snake.svg?raw=true" width="100%" />
   </picture>
   <br/>
   <sub><i>Hovering through the GitHub matrix, one green tile at a time.</i></sub>
