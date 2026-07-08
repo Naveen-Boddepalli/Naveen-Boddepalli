@@ -52,31 +52,17 @@
 <table bordercolor="#00C9FF">
   <tr>
     <td width="50%" valign="top">
-      <h3 align="center">📈 Tessera</h3>
-      <p align="center"><i>Financial Market Intelligence Platform</i></p>
-      <p>Turns institutional-grade research into interactive MDX briefs, complete with custom <code>Chart</code> and <code>TearSheet</code> components, rendered through a single-pass, prompt-engineered generation pipeline on the Next.js App Router.</p>
+      <h3 align="center">📄 Resume-Analyser</h3>
+      <p align="center"><i>AI-Powered Resume Parsing</i></p>
+      <p>An intelligent tool to analyze and extract key information from resumes using advanced machine learning techniques.</p>
       <p align="center">
-        <img src="https://img.shields.io/badge/Next.js-black?style=flat-square&logo=next.js&logoColor=white" />
-        <img src="https://img.shields.io/badge/MDX-black?style=flat-square&logo=markdown&logoColor=white" />
-        <img src="https://img.shields.io/badge/Prompt_Engineering-00C9FF?style=flat-square&logo=openai&logoColor=white" />
+        <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
+        <img src="https://img.shields.io/badge/Jupyter-F37626?style=flat-square&logo=jupyter&logoColor=white" />
       </p>
-      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/fintel-web">Explore Repository ➔</a></b></p>
+      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/Resume-Analyser">Explore Repository ➔</a></b></p>
     </td>
     <td width="50%" valign="top">
-      <h3 align="center">🤖 Time-Series AutoML</h3>
-      <p align="center"><i>Wizard-Style Forecasting Studio</i></p>
-      <p>Walks a user from raw time-series data to a trained model, with a hybrid architecture that trains lightweight models directly in-browser and offloads heavier jobs to a FastAPI backend.</p>
-      <p align="center">
-        <img src="https://img.shields.io/badge/Next.js-black?style=flat-square&logo=next.js&logoColor=white" />
-        <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" />
-        <img src="https://img.shields.io/badge/AutoML-92FE9D?style=flat-square&logo=python&logoColor=black" />
-      </p>
-      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/automl-studio">Explore Repository ➔</a></b></p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <h3 align="center">🕸️ Shadow Network</h3>
+      <h3 align="center">🕸️ shadow-network</h3>
       <p align="center"><i>Decentralized Academic File-Sharing</i></p>
       <p>Semantic-search-powered file-sharing pairing FAISS similarity search and transformer summarization (BART/RoBERTa) with a libp2p-inspired frontend, across a three-tier cloud stack.</p>
       <p align="center">
@@ -86,16 +72,28 @@
       </p>
       <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/shadow-network">Explore Repository ➔</a></b></p>
     </td>
+  </tr>
+  <tr>
     <td width="50%" valign="top">
-      <h3 align="center">🎧 AI Support Auto</h3>
-      <p align="center"><i>Human-in-the-Loop Ticket Routing</i></p>
-      <p>A state-driven customer support system that routes tickets automatically and pauses for human review at key checkpoints, built on LangGraph's checkpointing model.</p>
+      <h3 align="center">💰 Expense-Tracker</h3>
+      <p align="center"><i>Personal Finance Organizer</i></p>
+      <p>Track your monthly expenses to be organized. A comprehensive and efficient tool for monitoring and managing your personal financial data.</p>
       <p align="center">
-        <img src="https://img.shields.io/badge/LangGraph-1C1C1C?style=flat-square&logo=python&logoColor=white" />
-        <img src="https://img.shields.io/badge/Groq-F55036?style=flat-square&logo=groq&logoColor=white" />
-        <img src="https://img.shields.io/badge/LangChain-121212?style=flat-square&logo=chainlink&logoColor=white" />
+        <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
+        <img src="https://img.shields.io/badge/Data_Analysis-00C9FF?style=flat-square&logo=pandas&logoColor=white" />
       </p>
-      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/ai-support-automation">Explore Repository ➔</a></b></p>
+      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/Expense-Tracker">Explore Repository ➔</a></b></p>
+    </td>
+    <td width="50%" valign="top">
+      <h3 align="center">🤖 claude-desktop-mcp</h3>
+      <p align="center"><i>Token-Optimized MCP Server</i></p>
+      <p>MCP server tools for Claude-Desktop app, for reducing token consumption. The input tokens are reduced by MCP server tools and the output tokens are reduced by Caveman skill.</p>
+      <p align="center">
+        <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
+        <img src="https://img.shields.io/badge/Anthropic-1a1a1a?style=flat-square&logo=anthropic&logoColor=white" />
+        <img src="https://img.shields.io/badge/MCP-92FE9D?style=flat-square&logo=c&logoColor=black" />
+      </p>
+      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/claude-desktop-mcp">Explore Repository ➔</a></b></p>
     </td>
   </tr>
 </table>
