@@ -185,7 +185,7 @@
   </a>
   <br/><br/>
   <a href="https://leetcode.com/u/NAVEEN2007B/">
-    <img src="https://leetcard.jacoblin.cool/NAVEEN2007B?theme=dark&font=Fira%20Code&ext=heatmap" />
+    <img src="https://leetcard.jacoblin.cool/NAVEEN2007B?theme=dark&font=Fira%20Code" />
   </a>
 </div>
 
