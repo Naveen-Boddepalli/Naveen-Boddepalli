@@ -13,7 +13,7 @@
 
 <h3 align="center">
   <a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.herokuapp.com/?font=Fira+Code&weight=600&size=24&pause=1000&color=00C9FF&center=true&vCenter=true&width=750&height=50&lines=%E2%9A%A1+B.Tech+CS+%40+VIT+Vellore;%F0%9F%9A%80+Building+Tessera+%26+AutoML+Studio;%F0%9F%94%A5+300%2B+LeetCode+Problems+Conquered;%F0%9F%8C%90+GSSoC+Open-Source+Contributor" alt="Typing SVG" />
+    <img src="https://readme-typing-svg.herokuapp.com/?font=Fira+Code&weight=600&size=24&pause=1000&color=00C9FF&center=true&vCenter=true&width=750&height=50&lines=%E2%9A%A1+B.Tech+CS+%40+VIT+Vellore;%F0%9F%9A%80+Building+Resume-Analyser+%26+AutoML+Studio;%F0%9F%94%A5+300%2B+LeetCode+Problems+Conquered;%F0%9F%8C%90+GSSoC+Open-Source+Contributor" alt="Typing SVG" />
   </a>
 </h3>
 
