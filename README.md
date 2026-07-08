@@ -184,8 +184,8 @@
     <img src="https://github-readme-activity-graph.vercel.app/graph?username=Naveen-Boddepalli&theme=react-dark&hide_border=true&bg_color=0a0a0a&color=00C9FF&line=92FE9D&point=ffffff" width="100%" />
   </a>
   <br/><br/>
-  <a href="https://leetcode.com/YOUR-LEETCODE-USERNAME">
-    <img src="https://leetcard.jacoblin.cool/YOUR-LEETCODE-USERNAME?theme=dark&font=Fira%20Code&ext=heatmap" />
+  <a href="https://leetcode.com/u/NAVEEN2007B/">
+    <img src="https://leetcode.com/u/NAVEEN2007B/?theme=dark&font=Fira%20Code&ext=heatmap" />
   </a>
 </div>
 
@@ -212,19 +212,19 @@
 ## `ping -c 4 network`
 
 <div align="center">
-  <a href="https://linkedin.com/in/YOUR-LINKEDIN-ID">
+  <a href="https://www.linkedin.com/in/naveen-boddepalli-689056327/">
     <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
   </a>
   <a href="https://your-portfolio-url.com">
     <img src="https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=googlechrome&logoColor=00C9FF" />
   </a>
-  <a href="mailto:your.email@example.com">
+  <a href="mailto:1234naveenboddepalli@gmail.com">
     <img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" />
   </a>
-  <a href="https://leetcode.com/YOUR-LEETCODE-ID">
+  <a href="https://leetcode.com/u/NAVEEN2007B/">
     <img src="https://img.shields.io/badge/LeetCode-FFA116?style=for-the-badge&logo=leetcode&logoColor=white" />
   </a>
-  <a href="https://x.com/YOUR-X-HANDLE">
+  <a href="https://x.com/N_Boddepalli">
     <img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white" />
   </a>
 </div>
