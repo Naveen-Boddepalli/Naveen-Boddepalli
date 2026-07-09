@@ -161,7 +161,7 @@
     </td>
     <td width="50%" align="center">
       <a href="https://github.com/Naveen-Boddepalli">
-        <img src="https://github-readme-streak-stats.herokuapp.com/?user=Naveen-Boddepalli&theme=dark&hide_border=true&background=0a0a0a&ring=00C9FF&fire=92FE9D&currStreakLabel=00C9FF" width="100%" />
+        <img src="https://readme-streak-stats.vercel.app/?user=Naveen-Boddepalli&theme=dark&hide_border=true&background=0a0a0a&ring=00C9FF&fire=92FE9D&currStreakLabel=00C9FF" width="100%" />
       </a>
     </td>
   </tr>
