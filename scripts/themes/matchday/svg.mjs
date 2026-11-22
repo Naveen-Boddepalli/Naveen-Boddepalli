@@ -6,7 +6,7 @@
 // Renderers not yet redesigned fall back to the psql theme (see `viaPsql`).
 
 import { readFileSync } from 'node:fs';
-import { esc } from '../common.mjs';
+import { esc, clip, ago } from '../common.mjs';
 import * as psql from '../psql/svg.mjs';
 import { ratings, season } from '../../ratings.mjs';
 
@@ -169,14 +169,159 @@ ${rows}
   return frame({ h, t, title: alt, body: markings(t, W, h, { circle: false }) + card + cover, defs, css });
 }
 
+// ── shared bits ─────────────────────────────────────────────────────────────
+const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
+const DAY = 86400000;
+const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
+/** Section heading: big display title with a small kicker after it. */
+function heading(t, x, y, title, kicker = '') {
+  const tw = measure(title, 24, 700, 1);
+  return `<text x="${x}" y="${y}" class="d" style="font-size:24px;font-weight:700;letter-spacing:1px">${esc(title)}</text>
+${kicker ? `<text x="${Math.ceil(x + tw + 14)}" y="${y - 1}" class="dim" style="font-size:13px">${esc(kicker)}</text>` : ''}`;
+}
+
+const label = (x, y, text, anchor = 'start', cls = 'dim') =>
+  `<text x="${x}" y="${y}" text-anchor="${anchor}" class="d ${cls}" style="font-size:11.5px;font-weight:500;letter-spacing:2px">${esc(text)}</text>`;
+
+// small "open in new place" arrow, drawn so it doesn't depend on a font
+const arrow = (x, y, color) =>
+  `<path d="M ${x} ${y + 7} L ${x + 7} ${y} M ${x + 2} ${y} H ${x + 7} V ${y + 5}" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round"/>`;
+
+// ── squad sheet: one clickable row per pinned repo ──────────────────────────
+// Column x positions shared by the header and every row.
+const COL = { num: 28, name: 88, pos: 560, push: 718, status: 870 };
+
+export function resultHeader(d, t) {
+  const h = 64;
+  const body = `${heading(t, COL.num, 34, 'THE SQUAD', 'pinned repos · click a player to open the repo')}
+${label(COL.pos, 54, 'POSITION')}${label(COL.push, 54, 'LAST TRAINED')}${label(COL.status, 54, 'STATUS')}`;
+  return frame({ h, t, title: 'The squad: pinned projects', body });
+}
+
+export function resultRow(r, i, t, now = new Date()) {
+  const h = 66, delay = (0.1 + i * 0.1).toFixed(2);
+  const days = Math.max(0, Math.floor((now - new Date(r.pushedAt)) / DAY));
+  const fitness = days <= 14 ? t.go : days <= 60 ? t.gold : t.dim;
+  const stars = r.stars > 0 ? `<tspan class="gold" style="font-size:13px" dx="10">★ ${r.stars}</tspan>` : '';
+  const lang = r.lang
+    ? `<circle cx="${COL.pos + 5}" cy="33" r="5" fill="${r.lang.color || t.dim}"/><text x="${COL.pos + 17}" y="38" style="font-size:13px">${esc(clip(r.lang.name, 16))}</text>`
+    : `<text x="${COL.pos}" y="38" class="dim" style="font-size:13px">-</text>`;
+  const live = Boolean(r.demo);
+  const pillColor = live ? t.go : t.dim;
+  const pillText = live ? 'LIVE DEMO' : 'SOURCE';
+  const pillW = 106, px = COL.status, textW = measure(pillText, 13, 600, 1.5);
+  const pill = `<rect x="${px}" y="20" width="${pillW}" height="26" rx="13" fill="${live ? t.go : 'none'}" fill-opacity="${live ? 0.14 : 0}" stroke="${pillColor}"/>
+<text x="${(px + (pillW - textW - 12) / 2).toFixed(1)}" y="38" class="d" style="font-size:13px;font-weight:600;letter-spacing:1.5px;fill:${pillColor}">${pillText}</text>
+${arrow(px + (pillW + textW - 12) / 2 + 5, 26.5, pillColor)}`;
+  const body = `
+<g style="animation: rise .45s ease-out ${delay}s backwards">
+  <text x="${COL.num}" y="44" class="d gold" style="font-size:30px;font-weight:700">${String(i + 1).padStart(2, '0')}</text>
+  <text x="${COL.name}" y="30" class="d" style="font-size:20px;font-weight:600;letter-spacing:.3px">${esc(clip(r.name, 34))}${stars}</text>
+  <text x="${COL.name}" y="51" class="dim" style="font-size:13px">${esc(clip(r.about, 68))}</text>
+  ${lang}
+  <circle cx="${COL.push + 5}" cy="33" r="5" fill="${fitness}"/>
+  <text x="${COL.push + 17}" y="38" style="font-size:13px">pushed ${esc(ago(r.pushedAt, now))}</text>
+  ${pill}
+</g>`;
+  return frame({ h, t, title: `${r.name}: ${r.about}`, body });
+}
+
+export function resultFooter(d, t) {
+  const n = d.pinned.length;
+  const text = `${plural(n, 'player')} in the squad  ·  ${plural(d.ownRepos, 'public repo')}  ·  ${d.liveDemos} with live demos`.toUpperCase();
+  const body = `<text x="${COL.num}" y="28" class="d dim" style="font-size:12.5px;font-weight:500;letter-spacing:2px">${esc(text)}</text>
+<circle cx="${COL.push + 5}" cy="23.5" r="4" fill="${t.go}"/><text x="${COL.push + 15}" y="28" class="dim" style="font-size:11.5px">≤ 14 d</text>
+<circle cx="${COL.push + 68}" cy="23.5" r="4" fill="${t.gold}"/><text x="${COL.push + 78}" y="28" class="dim" style="font-size:11.5px">≤ 60 d</text>`;
+  return frame({ h: 44, t, title: `${n} pinned projects`, body });
+}
+
+// ── season stats: scoreboard tiles + language "possession" bar ──────────────
+export function stats(d, t) {
+  const X = 32, R = W - 32;
+  const tiles = [
+    ['TOUCHES', d.contributions, `contributions in ${d.year}`],
+    ['GOALS', d.commits, `commits in ${d.year}`],
+    ['ASSISTS', d.upstream.prs, 'PRs merged elsewhere'],
+    ['AWAY GROUNDS', d.upstream.repos, 'repos contributed to'],
+    ['UNBEATEN RUN', `${d.streak.current}d`, 'current daily streak'],
+    ['BEST RUN', `${d.streak.best}d`, 'longest in a year'],
+    ['DRILLS', d.leetcodeSolved ?? '-', 'LeetCode solved'],
+  ];
+  const gap = 8, tw = (R - X - gap * (tiles.length - 1)) / tiles.length;
+  const tileEls = tiles.map(([k, v, sub], i) => {
+    const x = X + i * (tw + gap), cx = x + tw / 2;
+    const size = fit(String(v), tw - 20, 38);
+    return `<g style="animation: rise .45s ease-out ${(0.15 + i * 0.07).toFixed(2)}s backwards">
+<rect x="${x.toFixed(1)}" y="60" width="${tw.toFixed(1)}" height="106" rx="6" fill="${t.mode === 'dark' ? '#082c21' : '#ffffff'}" fill-opacity="${t.mode === 'dark' ? 0.75 : 0.7}" stroke="${t.line}" stroke-opacity="${t.lineOp}"/>
+${label(cx.toFixed(1), 84, k, 'middle', 'gold')}
+<text x="${cx.toFixed(1)}" y="128" text-anchor="middle" class="d" style="font-size:${size}px;font-weight:700">${esc(v)}</text>
+<text x="${cx.toFixed(1)}" y="151" text-anchor="middle" class="dim" style="font-size:11px">${esc(clip(sub, 24))}</text>
+</g>`;
+  }).join('\n');
+
+  // possession: one bar split by language share
+  const langs = d.languages, total = langs.reduce((s, l) => s + l.share, 0) || 1;
+  const barY = 232, barH = 18, barW = R - X;
+  let x = X;
+  const segs = langs.map((l, i) => {
+    const w = (l.share / total) * barW;
+    const seg = `<rect x="${x.toFixed(1)}" y="${barY}" width="${Math.max(0, w - (i < langs.length - 1 ? 2 : 0)).toFixed(1)}" height="${barH}" fill="${l.color}"/>`;
+    x += w;
+    return seg;
+  }).join('');
+  let lx = X;
+  const legend = langs.map((l) => {
+    const pct = `${Math.round(l.share * 100)}%`;
+    const out = `<circle cx="${lx + 5}" cy="${barY + 41}" r="5" fill="${l.color}"/>
+<text x="${lx + 16}" y="${barY + 46}" style="font-size:13px">${esc(l.name)} <tspan class="d" style="font-weight:600">${pct}</tspan></text>`;
+    lx += 16 + (l.name.length + 1) * 7.3 + measure(pct, 13, 600) + 22;
+    return out;
+  }).join('\n');
+  const h = barY + 68;
+  const body = `${markings(t, W, h, { circle: false })}
+${heading(t, X, 40, `SEASON STATS ${d.year}`, 'from GitHub, refreshed every 6 hours')}
+${tileEls}
+${heading(t, X, 212, 'POSSESSION', 'share of code by language')}
+<clipPath id="barClip"><rect x="${X}" y="${barY}" width="${barW}" height="${barH}" rx="${barH / 2}"/></clipPath>
+<g clip-path="url(#barClip)"><g class="bar">${segs}</g></g>
+${legend}`;
+  const css = `.bar { transform-box: fill-box; transform-origin: left center; animation: grow 1.1s cubic-bezier(.2,.7,.2,1) .5s backwards; }
+@keyframes grow { from { transform: scaleX(0); } }`;
+  return frame({ h, t, title: `Season stats for ${d.name}: ${tiles.map(([k, v]) => `${k.toLowerCase()} ${v}`).join(', ')}`, body, css });
+}
+
+// ── away fixtures: merged PRs to other people's repos ───────────────────────
+export function upstreamLog(d, t, limit = 8) {
+  const X = 32, R = W - 32, list = d.upstream.list.slice(0, limit), rowH = 34, top = 102;
+  const rows = list.map((p, i) => {
+    const y = top + i * rowH;
+    const [yy, mm, dd] = p.merged.split('-');
+    const date = `${dd} ${MONTHS[Number(mm) - 1]} ${yy}`;
+    return `<g style="animation: rise .4s ease-out ${(0.1 + i * 0.07).toFixed(2)}s backwards">
+  ${i % 2 ? '' : `<rect x="${X - 10}" y="${y - 22}" width="${R - X + 20}" height="${rowH}" rx="4" fill="${t.line}" fill-opacity="${t.mode === 'dark' ? 0.05 : 0.04}"/>`}
+  <text x="${X}" y="${y}" class="d dim" style="font-size:14px;font-weight:500;letter-spacing:1px">${esc(date)}</text>
+  <rect x="${X + 108}" y="${y - 16}" width="22" height="22" rx="4" fill="${t.go}"/>
+  <text x="${X + 119}" y="${y}" text-anchor="middle" class="d" style="font-size:14px;font-weight:700;fill:${t.bg}">W</text>
+  <text x="${X + 170}" y="${y}" class="d" style="font-size:16px;font-weight:600">${esc(clip(p.repo, 32))}</text>
+  <text x="${X + 450}" y="${y}" style="font-size:13.5px">${esc(clip(p.title, 58))}</text>
+  <text x="${R}" y="${y}" text-anchor="end" class="d dim" style="font-size:14px;font-weight:500">#${esc(p.number)}</text>
+</g>`;
+  }).join('\n');
+  const empty = list.length ? '' : `<text x="${X}" y="${top}" class="dim">No away fixtures yet.</text>`;
+  const footY = top + Math.max(1, list.length) * rowH;
+  const more = d.upstream.prs > list.length ? `  ·  latest ${list.length} shown` : '';
+  const body = `${heading(t, X, 40, 'AWAY FIXTURES', 'pull requests merged into other people\'s projects')}
+${label(X, 68, 'MERGED')}${label(X + 108, 68, 'RESULT')}${label(X + 170, 68, 'GROUND')}${label(X + 450, 68, 'PULL REQUEST')}${label(R, 68, 'PR', 'end')}
+<line x1="${X}" x2="${R}" y1="76" y2="76" stroke="${t.line}" stroke-opacity="${t.lineOp + 0.06}"/>
+${rows}${empty}
+<text x="${X}" y="${footY + 4}" class="d dim" style="font-size:12.5px;font-weight:500;letter-spacing:2px">${esc(`${plural(d.upstream.prs, 'win')} away from home across ${plural(d.upstream.repos, 'ground')}${more}`.toUpperCase())}</text>`;
+  return frame({ h: footY + 26, t, title: `${d.upstream.prs} merged pull requests to other projects`, body });
+}
+
 // ── not redesigned yet: render with the psql look ──────────────────────────
 const viaPsql = (fn) => (...args) => fn(...args.map((a) => (a && a.mode && THEMES[a.mode] === a ? psql.THEMES[a.mode] : a)));
 
-export const resultHeader = viaPsql(psql.resultHeader);
-export const resultRow = viaPsql(psql.resultRow);
-export const resultFooter = viaPsql(psql.resultFooter);
-export const stats = viaPsql(psql.stats);
-export const upstreamLog = viaPsql(psql.upstreamLog);
 export const linkButton = viaPsql(psql.linkButton);
 export const queryButton = viaPsql(psql.queryButton);
 export const queryResult = viaPsql(psql.queryResult);
