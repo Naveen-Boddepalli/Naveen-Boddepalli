@@ -16,7 +16,7 @@ import { Worker } from 'node:worker_threads';
 import { fetchProfile, normalize } from './data.mjs';
 import { sampleResponse } from './sample.mjs';
 import { check, SCHEMA } from './query/guard.mjs';
-import * as svg from './svg.mjs';
+import { loadTheme } from './themes/index.mjs';
 
 const args = process.argv.slice(2);
 const flag = (n) => args.includes(`--${n}`);
@@ -25,6 +25,7 @@ const opt = (n, d) => { const i = args.indexOf(`--${n}`); return i >= 0 && args[
 const cfg = JSON.parse(await readFile(new URL('./profile.config.json', import.meta.url), 'utf8'));
 const login = process.env.PROFILE_LOGIN || cfg.login;
 cfg.login = login;
+const svg = await loadTheme(opt('theme', cfg.theme));
 const dir = opt('dir', 'q');
 const token = process.env.GITHUB_TOKEN;
 const repo = process.env.GITHUB_REPOSITORY || `${login}/${login}`;

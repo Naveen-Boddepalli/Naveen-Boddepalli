@@ -1,5 +1,9 @@
-// SVG renderers for the "EXPLAIN naveen" profile. Every image is plain SVG with
-// CSS / SMIL animation only, so it survives GitHub's image proxy.
+// "psql" theme: SVG renderers for the "EXPLAIN naveen" profile. Every image is
+// plain SVG with CSS / SMIL animation only, so it survives GitHub's image proxy.
+
+import { esc, clip, ago } from '../common.mjs';
+
+export { esc, ago };
 
 export const THEMES = {
   dark: {
@@ -18,20 +22,6 @@ const MONO = `ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberat
 const SANS = `-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif`;
 const W = 1000;
 const CH = 0.6; // monospace advance per px of font-size
-
-export const esc = (s) =>
-  String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-
-const clip = (s, n) => (s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s);
-
-export function ago(iso, now = new Date()) {
-  const d = Math.floor((now - new Date(iso)) / 86400000);
-  if (d <= 0) return 'today';
-  if (d === 1) return 'yesterday';
-  if (d < 30) return `${d}d ago`;
-  if (d < 365) return `${Math.floor(d / 30)}mo ago`;
-  return `${Math.floor(d / 365)}y ago`;
-}
 
 function frame({ w = W, h, t, title, body, css = '', defs = '' }) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(title)}">

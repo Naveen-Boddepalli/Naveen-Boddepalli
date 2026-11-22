@@ -14,7 +14,8 @@ import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { fetchProfile, normalize } from './data.mjs';
 import { sampleResponse } from './sample.mjs';
-import { THEMES, esc } from './svg.mjs';
+// Social previews keep the psql look whatever the profile theme is.
+import { THEMES, esc } from './themes/psql/svg.mjs';
 
 const args = process.argv.slice(2);
 const opt = (n, d) => { const i = args.indexOf(`--${n}`); return i >= 0 && args[i + 1] ? args[i + 1] : d; };

@@ -4,6 +4,7 @@
 //   GITHUB_TOKEN=... node scripts/build.mjs            live data (used in CI)
 //   node scripts/build.mjs --sample --preview          sample data + preview.html
 //   ... --readme README.md                             also sync the README projects block
+//   ... --theme matchday                               override `theme` from profile.config.json
 //
 // Every image is written in a -dark and a -light variant.
 
@@ -11,7 +12,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fetchProfile, normalize } from './data.mjs';
 import { sampleResponse } from './sample.mjs';
-import * as svg from './svg.mjs';
+import { loadTheme } from './themes/index.mjs';
 import { syncReadme } from './readme.mjs';
 
 const started = Date.now();
@@ -24,6 +25,7 @@ const opt = (name, dflt) => {
 
 const cfg = JSON.parse(await readFile(new URL('./profile.config.json', import.meta.url), 'utf8'));
 cfg.login = process.env.PROFILE_LOGIN || cfg.login;
+const svg = await loadTheme(opt('theme', cfg.theme));
 const out = opt('out', 'dist/profile');
 const now = new Date();
 
@@ -50,6 +52,7 @@ const images = {
   upstream: (t) => svg.upstreamLog(d, t),
   ...Object.fromEntries(cfg.links.map((l) => [`link-${l.label}`, (t) => svg.linkButton(l.label, t)])),
   ...Object.fromEntries(cfg.queries.map((q, i) => [`query-${i + 1}`, (t) => svg.queryButton(q.label, t)])),
+  ...(svg.extras?.(d, cfg, now) ?? {}),
 };
 const fileCount = (Object.keys(images).length + 1) * 2; // +1 for the footer itself
 images.footer = (t) => svg.footer(d, t, Date.now() - started, fileCount);
