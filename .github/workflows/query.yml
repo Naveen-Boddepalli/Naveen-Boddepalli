@@ -6,13 +6,15 @@ name: query my profile
 on:
   issues:
     types: [opened]
-  # re-run the default query by hand, or after changing the query code
+  # re-run the default query by hand, or after changing the query code or the theme
   workflow_dispatch:
   push:
     branches: [main]
     paths:
       - scripts/query.mjs
       - scripts/query/**
+      - scripts/themes/**
+      - scripts/profile.config.json
       - .github/workflows/query.yml
 
 permissions:
