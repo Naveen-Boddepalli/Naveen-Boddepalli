@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="362" viewBox="0 0 1000 362" role="img" aria-label="Last visitor query: SELECT name, lang FROM projects WHERE demo IS NOT NULL ORDER BY pushed_days">
+<title>Last visitor query: SELECT name, lang FROM projects WHERE demo IS NOT NULL ORDER BY pushed_days</title>
+<style>
+text { font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; font-size: 14px; fill: #1f2328; }
+.dim { fill: #59636e; } .acc { fill: #0a7ea4; } .kw { fill: #cf222e; }
+.grn { fill: #1a7f37; } .amb { fill: #9a6700; } .b { font-weight: 700; }
+.sans { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif; }
+@keyframes in { from { opacity: 0; transform: translateY(6px); } }
+@keyframes slide { from { opacity: 0; transform: translateX(-10px); } }
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes pulse { 50% { opacity: .35; } }
+.cursor { animation: blink 1.1s steps(1) infinite; }
+.pulse { animation: pulse 2s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+
+<rect x="0.5" y="0.5" width="999" height="361" rx="10" fill="#ffffff" stroke="#d0d7de"/>
+<text x="32" y="44"><tspan class="acc b">naveen=#</tspan> <tspan class="kw">SELECT</tspan> name, lang <tspan class="kw">FROM</tspan> projects <tspan class="kw">WHERE</tspan> demo IS NOT NULL <tspan class="kw">ORDER BY</tspan> pushed_days</text><text x="32" y="66" class="dim" style="font-size:12px">-- seeded by the owner · 2026-11-22 03:31 UTC</text><text x="32" y="100"  class="dim">name</text><text x="410" y="100"  class="dim">lang</text><line x1="32" x2="502.40000000000003" y1="109" y2="109" stroke="#d0d7de"/><g style="animation: in .35s ease-out 0.15s backwards"><text x="32" y="132" >flowinger</text><text x="410" y="132" >TypeScript</text></g><g style="animation: in .35s ease-out 0.22s backwards"><text x="32" y="154" >shadow-network</text><text x="410" y="154" >JavaScript</text></g><g style="animation: in .35s ease-out 0.29s backwards"><text x="32" y="176" >heurix</text><text x="410" y="176" >Python</text></g><g style="animation: in .35s ease-out 0.36s backwards"><text x="32" y="198" >query-lens</text><text x="410" y="198" >TypeScript</text></g><g style="animation: in .35s ease-out 0.43s backwards"><text x="32" y="220" >palisade</text><text x="410" y="220" >JavaScript</text></g><g style="animation: in .35s ease-out 0.50s backwards"><text x="32" y="242" >compiler-based-static-bug-detection-system</text><text x="410" y="242" >Python</text></g><g style="animation: in .35s ease-out 0.57s backwards"><text x="32" y="264" >Resume-Analyser</text><text x="410" y="264" >Python</text></g><g style="animation: in .35s ease-out 0.64s backwards"><text x="32" y="286" >aerodex</text><text x="410" y="286" >TypeScript</text></g><text x="32" y="312" class="dim" style="font-size:13px">(12 rows) (4 more not shown)</text><text x="32" y="340" class="dim" style="font-size:12px">ran on QueryLens: parse → plan → optimize → lock → buffer → execute → result in 11.2 ms</text>
+</svg>

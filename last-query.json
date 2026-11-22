@@ -1,0 +1,70 @@
+{
+  "sql": "SELECT name, lang FROM projects WHERE demo IS NOT NULL ORDER BY pushed_days",
+  "author": null,
+  "at": "2026-11-22T03:31:24.029Z",
+  "rows": [
+    {
+      "name": "flowinger",
+      "lang": "TypeScript"
+    },
+    {
+      "name": "shadow-network",
+      "lang": "JavaScript"
+    },
+    {
+      "name": "heurix",
+      "lang": "Python"
+    },
+    {
+      "name": "query-lens",
+      "lang": "TypeScript"
+    },
+    {
+      "name": "palisade",
+      "lang": "JavaScript"
+    },
+    {
+      "name": "compiler-based-static-bug-detection-system",
+      "lang": "Python"
+    },
+    {
+      "name": "Resume-Analyser",
+      "lang": "Python"
+    },
+    {
+      "name": "aerodex",
+      "lang": "TypeScript"
+    },
+    {
+      "name": "time-series-autoML",
+      "lang": "TypeScript"
+    },
+    {
+      "name": "portfolio",
+      "lang": "JavaScript"
+    },
+    {
+      "name": "smart-tools-for-studying",
+      "lang": "JavaScript"
+    },
+    {
+      "name": "Harry-Potter--Fan-Web",
+      "lang": "TypeScript"
+    }
+  ],
+  "columns": [
+    "name",
+    "lang"
+  ],
+  "error": null,
+  "stages": [
+    "parse",
+    "plan",
+    "optimize",
+    "lock",
+    "buffer",
+    "execute",
+    "result"
+  ],
+  "ms": 11.166455999999926
+}
