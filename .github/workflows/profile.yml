@@ -52,8 +52,14 @@ jobs:
             git push
           fi
 
-      # snake eating the contribution graph -> dist/ (same paths as before)
+      # which theme is active (the snake below is only shown by the psql theme)
+      - name: read theme
+        id: theme
+        run: echo "name=$(node -p "require('./scripts/profile.config.json').theme || 'psql'")" >> "$GITHUB_OUTPUT"
+
+      # snake eating the contribution graph -> dist/ (psql theme only; Matchday has its heatmap)
       - name: generate github-contribution-grid-snake.svg
+        if: steps.theme.outputs.name == 'psql'
         uses: Platane/snk/svg-only@v3
         with:
           github_user_name: ${{ github.repository_owner }}
@@ -63,7 +69,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # one push of everything, so the snake and profile images never overwrite each other
+      # one push of everything (it replaces the branch), so images never overwrite each other
       - name: push dist/ to the output branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
