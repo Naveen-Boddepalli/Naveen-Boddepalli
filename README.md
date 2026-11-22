@@ -18,8 +18,8 @@
 
 ```text
 ─────────────────────────────────────────────────────────────────────────
-Role          : Full-Stack Developer & ML/AI Engineer (Year 2)
-Education     : B.Tech Computer Science @ VIT Vellore, Chennai
+Role          : Full-Stack Developer & ML/AI Engineer (Year 3)
+Education     : B.Tech Computer Science @ VIT Vellore
 Focus         : Building intelligent, scalable, and resilient systems.
 Current Quests: Shipping flowinger, query-lens & heurix
 Languages     : Python, C++, TypeScript, JavaScript
@@ -28,7 +28,7 @@ Milestones    : 300+ LeetCode Solutions, GSSoC Open Source Contributor
 ─────────────────────────────────────────────────────────────────────────
 ```
 
-> I'm a second-year Computer Science student who believes software should solve real-world problems. Whether it's turning dense institutional research into an interactive market brief or teaching a pipeline to train its own forecasting models, I love building from 0 to 1. My latest obsession? Open-source contributions through GSSoC and diving deep into the intersection of electrical engineering and CS—because debouncing a noisy signal and debugging a flaky API have more in common than you'd think!
+> I'm a third-year Computer Science student who believes software should solve real-world problems. Whether it's turning dense institutional research into an interactive market brief or teaching a pipeline to train its own forecasting models, I love building from 0 to 1. My latest obsession? Open-source contributions through GSSoC and diving deep into the intersection of electrical engineering and CS—because debouncing a noisy signal and debugging a flaky API have more in common than you'd think!
 
 ## `./view_projects.sh --gui`
 
