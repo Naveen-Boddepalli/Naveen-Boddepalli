@@ -1,12 +1,3 @@
-<!--
-  ⚙️ QUICK SETUP — do this before publishing:
-  1. This repository must be named exactly Naveen-Boddepalli (e.g. github.com/torvalds/torvalds) for it to appear on your profile.
-  2. Find & replace "Naveen-Boddepalli" everywhere below with your real GitHub username.
-  3. In the "network" section near the bottom, swap in your real LinkedIn, portfolio URL, email, LeetCode, and X handle.
-  4. Update the "Explore Repository ➔" links in the Projects section.
-  5. Setup the GitHub Action for the snake graph in `.github/workflows/snake.yml`.
--->
-
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:00C9FF,100:92FE9D&height=220&section=header&text=Hello%20World,%20I'm%20Naveen!&fontSize=50&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Full-Stack%20Architect%20%7C%20AI/ML%20Alchemist&descAlignY=62&descAlign=50" width="100%" />
 </div>
@@ -18,14 +9,10 @@
 </h3>
 
 <div align="center">
-  <a href="#"><img alt="Status" src="https://img.shields.io/badge/STATUS-Open_to_Internships-00C9FF?style=for-the-badge&logo=rocket&logoColor=white&labelColor=1a1a1a" /></a>
-  <a href="#"><img alt="Focus" src="https://img.shields.io/badge/FOCUS-Full--Stack_%26_ML-92FE9D?style=for-the-badge&logo=target&logoColor=1a1a1a&labelColor=1a1a1a" /></a>
-  <a href="#"><img alt="Location" src="https://img.shields.io/badge/BASE-VIT_Vellore-00C9FF?style=for-the-badge&logo=googlemaps&logoColor=white&labelColor=1a1a1a" /></a>
+  <img alt="Status" src="https://img.shields.io/badge/STATUS-Open_to_Internships-00C9FF?style=for-the-badge&logo=rocket&logoColor=white&labelColor=1a1a1a" />
+  <img alt="Focus" src="https://img.shields.io/badge/FOCUS-Full--Stack_%26_ML-92FE9D?style=for-the-badge&logo=target&logoColor=1a1a1a&labelColor=1a1a1a" />
+  <img alt="Location" src="https://img.shields.io/badge/BASE-VIT_Vellore-00C9FF?style=for-the-badge&logo=googlemaps&logoColor=white&labelColor=1a1a1a" />
 </div>
-
-<br />
-
-<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
 
 ## `cat /home/naveen/about.txt`
 
@@ -42,10 +29,6 @@
 ```
 
 > I'm a second-year Computer Science student who believes software should solve real-world problems. Whether it's turning dense institutional research into an interactive market brief or teaching a pipeline to train its own forecasting models, I love building from 0 to 1. My latest obsession? Open-source contributions through GSSoC and diving deep into the intersection of electrical engineering and CS—because debouncing a noisy signal and debugging a flaky API have more in common than you'd think!
-
-<br />
-
-<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
 
 ## `./view_projects.sh --gui`
 
@@ -124,10 +107,6 @@
   </tr>
 </table>
 
-<br />
-
-<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
-
 ## `./show_stack.sh --render-icons`
 
 <div align="center">
@@ -159,10 +138,6 @@
   </p>
 </div>
 
-<br />
-
-<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
-
 ## `./fetch_contributions.sh --org=GSSoC`
 
 | 🗄️ Repository | 💡 Impact & Stack |
@@ -171,10 +146,6 @@
 | **[DevTrack](https://github.com/DevTrack)** | Patched SSRF vulnerability (incl. IPv6 bypass), integrated Supabase Realtime sync via custom `useRealtimeSync` hook, and fortified CI for secure fork PR runs. <br/> `TypeScript` `Supabase` `GitHub Actions` |
 | **[Eventra](https://github.com/Eventra)** | Debugged and resolved service worker lifecycle issues, restoring seamless offline reliability. <br/> `JavaScript` `PWA` |
 | **[withfig/autocomplete](https://github.com/withfig/autocomplete)** | Contributed terminal CLI completion spec for the `xattr` command. <br/> `TypeScript` `Fig` |
-
-<br />
-
-<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
 
 ## `top -u naveen`
 
@@ -215,10 +186,6 @@
   </a>
 </div>
 
-<br />
-
-<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
-
 ## `python train_snake.py`
 
 <div align="center">
@@ -231,17 +198,13 @@
   <sub><i>Hovering through the GitHub matrix, one green tile at a time.</i></sub>
 </div>
 
-<br />
-
-<img src="https://raw.githubusercontent.com/trinib/trinib/main/assets/images/line_neon.gif" width="100%" />
-
 ## `ping -c 4 network`
 
 <div align="center">
   <a href="https://www.linkedin.com/in/naveen-boddepalli-689056327/">
     <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />
   </a>
-  <a href="https://your-portfolio-url.com">
+  <a href="https://naveen-boddepalli-portfolio.vercel.app/">
     <img src="https://img.shields.io/badge/Portfolio-000000?style=for-the-badge&logo=googlechrome&logoColor=00C9FF" />
   </a>
   <a href="mailto:1234naveenboddepalli@gmail.com">
