@@ -308,3 +308,27 @@ export function queryButton(label, t) {
   const body = `<text x="17" y="23" style="font-size:13px"><tspan class="grn">▸</tspan> <tspan class="acc">${esc(label)}</tspan></text>`;
   return frame({ w, h, t, title: `Run: ${label}`, body });
 }
+
+// ── upstream: merged PRs to other people's repos, git-log style ─────────────
+export function upstreamLog(d, t, limit = 8) {
+  const X = 32, list = d.upstream.list.slice(0, limit);
+  const rows = list.map((p, i) => {
+    const y = 84 + i * 26;
+    const delay = (0.1 + i * 0.07).toFixed(2);
+    return `<g style="animation: slide .4s ease-out ${delay}s backwards">
+  <text x="${X}" y="${y}" class="amb">${esc(`#${p.number}`)}</text>
+  <text x="${X + 70}" y="${y}" class="dim">${esc(p.merged)}</text>
+  <text x="${X + 180}" y="${y}" class="acc">${esc(clip(p.repo, 30))}</text>
+  <text x="${X + 450}" y="${y}">${esc(clip(p.title, 52))}</text>
+</g>`;
+  });
+  const empty = list.length ? '' : `<text x="${X}" y="84" class="dim">(no merged upstream PRs yet)</text>`;
+  const footY = 84 + Math.max(1, list.length) * 26 + 8;
+  const more = d.upstream.prs > list.length ? `, latest ${list.length} shown` : '';
+  const body = `
+<text x="${X}" y="40"><tspan class="acc b">naveen=#</tspan> <tspan class="dim">\\!</tspan> git log --merged --author=${esc(d.login.toLowerCase())} upstream</text>
+<line x1="${X}" x2="${W - X}" y1="56" y2="56" stroke="${t.faint}"/>
+${rows.join('\n')}${empty}
+<text x="${X}" y="${footY}" class="dim" style="font-size:13px">(${d.upstream.prs} merged PR${d.upstream.prs === 1 ? '' : 's'} across ${d.upstream.repos} repo${d.upstream.repos === 1 ? '' : 's'}${more})</text>`;
+  return frame({ h: footY + 22, t, title: `${d.upstream.prs} merged pull requests to other projects`, body });
+}

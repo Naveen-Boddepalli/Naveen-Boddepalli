@@ -113,7 +113,18 @@ Run SQL against this profile. Pick a query to open a pre-filled issue: a GitHub 
   </p>
 </div>
 
-## `SELECT * FROM upstream_prs WHERE program = 'GSSoC';`
+## `\! git log upstream`
+
+<a href="https://github.com/pulls?q=is%3Apr%20is%3Amerged%20author%3ANaveen-Boddepalli%20-user%3ANaveen-Boddepalli">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Naveen-Boddepalli/Naveen-Boddepalli/blob/output/profile/upstream-dark.svg?raw=true" />
+    <img alt="Merged pull requests to other projects" src="https://github.com/Naveen-Boddepalli/Naveen-Boddepalli/blob/output/profile/upstream-light.svg?raw=true" width="100%" />
+  </picture>
+</a>
+
+<details>
+<summary><b>GSSoC highlights:</b> what each contribution changed</summary>
+<br/>
 
 | Repository | Impact & Stack |
 | :--- | :--- |
@@ -121,6 +132,8 @@ Run SQL against this profile. Pick a query to open a pre-filled issue: a GitHub 
 | **[Priyanshu-byte-coder/devtrack](https://github.com/Priyanshu-byte-coder/devtrack)** | Patched SSRF vulnerability (incl. IPv6 bypass), integrated Supabase Realtime sync via custom `useRealtimeSync` hook, and fortified CI for secure fork PR runs. <br/> `TypeScript` `Supabase` `GitHub Actions` |
 | **[SandeepVashishtha/Eventra](https://github.com/SandeepVashishtha/Eventra)** | Debugged and resolved service worker lifecycle issues, restoring seamless offline reliability. <br/> `JavaScript` `PWA` |
 | **[withfig/autocomplete](https://github.com/withfig/autocomplete)** | Contributed terminal CLI completion spec for the `xattr` command. <br/> `TypeScript` `Fig` |
+
+</details>
 
 <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Naveen-Boddepalli/Naveen-Boddepalli/blob/output/profile/stats-dark.svg?raw=true" />

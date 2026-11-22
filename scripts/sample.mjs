@@ -52,11 +52,11 @@ export function sampleResponse(now = new Date()) {
       upstream: {
         issueCount: 9,
         nodes: [
-          { title: 'Add custom validator registration', mergedAt: daysAgo(now, 55), repository: { nameWithOwner: 'im-anishraj/arnio' } },
-          { title: 'Fix IPv6 SSRF bypass', mergedAt: daysAgo(now, 80), repository: { nameWithOwner: 'Priyanshu-byte-coder/devtrack' } },
-          { title: 'Fix service worker lifecycle', mergedAt: daysAgo(now, 105), repository: { nameWithOwner: 'SandeepVashishtha/Eventra' } },
-          { title: 'Add xattr completion spec', mergedAt: daysAgo(now, 130), repository: { nameWithOwner: 'withfig/autocomplete' } },
-          { title: 'Add redaction-aware HTML export', mergedAt: daysAgo(now, 155), repository: { nameWithOwner: 'im-anishraj/arnio' } },
+          { title: 'Add custom validator registration', number: 107, url: 'https://github.com/im-anishraj/arnio/pull/107', mergedAt: daysAgo(now, 55), repository: { nameWithOwner: 'im-anishraj/arnio' } },
+          { title: 'Fix IPv6 SSRF bypass', number: 114, url: 'https://github.com/Priyanshu-byte-coder/devtrack/pull/114', mergedAt: daysAgo(now, 80), repository: { nameWithOwner: 'Priyanshu-byte-coder/devtrack' } },
+          { title: 'Fix service worker lifecycle', number: 121, url: 'https://github.com/SandeepVashishtha/Eventra/pull/121', mergedAt: daysAgo(now, 105), repository: { nameWithOwner: 'SandeepVashishtha/Eventra' } },
+          { title: 'Add xattr completion spec', number: 128, url: 'https://github.com/withfig/autocomplete/pull/128', mergedAt: daysAgo(now, 130), repository: { nameWithOwner: 'withfig/autocomplete' } },
+          { title: 'Add redaction-aware HTML export', number: 135, url: 'https://github.com/im-anishraj/arnio/pull/135', mergedAt: daysAgo(now, 155), repository: { nameWithOwner: 'im-anishraj/arnio' } },
         ],
       },
     },

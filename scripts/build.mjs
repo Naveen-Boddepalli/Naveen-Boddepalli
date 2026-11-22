@@ -47,6 +47,7 @@ const images = {
   ...Object.fromEntries(d.pinned.map((r, i) => [`project-${i + 1}`, (t) => svg.resultRow(r, i, t, now)])),
   'projects-footer': (t) => svg.resultFooter(d, t),
   stats: (t) => svg.stats(d, t),
+  upstream: (t) => svg.upstreamLog(d, t),
   ...Object.fromEntries(cfg.links.map((l) => [`link-${l.label}`, (t) => svg.linkButton(l.label, t)])),
   ...Object.fromEntries(cfg.queries.map((q, i) => [`query-${i + 1}`, (t) => svg.queryButton(q.label, t)])),
 };

@@ -32,7 +32,7 @@ query ($login: String!, $from: DateTime!, $prs: String!) {
   }
   upstream: search(query: $prs, type: ISSUE, first: 100) {
     issueCount
-    nodes { ... on PullRequest { title mergedAt repository { nameWithOwner } } }
+    nodes { ... on PullRequest { title number url mergedAt repository { nameWithOwner } } }
   }
 }`;
 
@@ -117,7 +117,14 @@ export function normalize(resp, cfg, now = new Date()) {
     stars: own.reduce((s, r) => s + r.stargazerCount, 0),
     contributions: u.thisYear.contributionCalendar.totalContributions,
     commits: u.thisYear.totalCommitContributions,
-    upstream: { prs: resp.data.upstream.issueCount, repos: upstreamRepos.size },
+    upstream: {
+      prs: resp.data.upstream.issueCount,
+      repos: upstreamRepos.size,
+      list: resp.data.upstream.nodes
+        .filter((n) => n?.repository && n.mergedAt)
+        .map((n) => ({ repo: n.repository.nameWithOwner, title: n.title, number: n.number, url: n.url, merged: n.mergedAt.slice(0, 10) }))
+        .sort((a, b) => b.merged.localeCompare(a.merged)),
+    },
     streak: streaks(days, now),
     languages: languageShares(own, cfg.excludeLanguages, 6),
     // Tables visitors can query with "query my profile" (scripts/query.mjs).
