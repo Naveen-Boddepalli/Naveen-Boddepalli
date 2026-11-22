@@ -3,6 +3,7 @@
 //
 //   GITHUB_TOKEN=... node scripts/build.mjs            live data (used in CI)
 //   node scripts/build.mjs --sample --preview          sample data + preview.html
+//   ... --readme README.md                             also sync the README projects block
 //
 // Every image is written in a -dark and a -light variant.
 
@@ -11,6 +12,7 @@ import { join } from 'node:path';
 import { fetchProfile, normalize } from './data.mjs';
 import { sampleResponse } from './sample.mjs';
 import * as svg from './svg.mjs';
+import { syncReadme } from './readme.mjs';
 
 const started = Date.now();
 const args = process.argv.slice(2);
@@ -60,6 +62,14 @@ for (const [name, render] of Object.entries(images)) {
   }
 }
 await writeFile(join(out, 'data.json'), JSON.stringify(d, null, 2) + '\n');
+
+const readmePath = opt('readme', null);
+if (readmePath) {
+  const before = await readFile(readmePath, 'utf8');
+  const after = syncReadme(before, d);
+  if (after !== before) await writeFile(readmePath, after);
+  console.log(after === before ? 'README projects block already in sync' : 'README projects block updated');
+}
 
 if (flag('preview')) {
   const names = Object.keys(images);

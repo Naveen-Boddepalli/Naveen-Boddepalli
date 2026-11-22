@@ -26,19 +26,31 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
 
       - uses: actions/setup-node@v4
         with:
           node-version: 22
 
       # hero, project rows, pg_stat panel, link buttons, footer -> dist/profile/
+      # and re-sync the README projects block with the current pins
       - name: generate profile SVGs
-        run: node scripts/build.mjs --out dist/profile
+        run: node scripts/build.mjs --out dist/profile --readme README.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PROFILE_LOGIN: ${{ github.repository_owner }}
+
+      # commits to main only when the pinned repos changed
+      # (pushes made with GITHUB_TOKEN don't re-trigger this workflow)
+      - name: commit README if the pins changed
+        run: |
+          if git diff --quiet -- README.md; then
+            echo "README already matches the pins"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Sync README projects with pinned repos" -- README.md
+            git push
+          fi
 
       # snake eating the contribution graph -> dist/ (same paths as before)
       - name: generate github-contribution-grid-snake.svg
