@@ -3,7 +3,7 @@
 //
 //   GITHUB_TOKEN=... node scripts/build.mjs            live data (used in CI)
 //   node scripts/build.mjs --sample --preview          sample data + preview.html
-//   ... --readme README.md                             also sync the README projects block
+//   ... --readme README.md                             also render README.md from the theme's README.template.md
 //   ... --theme matchday                               override `theme` from profile.config.json
 //
 // Every image is written in a -dark and a -light variant.
@@ -12,8 +12,8 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fetchProfile, normalize } from './data.mjs';
 import { sampleResponse } from './sample.mjs';
-import { loadTheme } from './themes/index.mjs';
-import { syncReadme } from './readme.mjs';
+import { DEFAULT_THEME, loadTheme } from './themes/index.mjs';
+import { renderReadme } from './readme.mjs';
 
 const started = Date.now();
 const args = process.argv.slice(2);
@@ -25,7 +25,8 @@ const opt = (name, dflt) => {
 
 const cfg = JSON.parse(await readFile(new URL('./profile.config.json', import.meta.url), 'utf8'));
 cfg.login = process.env.PROFILE_LOGIN || cfg.login;
-const svg = await loadTheme(opt('theme', cfg.theme));
+const themeName = opt('theme', cfg.theme) ?? DEFAULT_THEME;
+const svg = await loadTheme(themeName);
 const out = opt('out', 'dist/profile');
 const now = new Date();
 
@@ -70,10 +71,11 @@ await writeFile(join(out, 'data.json'), JSON.stringify(d, null, 2) + '\n');
 
 const readmePath = opt('readme', null);
 if (readmePath) {
-  const before = await readFile(readmePath, 'utf8');
-  const after = syncReadme(before, d, cfg);
+  const template = await readFile(new URL(`./themes/${themeName}/README.template.md`, import.meta.url), 'utf8');
+  const before = await readFile(readmePath, 'utf8').catch(() => '');
+  const after = renderReadme(template, d, cfg);
   if (after !== before) await writeFile(readmePath, after);
-  console.log(after === before ? 'README generated blocks already in sync' : 'README generated blocks updated');
+  console.log(after === before ? 'README already up to date' : `README rendered from the ${themeName} template`);
 }
 
 if (flag('preview')) {

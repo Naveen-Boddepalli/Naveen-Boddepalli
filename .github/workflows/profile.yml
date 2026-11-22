@@ -31,24 +31,24 @@ jobs:
         with:
           node-version: 22
 
-      # hero, project rows, pg_stat panel, link buttons, footer -> dist/profile/
-      # and re-sync the README projects block with the current pins
+      # every profile image for the theme in profile.config.json -> dist/profile/
+      # and README.md rendered from that theme's README.template.md
       - name: generate profile SVGs
         run: node scripts/build.mjs --out dist/profile --readme README.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PROFILE_LOGIN: ${{ github.repository_owner }}
 
-      # commits to main only when the pinned repos changed
+      # commits to main only when the README changed (new pins, template or theme)
       # (pushes made with GITHUB_TOKEN don't re-trigger this workflow)
-      - name: commit README if the pins changed
+      - name: commit README if it changed
         run: |
           if git diff --quiet -- README.md; then
-            echo "README already matches the pins"
+            echo "README already up to date"
           else
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "Sync README projects with pinned repos" -- README.md
+            git commit -m "Regenerate README from the profile template" -- README.md
             git push
           fi
 
