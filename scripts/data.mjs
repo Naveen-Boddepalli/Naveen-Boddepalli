@@ -126,6 +126,8 @@ export function normalize(resp, cfg, now = new Date()) {
         .sort((a, b) => b.merged.localeCompare(a.merged)),
     },
     streak: streaks(days, now),
+    // Last year's contribution calendar, oldest first (Matchday heatmap).
+    calendar: days.map((d) => ({ date: d.date, count: d.contributionCount })),
     languages: languageShares(own, cfg.excludeLanguages, 6),
     // Tables visitors can query with "query my profile" (scripts/query.mjs).
     tables: {

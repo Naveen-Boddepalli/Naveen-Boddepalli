@@ -9,7 +9,38 @@
     "shirt": 7,
     "position": "FWD",
     "club": "VIT Vellore",
-    "deal": "internship"
+    "deal": "internship",
+    "stack": {
+      "gk": [
+        "Git"
+      ],
+      "def": [
+        "PostgreSQL",
+        "MongoDB",
+        "GitHub Actions",
+        "Vercel"
+      ],
+      "mid": [
+        "React",
+        "Next.js",
+        "FastAPI"
+      ],
+      "fwd": [
+        "Python",
+        "TypeScript",
+        "C++"
+      ],
+      "bench": [
+        "JavaScript",
+        "Node.js",
+        "Express",
+        "LangChain",
+        "LangGraph",
+        "Groq",
+        "Hugging Face",
+        "FAISS"
+      ]
+    }
   },
   "excludeLanguages": [
     "Jupyter Notebook"

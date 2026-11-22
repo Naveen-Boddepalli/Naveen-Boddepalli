@@ -319,10 +319,206 @@ ${rows}${empty}
   return frame({ h: footY + 26, t, title: `${d.upstream.prs} merged pull requests to other projects`, body });
 }
 
+// ── tactics board: the stack as a starting XI ───────────────────────────────
+// Brand colours and short labels for player tokens. Unknown names fall back to
+// initials on the theme colour; config entries can also be { name, short, color }.
+const KIT = {
+  'Git': ['Git', '#F05032'], 'PostgreSQL': ['PG', '#4169E1'], 'MongoDB': ['Mdb', '#47A248'],
+  'GitHub Actions': ['GHA', '#2088FF'], 'Vercel': ['Vc', '#111111'], 'React': ['Re', '#61DAFB'],
+  'Next.js': ['Nx', '#111111'], 'FastAPI': ['FA', '#009688'], 'Python': ['Py', '#3776AB'],
+  'TypeScript': ['TS', '#3178C6'], 'C++': ['C++', '#00599C'], 'JavaScript': ['JS', '#F7DF1E'],
+  'Node.js': ['Nd', '#5FA04E'], 'Express': ['Ex', '#111111'], 'LangChain': ['LC', '#1C3C3C'],
+  'LangGraph': ['LG', '#1C3C3C'], 'Groq': ['Gq', '#F55036'], 'Hugging Face': ['HF', '#FFD21E'],
+  'FAISS': ['FS', '#0467DF'], 'Docker': ['Dk', '#2496ED'], 'Rust': ['Rs', '#DEA584'],
+};
+
+function kit(entry, t) {
+  const e = typeof entry === 'string' ? { name: entry } : entry;
+  const [short, color] = KIT[e.name] ?? [e.name.split(/[\s.-]+/).map((w) => w[0]).join('').slice(0, 3), t.gold];
+  return { name: e.name, short: e.short ?? short, color: e.color ?? color };
+}
+
+// Black or white text, whichever reads better on `hex`.
+function ink(hex) {
+  const n = parseInt(hex.slice(1), 16), [r, g, b] = [n >> 16, (n >> 8) & 255, n & 255].map((v) => {
+    const c = v / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.4 ? '#111111' : '#ffffff';
+}
+
+function pitchLines(t, x, y, w, h) {
+  const cy = y + h / 2, s = `stroke="${t.line}" stroke-opacity="${t.lineOp + 0.12}" stroke-width="2" fill="none"`;
+  const box = (bx, dir, depth, height) => `<rect x="${dir > 0 ? bx : bx - depth}" y="${cy - height / 2}" width="${depth}" height="${height}" ${s}/>`;
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" ${s}/>
+<line x1="${x + w / 2}" x2="${x + w / 2}" y1="${y}" y2="${y + h}" ${s}/>
+<circle cx="${x + w / 2}" cy="${cy}" r="${h * 0.16}" ${s}/>
+<circle cx="${x + w / 2}" cy="${cy}" r="3" fill="${t.line}" fill-opacity="${t.lineOp + 0.12}"/>
+${box(x, 1, w * 0.13, h * 0.6)}${box(x, 1, w * 0.05, h * 0.3)}
+${box(x + w, -1, w * 0.13, h * 0.6)}${box(x + w, -1, w * 0.05, h * 0.3)}
+<rect x="${x - 8}" y="${cy - h * 0.09}" width="8" height="${h * 0.18}" ${s}/>
+<rect x="${x + w}" y="${cy - h * 0.09}" width="8" height="${h * 0.18}" ${s}/>`;
+}
+
+export function tactics(d, t, cfg = {}) {
+  const s = cfg.matchday?.stack ?? {};
+  const lines = ['gk', 'def', 'mid', 'fwd'].map((k) => (s[k] ?? []).map((e) => kit(e, t)));
+  const bench = (s.bench ?? []).map((e) => kit(e, t));
+  const formation = lines.slice(1).map((l) => l.length).filter(Boolean).join('-');
+  const PX = 40, PY = 66, PW = W - 80, PH = 420;
+  const colX = [0.055, 0.25, 0.5, 0.76].map((f) => PX + PW * f);
+
+  let n = 0;
+  const pos = lines.map((line, li) => line.map((p, k) => ({ ...p, x: colX[li], y: PY + (PH * (k + 1)) / (line.length + 1), i: n++ })));
+  const tokens = pos.flat().map((p) => {
+    const size = fit(p.short, 34, 15, 700);
+    return `<g style="animation: rise .45s ease-out ${(0.2 + p.i * 0.07).toFixed(2)}s backwards">
+<circle cx="${p.x}" cy="${p.y}" r="22" fill="${p.color}" stroke="${t.line}" stroke-opacity=".85" stroke-width="2"/>
+<text x="${p.x}" y="${p.y + size * 0.36}" text-anchor="middle" class="d" style="font-size:${size}px;font-weight:700;fill:${ink(p.color)}">${esc(p.short)}</text>
+<text x="${p.x}" y="${p.y + 40}" text-anchor="middle" class="d" style="font-size:13px;font-weight:500;letter-spacing:.5px">${esc(p.name)}</text>
+</g>`;
+  }).join('\n');
+
+  // a ball worked out from the back: keeper → middle defender → middle midfielder → striker → goal
+  const mid = (line) => line[Math.floor((line.length - 1) / 2)];
+  const chain = pos.map((l) => (l.length ? mid(l) : null)).filter(Boolean);
+  const goal = { x: PX + PW + 4, y: PY + PH / 2 };
+  const passPath = chain.length > 1 ? `M ${[...chain, goal].map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' L ')}` : '';
+  const ball = passPath ? `<path d="${passPath}" fill="none" stroke="${t.gold}" stroke-opacity=".45" stroke-width="1.5" stroke-dasharray="4 6"/>
+<circle r="6" fill="#ffffff" stroke="#111" stroke-width="1.2">
+  <animateMotion dur="5s" begin="1.5s" repeatCount="indefinite" path="${passPath}" keyPoints="0;0;1;1" keyTimes="0;.15;.85;1" calcMode="linear"/>
+</circle>` : '';
+
+  // bench chips, wrapped onto as many rows as needed
+  const benchTop = PY + PH + 50;
+  let bx = PX + measure('BENCH', 13, 600, 2) + 20, by = benchTop;
+  const chips = bench.map((p) => {
+    const cw = 30 + measure(p.name, 13, 500, 0.5);
+    if (bx + cw > PX + PW) { bx = PX + measure('BENCH', 13, 600, 2) + 20; by += 34; }
+    const out = `<rect x="${bx}" y="${by - 18}" width="${cw.toFixed(1)}" height="26" rx="13" fill="none" stroke="${t.line}" stroke-opacity="${t.lineOp + 0.14}"/>
+<circle cx="${bx + 14}" cy="${by - 5}" r="5" fill="${p.color}" stroke="${t.line}" stroke-opacity=".5"/>
+<text x="${bx + 24}" y="${by}" class="d" style="font-size:13px;font-weight:500;letter-spacing:.5px">${esc(p.name)}</text>`;
+    bx += cw + 8;
+    return out;
+  }).join('\n');
+  const h = by + 30;
+
+  const body = `${heading(t, PX, 42, 'TACTICS BOARD', `the stack in a ${formation}${bench.length ? ', with the rest on the bench' : ''}`)}
+${pitchLines(t, PX, PY, PW, PH)}
+${ball}
+${tokens}
+${bench.length ? `${label(PX, benchTop, 'BENCH', 'start', 'gold')}${chips}` : ''}`;
+  const names = (l) => l.map((p) => p.name).join(', ');
+  const alt = `Tech stack as a ${formation}: goal ${names(lines[0])}; defence ${names(lines[1])}; midfield ${names(lines[2])}; attack ${names(lines[3])}${bench.length ? `; bench ${names(bench)}` : ''}.`;
+  return frame({ h, t, title: alt, body });
+}
+
+// ── heatmap: last year's contributions spread over a pitch ──────────────────
+export function heatmap(d, t) {
+  const days = d.calendar ?? [];
+  const PX = 40, PY = 66, PW = W - 80, PH = 300;
+  const weeks = [];
+  // Columns are Sunday-based weeks, like GitHub's calendar.
+  days.forEach((day) => {
+    const dow = new Date(`${day.date}T00:00:00Z`).getUTCDay();
+    if (!weeks.length || dow === 0) weeks.push([]);
+    weeks[weeks.length - 1].push({ ...day, dow });
+  });
+  const counts = days.map((x) => x.count).filter((c) => c > 0).sort((a, b) => a - b);
+  const p90 = counts.length ? counts[Math.floor(counts.length * 0.9)] : 1;
+  const cw = PW / Math.max(1, weeks.length), ch = PH / 7;
+  const ramp = t.mode === 'dark' ? ['#f5c542', '#ff8a3d', '#ff3b3b'] : ['#f2b705', '#f07b16', '#d62828'];
+  const colour = (v) => (v < 0.5 ? ramp[0] : v < 0.8 ? ramp[1] : ramp[2]);
+  const cols = weeks.map((wk, wi) => {
+    const cells = wk.filter((c) => c.count > 0).map((c) => {
+      const v = Math.min(1, c.count / p90);
+      return `<rect x="${(PX + wi * cw).toFixed(1)}" y="${(PY + c.dow * ch).toFixed(1)}" width="${(cw + 0.5).toFixed(1)}" height="${(ch + 0.5).toFixed(1)}" fill="${colour(v)}" fill-opacity="${(0.25 + 0.7 * v).toFixed(2)}"/>`;
+    }).join('');
+    return cells ? `<g style="animation: fade .5s ease-out ${(0.2 + wi * 0.025).toFixed(3)}s backwards">${cells}</g>` : '';
+  }).join('\n');
+
+  // month labels along the bottom touchline, at the first week of each month
+  let lastMonth = -1;
+  const months = weeks.map((wk, wi) => {
+    const m = Number(wk[0].date.slice(5, 7)) - 1;
+    if (m === lastMonth) return '';
+    lastMonth = m;
+    // skip a label that would crowd the next one (a partial first month) or the right edge
+    const nextStart = weeks.findIndex((w2, j) => j > wi && Number(w2[0].date.slice(5, 7)) - 1 !== m);
+    if ((nextStart >= 0 && nextStart - wi < 3) || wi > weeks.length - 3) return '';
+    return label((PX + wi * cw + 2).toFixed(1), PY + PH + 22, MONTHS[m]);
+  }).join('');
+  const dows = [[1, 'MON'], [3, 'WED'], [5, 'FRI']].map(([i, n]) =>
+    `<text x="${PX - 8}" y="${(PY + i * ch + ch / 2 + 4).toFixed(1)}" text-anchor="end" class="d dim" style="font-size:10px;letter-spacing:1px">${n}</text>`).join('');
+  const total = days.reduce((s, x) => s + x.count, 0);
+  const active = days.filter((x) => x.count > 0).length;
+  const h = PY + PH + 44;
+  const body = `${heading(t, PX, 42, 'HEATMAP', `${total} contributions over the last year, on ${active} days · one column per week`)}
+<clipPath id="heatClip"><rect x="${PX}" y="${PY}" width="${PW}" height="${PH}"/></clipPath>
+<g clip-path="url(#heatClip)"><g filter="url(#blur)">${cols}</g></g>
+${pitchLines(t, PX, PY, PW, PH)}
+${dows}${months}
+<g transform="translate(${PX + PW - 150} 31)">
+  <text x="0" y="10" class="d dim" style="font-size:11px;letter-spacing:1.5px">QUIET</text>
+  <rect x="44" y="1" width="60" height="10" rx="5" fill="url(#rampGrad)"/>
+  <text x="112" y="10" class="d dim" style="font-size:11px;letter-spacing:1.5px">BUSY</text>
+</g>`;
+  const defs = `<filter id="blur" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="${(cw * 0.8).toFixed(1)} ${(ch * 0.45).toFixed(1)}"/></filter>
+<linearGradient id="rampGrad"><stop offset="0" stop-color="${ramp[0]}" stop-opacity=".3"/><stop offset=".5" stop-color="${ramp[1]}"/><stop offset="1" stop-color="${ramp[2]}"/></linearGradient>`;
+  return frame({ h, t, title: `Contribution heatmap: ${total} contributions on ${active} days in the last year`, body, defs });
+}
+
+export const extras = (d, cfg) => ({
+  tactics: (t) => tactics(d, t, cfg),
+  heatmap: (t) => heatmap(d, t),
+});
+
+// ── links as match tickets ──────────────────────────────────────────────────
+export function linkButton(name, t) {
+  const text = name.toUpperCase(), h = 40, stub = 34, r = 6;
+  const tw = measure(text, 14, 600, 2);
+  const w = Math.ceil(18 + tw + 12 + 8 + 16 + stub);
+  const fill = t.mode === 'dark' ? t.gold : t.card, fg = t.cardInk;
+  const shape = `M 0 0 H ${w} V ${h / 2 - r} A ${r} ${r} 0 0 0 ${w} ${h / 2 + r} V ${h} H 0 V ${h / 2 + r} A ${r} ${r} 0 0 0 0 ${h / 2 - r} Z`;
+  const perf = w - stub;
+  const body = `<path d="${shape}" fill="${fill}"/>
+<line x1="${perf}" x2="${perf}" y1="5" y2="${h - 5}" stroke="${fg}" stroke-opacity=".45" stroke-dasharray="3 3"/>
+<text x="18" y="25.5" class="d" style="font-size:14px;font-weight:600;letter-spacing:2px;fill:${fg}">${esc(text)}</text>
+${arrow(Math.ceil(18 + tw + 10), 16, fg)}
+<circle cx="${perf + stub / 2}" cy="${h / 2}" r="7" fill="none" stroke="${fg}" stroke-width="1.4"/>
+<path d="M ${perf + stub / 2} ${h / 2 - 3} l 2.9 2.1 -1.1 3.4 h -3.6 l -1.1 -3.4 Z" fill="${fg}"/>`;
+  // no frame background: a ticket shape on a transparent canvas
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(name)}">
+<title>${esc(name)}</title>
+<style>@font-face { font-family: MatchdayDisplay; font-weight: 400 700; src: url(data:font/woff2;base64,${FONT_B64}) format('woff2'); }
+.d { font-family: ${DISPLAY}; }</style>
+${body}
+</svg>
+`;
+}
+
+// ── footer: full-time scoreboard ────────────────────────────────────────────
+/** Next 6-hourly rebuild (the profile.yml cron), as HH:MM UTC. */
+function nextKickoff(now) {
+  const next = new Date(now);
+  next.setUTCMinutes(0, 0, 0);
+  next.setUTCHours(Math.floor(now.getUTCHours() / 6) * 6 + 6);
+  return next.toISOString().slice(11, 16);
+}
+
+export function footer(d, t, buildMs, files) {
+  const now = new Date(d.generatedAt);
+  const stamp = d.generatedAt.slice(0, 16).replace('T', ' ');
+  const h = 96;
+  const body = `<rect x="24" y="22" width="72" height="52" rx="6" fill="${t.mode === 'dark' ? '#06231a' : t.card}"/>
+<text x="60" y="61" text-anchor="middle" class="d" style="font-size:30px;font-weight:700;letter-spacing:2px;fill:${t.mode === 'dark' ? t.gold : '#f5c542'}">FT</text>
+<text x="116" y="42" class="d" style="font-size:17px;font-weight:600;letter-spacing:1.5px">FULL TIME · THANKS FOR STOPPING BY</text>
+<text x="116" y="66" class="dim" style="font-size:13px">Rebuilt ${esc(stamp)} UTC · ${files} images in ${buildMs} ms · next kick-off ${nextKickoff(now)} UTC. Probably debugging a segfault right now.</text>`;
+  return frame({ h, t, title: `Regenerated ${stamp} UTC`, body });
+}
+
 // ── not redesigned yet: render with the psql look ──────────────────────────
 const viaPsql = (fn) => (...args) => fn(...args.map((a) => (a && a.mode && THEMES[a.mode] === a ? psql.THEMES[a.mode] : a)));
 
-export const linkButton = viaPsql(psql.linkButton);
 export const queryButton = viaPsql(psql.queryButton);
 export const queryResult = viaPsql(psql.queryResult);
-export const footer = viaPsql(psql.footer);
