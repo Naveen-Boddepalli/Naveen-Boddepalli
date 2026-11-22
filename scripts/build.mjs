@@ -44,7 +44,7 @@ const d = normalize(resp, cfg, now);
 
 // name -> (theme) => svg string
 const images = {
-  hero: (t) => svg.hero(d, t),
+  hero: (t) => svg.hero(d, t, cfg),
   'projects-header': (t) => svg.resultHeader(d, t),
   ...Object.fromEntries(d.pinned.map((r, i) => [`project-${i + 1}`, (t) => svg.resultRow(r, i, t, now)])),
   'projects-footer': (t) => svg.resultFooter(d, t),

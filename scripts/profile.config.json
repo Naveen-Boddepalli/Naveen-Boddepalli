@@ -5,6 +5,12 @@
   "role": "Full-stack & ML engineer · B.Tech CS @ VIT Vellore · Year 3",
   "status": "open to internships",
   "leetcodeSolved": "300+",
+  "matchday": {
+    "shirt": 7,
+    "position": "FWD",
+    "club": "VIT Vellore",
+    "deal": "internship"
+  },
   "excludeLanguages": [
     "Jupyter Notebook"
   ],
