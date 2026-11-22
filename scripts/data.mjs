@@ -15,7 +15,8 @@ query ($login: String!, $from: DateTime!, $prs: String!) {
     repositories(first: 100, ownerAffiliations: OWNER, isFork: false, privacy: PUBLIC,
                  orderBy: { field: PUSHED_AT, direction: DESC }) {
       nodes {
-        name homepageUrl stargazerCount
+        name homepageUrl stargazerCount pushedAt
+        primaryLanguage { name }
         languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
           edges { size node { name color } }
         }
@@ -31,7 +32,7 @@ query ($login: String!, $from: DateTime!, $prs: String!) {
   }
   upstream: search(query: $prs, type: ISSUE, first: 100) {
     issueCount
-    nodes { ... on PullRequest { repository { nameWithOwner } } }
+    nodes { ... on PullRequest { title mergedAt repository { nameWithOwner } } }
   }
 }`;
 
@@ -71,7 +72,7 @@ export function streaks(days, now = new Date()) {
   return { current: cur, best };
 }
 
-export function languageShares(repos, exclude = [], limit = 6) {
+export function languageShares(repos, exclude = [], limit = Infinity) {
   const totals = new Map();
   for (const r of repos) {
     for (const e of r.languages?.edges ?? []) {
@@ -93,6 +94,7 @@ export function normalize(resp, cfg, now = new Date()) {
   const upstreamRepos = new Set(
     resp.data.upstream.nodes.map((n) => n?.repository?.nameWithOwner).filter(Boolean),
   );
+  const pinnedNames = new Set(u.pinnedItems.nodes.filter(Boolean).map((r) => r.name));
   return {
     login: cfg.login,
     name: cfg.name,
@@ -117,6 +119,27 @@ export function normalize(resp, cfg, now = new Date()) {
     commits: u.thisYear.totalCommitContributions,
     upstream: { prs: resp.data.upstream.issueCount, repos: upstreamRepos.size },
     streak: streaks(days, now),
-    languages: languageShares(own, cfg.excludeLanguages),
+    languages: languageShares(own, cfg.excludeLanguages, 6),
+    // Tables visitors can query with "query my profile" (scripts/query.mjs).
+    tables: {
+      projects: own.map((r) => ({
+        name: r.name,
+        lang: r.primaryLanguage?.name ?? null,
+        stars: r.stargazerCount,
+        demo: r.homepageUrl ? 'live' : null,
+        pushed_days: Math.max(0, Math.floor((now - new Date(r.pushedAt)) / DAY)),
+        pinned: pinnedNames.has(r.name) ? 1 : 0,
+      })),
+      languages: languageShares(own, cfg.excludeLanguages).map((l) => ({
+        lang: l.name,
+        bytes: l.bytes,
+        share_pct: Math.round(l.share * 1000) / 10,
+      })),
+      upstream_prs: resp.data.upstream.nodes.filter((n) => n?.repository).map((n) => ({
+        repo: n.repository.nameWithOwner,
+        title: n.title,
+        merged: (n.mergedAt ?? '').slice(0, 10),
+      })),
+    },
   };
 }

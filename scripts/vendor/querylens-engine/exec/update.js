@@ -1,0 +1,124 @@
+/**
+ * Executes an `UPDATE`'s access plan (`SeqScan` or `IndexScan`, from
+ * `emitUpdatePlanEvents`) against the real heap and index: finds every
+ * matching row exactly the way `DELETE` does, applies the SET assignments to
+ * produce its replacement, and — if any assignment touches the indexed
+ * column — drops the old key and adds the new one through the real
+ * `deleteKey`/`insert` algorithms. Delete-then-reinsert is the only honest
+ * way to keep a B+Tree's keys in order when the value they index changes;
+ * there is no in-place "rekey" (plan.md §22.2, the write path's last
+ * statement).
+ *
+ * Like `DELETE`, this finds every match before it changes anything — a
+ * `SELECT`'s Volcano operators pull one row at a time, but an update mid-scan
+ * could shift what a later step reads. It narrates through the same
+ * `execute`-stage shape (`SeqScan`/`IndexScan` while finding, then `Update`
+ * while applying) that `DELETE` and `INSERT` already use.
+ */
+import { enforceUniqueOnUpdate } from "./unique.js";
+import { indexLookupMatches, indexRangeMatches } from "./writeScan.js";
+import { evaluateValue, passes } from "./evaluate.js";
+import { deleteKey, entryFor, height, indexNameOf, indexSpecsOf, insert, keyText, keyValuesOf } from "../index/index.js";
+import { summarizeSteps } from "./delete.js";
+import { summarizeInsert } from "./insert.js";
+const UPDATE = { name: 'UPDATE', does: 'modify' };
+/**
+ * `row` with every SET assignment applied — a new object; `row` itself is
+ * untouched. Every value is evaluated against the row *as it was*, so
+ * `SET a = b, b = a` swaps the two rather than copying one over the other
+ * (standard SQL, and what plan.md §25.4 B1b's `SET n = n + 1` relies on).
+ */
+function applyAssignments(row, assignments) {
+    const next = { ...row };
+    for (const a of assignments)
+        next[a.column] = evaluateValue(a.value, row);
+    return next;
+}
+/**
+ * Moves the row's entry from its old values to its new ones in each index whose own columns actually changed.
+ * A NULL leading column is never indexed, so on either side it just drops the delete or the insert half. A table
+ * can have several indexes; an assignment only reindexes the ones whose columns it touched, one sentence each.
+ */
+function reindexRow(ctx, before, after, pointer) {
+    const sentences = [];
+    for (const spec of indexSpecsOf(ctx.table)) {
+        const name = indexNameOf(spec.columns);
+        const tree = ctx.trees[name];
+        if (!tree)
+            continue;
+        const beforeValues = keyValuesOf(before, spec.columns);
+        const afterValues = keyValuesOf(after, spec.columns);
+        if (beforeValues.every((v, i) => v === afterValues[i]))
+            continue; // none of this index's columns changed
+        const parts = [];
+        if (beforeValues[0] !== null) {
+            const { key } = entryFor(spec.columns, before, pointer, ctx.table.clusteredKey);
+            const removed = deleteKey(tree, key);
+            if (removed.found) {
+                parts.push(`drops key ${keyText(beforeValues)} — ${summarizeSteps(removed.steps)}`);
+            }
+        }
+        if (afterValues[0] !== null) {
+            // Its old entry is out, so what remains is everyone else's: a UNIQUE index must not already hold the new key.
+            enforceUniqueOnUpdate(ctx, spec, afterValues);
+            const nodesBefore = Object.keys(tree.nodes).length;
+            const heightBefore = height(tree);
+            const { key, pointer: stored } = entryFor(spec.columns, after, pointer, ctx.table.clusteredKey);
+            insert(tree, key, stored);
+            const nodesAfter = Object.keys(tree.nodes).length;
+            const heightAfter = height(tree);
+            parts.push(`adds key ${keyText(afterValues)} — ${summarizeInsert(nodesBefore, nodesAfter, heightBefore, heightAfter)}`);
+        }
+        if (parts.length > 0) {
+            sentences.push(`Because \`${name}\` changed, its B+Tree ${parts.join(', then ')}.`);
+        }
+    }
+    return sentences.length > 0 ? sentences.join(' ') : null;
+}
+/** Every heap page, filtered by `filter` if present — the SeqScan half of an update. */
+function scanForMatches(ctx, filter) {
+    const matched = [];
+    let produced = 0;
+    for (const page of ctx.heap.pages) {
+        ctx.locks.acquire(page.pageId, 'exclusive', `Take an exclusive lock on page ${String(page.pageId)} — UPDATE may modify a row on it, so a shared lock is not enough.`);
+        const fetched = ctx.pool.fetch(page.pageId);
+        if (fetched)
+            ctx.pool.unpin(fetched.frameId);
+        let touchedPage = false;
+        page.rows.forEach((row, slot) => {
+            if (!passes(filter, row))
+                return;
+            matched.push({ row, pointer: { pageId: page.pageId, slot } });
+            touchedPage = true;
+            produced += 1;
+            ctx.emit(`SeqScan finds a matching row on page ${page.pageId} — UPDATE will modify it.`, {
+                stage: 'execute',
+                op: 'SeqScan',
+                rowsProduced: produced,
+            });
+        });
+        if (touchedPage)
+            ctx.pool.markDirty(page.pageId);
+        ctx.locks.release(page.pageId, 'exclusive');
+    }
+    return matched;
+}
+export function executeUpdate(plan, assignments, ctx) {
+    const matches = plan.op === 'IndexScan'
+        ? indexLookupMatches(ctx, plan, UPDATE)
+        : plan.op === 'IndexRangeScan'
+            ? indexRangeMatches(ctx, plan, UPDATE)
+            : scanForMatches(ctx, plan.op === 'SeqScan' ? plan.filter : undefined);
+    const before = [];
+    const after = [];
+    let produced = 0;
+    for (const { row, pointer } of matches) {
+        const updated = applyAssignments(row, assignments);
+        before.push(row);
+        after.push(updated);
+        produced += 1;
+        const indexDetail = reindexRow(ctx, row, updated, pointer);
+        ctx.emit(`Update changes row ${JSON.stringify(row)} to ${JSON.stringify(updated)}.${indexDetail ? ` ${indexDetail}` : ''}`, { stage: 'execute', op: 'Update', rowsProduced: produced });
+    }
+    return { before, after };
+}

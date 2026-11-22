@@ -234,3 +234,77 @@ ${prompt('\\q', 24, 84)}
 <rect x="${24 + 'naveen=# \\q '.length * 14 * CH + 2}" y="71" width="8" height="16" fill="${t.accent}" class="cursor"/>`;
   return frame({ h: 104, t, title: `Regenerated ${stamp} UTC`, body });
 }
+
+// ── query my profile ────────────────────────────────────────────────────────
+const cell = (v) => (v === null || v === undefined ? 'NULL' : typeof v === 'number' ? String(Math.round(v * 100) / 100) : String(v));
+
+/** The last visitor query and its result, psql style. `q` comes from scripts/query.mjs. */
+export function queryResult(q, t) {
+  const X = 32, FS = 14, cw = FS * CH, maxChars = Math.floor((W - 2 * X) / cw) - 9;
+  // Wrap the SQL onto at most two lines at word boundaries.
+  const words = q.sql.split(/\s+/);
+  const lines = [''];
+  for (const w of words) {
+    const cur = lines[lines.length - 1];
+    if ((cur + ' ' + w).trim().length > maxChars && cur) lines.push(w);
+    else lines[lines.length - 1] = (cur + ' ' + w).trim();
+  }
+  if (lines.length > 2) lines.splice(2, lines.length - 2, '…');
+  let y = 44;
+  const sqlLines = lines.map((l, i) => {
+    const out = i === 0 ? prompt(l, X, y) : `<text x="${X}" y="${y}"><tspan class="dim">naveen-#</tspan> ${esc(l)}</text>`;
+    y += 22;
+    return out;
+  });
+  const who = q.author ? `asked by @${q.author}` : 'seeded by the owner';
+  const meta = `<text x="${X}" y="${y}" class="dim" style="font-size:12px">-- ${esc(who)} · ${esc(q.at.slice(0, 16).replace('T', ' '))} UTC</text>`;
+  y += 34;
+
+  let body = '';
+  if (q.error) {
+    body += `<text x="${X}" y="${y}" class="amb">ERROR:  ${esc(clip(q.error.message, 104))}</text>`;
+    y += 22;
+    if (q.error.hint) {
+      body += `<text x="${X}" y="${y}" class="dim">HINT:  ${esc(clip(q.error.hint, 105))}</text>`;
+      y += 22;
+    }
+  } else {
+    const cols = (q.columns ?? []).slice(0, 6);
+    const shown = q.rows.slice(0, 8);
+    // Fewer columns get more room each: one column can use the full width.
+    const avail = Math.floor((W - 2 * X) / cw);
+    const cap = cols.length <= 2 ? Math.floor(avail / Math.max(1, cols.length)) - 3 : 40;
+    const widths = cols.map((c) => Math.min(cap, Math.max(c.length, ...shown.map((r) => cell(r[c]).length))));
+    const scale = Math.min(1, (W - 2 * X) / cw / widths.reduce((s, w) => s + w + 3, 0));
+    const cws = widths.map((w) => Math.max(4, Math.floor(w * scale)));
+    const xs = [];
+    let x = X;
+    for (const w of cws) { xs.push(x); x += (w + 3) * cw; }
+    const right = x - 2 * cw;
+    const isNum = cols.map((c) => shown.length > 0 && shown.every((r) => typeof r[c] === 'number' || r[c] === null));
+    body += cols.map((c, i) => `<text x="${isNum[i] ? xs[i] + cws[i] * cw : xs[i]}" y="${y}" ${isNum[i] ? 'text-anchor="end"' : ''} class="dim">${esc(clip(c, cws[i]))}</text>`).join('');
+    body += `<line x1="${X}" x2="${right}" y1="${y + 9}" y2="${y + 9}" stroke="${t.border}"/>`;
+    y += 32;
+    shown.forEach((r, ri) => {
+      const delay = (0.15 + ri * 0.07).toFixed(2);
+      body += `<g style="animation: in .35s ease-out ${delay}s backwards">` + cols.map((c, i) => {
+        const v = esc(clip(cell(r[c]), cws[i]));
+        return `<text x="${isNum[i] ? xs[i] + cws[i] * cw : xs[i]}" y="${y}" ${isNum[i] ? 'text-anchor="end"' : ''}${r[c] === null ? ' class="dim"' : ''}>${v}</text>`;
+      }).join('') + '</g>';
+      y += 22;
+    });
+    const more = q.rows.length > shown.length ? ` (${q.rows.length - shown.length} more not shown)` : '';
+    body += `<text x="${X}" y="${y + 4}" class="dim" style="font-size:13px">(${q.rows.length} row${q.rows.length === 1 ? '' : 's'})${esc(more)}</text>`;
+    y += 26;
+  }
+  const trace = `<text x="${X}" y="${y + 6}" class="dim" style="font-size:12px">ran on QueryLens: ${esc(q.stages.join(' → '))} in ${q.ms.toFixed(1)} ms</text>`;
+  const h = y + 28;
+  return frame({ h, t, title: `Last visitor query: ${q.sql}`, body: sqlLines.join('\n') + meta + body + trace });
+}
+
+export function queryButton(label, t) {
+  const text = `▸ ${label}`;
+  const w = Math.ceil(text.length * 13 * CH + 34), h = 36;
+  const body = `<text x="17" y="23" style="font-size:13px"><tspan class="grn">▸</tspan> <tspan class="acc">${esc(label)}</tspan></text>`;
+  return frame({ w, h, t, title: `Run: ${label}`, body });
+}

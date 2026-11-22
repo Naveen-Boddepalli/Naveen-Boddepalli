@@ -48,6 +48,7 @@ const images = {
   'projects-footer': (t) => svg.resultFooter(d, t),
   stats: (t) => svg.stats(d, t),
   ...Object.fromEntries(cfg.links.map((l) => [`link-${l.label}`, (t) => svg.linkButton(l.label, t)])),
+  ...Object.fromEntries(cfg.queries.map((q, i) => [`query-${i + 1}`, (t) => svg.queryButton(q.label, t)])),
 };
 const fileCount = (Object.keys(images).length + 1) * 2; // +1 for the footer itself
 images.footer = (t) => svg.footer(d, t, Date.now() - started, fileCount);
@@ -66,9 +67,9 @@ await writeFile(join(out, 'data.json'), JSON.stringify(d, null, 2) + '\n');
 const readmePath = opt('readme', null);
 if (readmePath) {
   const before = await readFile(readmePath, 'utf8');
-  const after = syncReadme(before, d);
+  const after = syncReadme(before, d, cfg);
   if (after !== before) await writeFile(readmePath, after);
-  console.log(after === before ? 'README projects block already in sync' : 'README projects block updated');
+  console.log(after === before ? 'README generated blocks already in sync' : 'README generated blocks updated');
 }
 
 if (flag('preview')) {

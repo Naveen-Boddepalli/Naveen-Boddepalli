@@ -1,0 +1,73 @@
+name: query my profile
+
+# A visitor opens an issue titled `sql: SELECT ...`. This runs the query on the
+# QueryLens engine against live profile data, replies on the issue, closes it,
+# and publishes the result image to the `query` branch for the README.
+on:
+  issues:
+    types: [opened]
+  # re-run the default query by hand, or after changing the query code
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/query.mjs
+      - scripts/query/**
+      - .github/workflows/query.yml
+
+permissions:
+  contents: write # push the result to the `query` branch
+  issues: write # reply on and close the visitor's issue
+
+# queue visitor queries one at a time so their pushes never collide
+concurrency:
+  group: query-my-profile
+  cancel-in-progress: false
+
+jobs:
+  query:
+    # only issues whose title starts with "sql:", and never from bots
+    if: >-
+      github.event_name != 'issues' ||
+      (startsWith(github.event.issue.title, 'sql:') && github.event.issue.user.type != 'Bot')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: check out the query branch
+        run: |
+          if git fetch --depth=1 origin query; then
+            git worktree add --detach q FETCH_HEAD
+          else
+            git worktree add --orphan -b query q
+          fi
+
+      # The issue title is untrusted. It reaches the script only as an env var,
+      # never inside this run: block, and the script vets it before running it.
+      - name: run the query
+        run: node scripts/query.mjs --dir q
+        env:
+          TITLE: ${{ github.event.issue.title }}
+          AUTHOR: ${{ github.event.issue.user.login }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROFILE_LOGIN: ${{ github.repository_owner }}
+
+      - name: publish the result
+        working-directory: q
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "nothing new to publish"
+            exit 0
+          fi
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -m "Run a visitor query"
+          git push origin HEAD:refs/heads/query

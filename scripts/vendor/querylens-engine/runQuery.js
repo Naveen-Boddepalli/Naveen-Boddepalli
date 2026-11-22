@@ -1,0 +1,424 @@
+/**
+ * The engine entry point, and the whole of the engine's public surface.
+ *
+ *   pure · synchronous · no DOM · no React · fully serializable output
+ *
+ * Kept worker-ready on purpose (plan.md §5) but deliberately run on the main
+ * thread in v0: step-back needs the full event history regardless, so once the
+ * UI holds the whole array a worker boundary buys nothing.
+ */
+import { emitAnalyzeParseEvents, emitDeleteParseEvents, emitInsertParseEvents, emitParseEvents, emitUpdateParseEvents, parseStatement, } from "./parser/index.js";
+import { analyzeTable, statsToRows } from "./stats.js";
+import { emitDeletePlanEvents, emitPlanEvents, emitUpdatePlanEvents, findIndexNestedLoopJoins, findSort, findSortAggregate, findSortDistinct, isReorderableChain, joinsIn, reorderJoinsIfCheaper, } from "./planner/index.js";
+import { buildHeap, createBufferPool } from "./storage/index.js";
+import { controlKindOf } from "./transactionControl.js";
+import { buildIndexes, describeUniqueKey, findIndexSpec, indexSpecsOf, pageCountFor } from "./index/index.js";
+import { walkExpr } from "./parser/index.js";
+import { execute } from "./exec/index.js";
+import { executeDelete } from "./exec/delete.js";
+import { executeInsert } from "./exec/insert.js";
+import { executeUpdate } from "./exec/update.js";
+import { UniqueViolation } from "./exec/unique.js";
+import { sortTempPageCount } from "./exec/sort.js";
+import { createLockManager } from "./locks/index.js";
+import { explainResult } from "./explain.js";
+import { resolveStatementSubqueries } from "./subquery.js";
+import { createTracer } from "./trace.js";
+import { DEFAULT_ENGINE_OPTIONS } from "./types.js";
+/** The error a rejected `INSERT` or `UPDATE` reports: which key is taken, by which row, and that nothing changed. */
+function uniqueError(violation, heap, span) {
+    const holder = heap.pages.find((p) => p.pageId === violation.holder.pageId)?.rows[violation.holder.slot];
+    return {
+        message: `Duplicate key — the UNIQUE index on \`${violation.index}\` already holds ${describeUniqueKey(violation.columns, violation.values)}.`,
+        hint: `A UNIQUE index allows one row per key (NULLs excepted: NULL is not equal to NULL).${holder ? ` The row that has it: ${JSON.stringify(holder)}.` : ''} Use a different value, or change or delete that row first. Nothing was changed.`,
+        from: span.from,
+        to: span.to,
+    };
+}
+/**
+ * `ast`, with its `JOIN`s reordered to the cheapest sequence `reorderJoinsIfCheaper` finds, alongside the order it
+ * was actually *typed* in (`writtenOrder`) — present only when reordering genuinely changed something, which is
+ * also the signal `emitPlanEvents` uses to narrate it. Otherwise `ast` comes back completely unchanged. Tolerant
+ * of a table that turns out not to exist: resolving `db.tables` here is a *look*, not the real validation (that
+ * happens right after, against whichever `ast` this returns), so a missing name just means "nothing to reorder,"
+ * never a different error than the query would have gotten anyway.
+ */
+function applyCostOrder(ast, db, rowsPerPage) {
+    if (!isReorderableChain(ast))
+        return { ast };
+    const names = [ast.from.name, ...(ast.joins ?? []).map((j) => j.table.name)];
+    const tables = {};
+    for (const name of names) {
+        const t = db.tables[name];
+        if (!t)
+            return { ast };
+        tables[name] = t;
+    }
+    const reordered = reorderJoinsIfCheaper(ast, tables, rowsPerPage);
+    return reordered ? { ast: { ...ast, from: reordered.from, joins: reordered.joins }, writtenOrder: names } : { ast };
+}
+/** A disk read is a miss, or a page read ahead of the request (plan.md §25.4 F7) — both cost the same I/O. */
+function diskReads(pool) {
+    return pool.stats.misses + pool.stats.prefetches;
+}
+export function runQuery(sql, db, options = DEFAULT_ENGINE_OPTIONS, hooks = {}) {
+    // Bélády's optimal policy (plan.md §26 Feature 2) evicts the page whose next use is farthest away, so it needs the
+    // future. A query's page reads are decided by its plan, not by the pool — the same query reads the same pages in
+    // the same order under any policy — so run it once (as FIFO) to record them, then run it for real with that record
+    // as the future. Without it `optimal` would quietly act as FIFO while its narration claimed otherwise. Nothing here
+    // changes `db` (a write's new rows are returned, not stored), so the rehearsal leaves nothing behind.
+    if (options.policy === 'optimal' && hooks.rehearsedReferences === undefined) {
+        const rehearsal = runQuery(sql, db, { ...options, policy: 'fifo' });
+        const references = rehearsal.events.flatMap((e) => e.stage === 'buffer' && (e.action === 'hit' || e.action === 'miss') ? [e.pageId] : []);
+        return runQuery(sql, db, options, { ...hooks, rehearsedReferences: references });
+    }
+    const { emit, drain } = createTracer();
+    const poolFor = (pageCount) => createBufferPool(pageCount, options, emit, hooks.rehearsedReferences, 'query');
+    // `BEGIN`, `COMMIT` and `ROLLBACK` mean nothing to a single statement: say where they do (plan.md §25.4 D1).
+    if (controlKindOf(sql) !== null) {
+        return {
+            events: drain(),
+            rows: [],
+            error: {
+                message: '`BEGIN`, `COMMIT` and `ROLLBACK` need two sessions to mean anything, and the Playground runs one statement at a time.',
+                hint: 'Open Transaction schedules (/tools/schedule), where two sessions share a table and you choose the interleaving.',
+            },
+        };
+    }
+    const parsed = parseStatement(sql);
+    if (!parsed.ok) {
+        return { events: drain(), rows: [], error: parsed.error };
+    }
+    const parsedAst = parsed.ast;
+    // EXPLAIN [ANALYZE] SELECT (plan.md §25.4 B6): the inner query, run and then reported as a plan.
+    if (parsedAst.kind === 'explain') {
+        return explainResult(sql, parsedAst, (inner) => runQuery(inner, db, options, hooks));
+    }
+    // A chain of 2+ plain inner JOINs may cost less in a different order (plan.md §25.4 C5 slice 3) — resolved here,
+    // before any table is looked up for real, so every later step (table/column validation, the heap, the plan
+    // itself) already sees whichever order will actually run. Left exactly as written when it is not eligible (a
+    // LEFT JOIN anywhere, fewer than two JOINs), already optimal, or names a table that turns out not to exist —
+    // the ordinary "no table called X" error just below is exactly as useful either way. `writtenJoinOrder` is only
+    // ever set alongside a real change, and is threaded through to `emitPlanEvents` so the trace can say so.
+    const { ast, writtenOrder: writtenJoinOrder } = parsedAst.kind === 'select'
+        ? applyCostOrder(parsedAst, db, options.rowsPerPage)
+        : { ast: parsedAst, writtenOrder: undefined };
+    const tableRef = ast.kind === 'insert' ? ast.into : ast.kind === 'update' || ast.kind === 'analyze' ? ast.table : ast.from;
+    const table = db.tables[tableRef.name];
+    if (!table) {
+        const known = Object.keys(db.tables);
+        return {
+            events: drain(),
+            rows: [],
+            error: {
+                message: `There is no table called \`${tableRef.name}\`.`,
+                hint: known.length === 1 ? `The only table is \`${known[0]}\`.` : `Tables: ${known.join(', ')}.`,
+                from: tableRef.span.from,
+                to: tableRef.span.to,
+            },
+        };
+    }
+    // ANALYZE (plan.md §25.4 C1): a real scan, nothing to plan or optimize, and no join/column checks below apply.
+    if (ast.kind === 'analyze') {
+        emitAnalyzeParseEvents(emit, ast);
+        const stats = analyzeTable(table);
+        const rows = statsToRows(stats);
+        emit(`ANALYZE scanned all ${String(table.rows.length)} row${table.rows.length === 1 ? '' : 's'} of \`${table.name}\` and built statistics for ${String(table.columns.length)} column${table.columns.length === 1 ? '' : 's'}. The next query against \`${table.name}\` reads these instead of scanning the live rows to estimate a plan.`, { stage: 'result', rows });
+        return { events: drain(), rows, analyze: { table: table.name, stats } };
+    }
+    // Every JOIN's own table (plan.md §25.4 C3 slice b: 0 or more, left-deep) — resolved here, alongside the
+    // FROM/INTO table above, so all of them go through the same "no table called X" shape.
+    const joins = ast.kind === 'select' ? (ast.joins ?? []) : [];
+    const joinTables = {};
+    for (const j of joins) {
+        const t = db.tables[j.table.name];
+        if (!t) {
+            const known = Object.keys(db.tables);
+            return {
+                events: drain(),
+                rows: [],
+                error: {
+                    message: `There is no table called \`${j.table.name}\`.`,
+                    hint: known.length === 1 ? `The only table is \`${known[0]}\`.` : `Tables: ${known.join(', ')}.`,
+                    from: j.table.span.from,
+                    to: j.table.span.to,
+                },
+            };
+        }
+        joinTables[j.table.name] = t;
+    }
+    const unknownColumn = referencedColumns(ast).find((c) => {
+        const named = c.table ? db.tables[c.table] : table;
+        return !named || !named.columns.includes(c.name);
+    });
+    if (unknownColumn) {
+        const named = (unknownColumn.table ? db.tables[unknownColumn.table] : table);
+        return {
+            events: drain(),
+            rows: [],
+            error: {
+                message: `\`${named.name}\` has no column called \`${unknownColumn.name}\`.`,
+                hint: `Columns: ${named.columns.join(', ')}.`,
+                from: unknownColumn.span.from,
+                to: unknownColumn.span.to,
+            },
+        };
+    }
+    if (ast.kind === 'insert' && !ast.columns && ast.values.items.length !== table.columns.length) {
+        return {
+            events: drain(),
+            rows: [],
+            error: {
+                message: `\`${table.name}\` has ${table.columns.length} column${table.columns.length === 1 ? '' : 's'}, but this INSERT gives ${ast.values.items.length} value${ast.values.items.length === 1 ? '' : 's'}.`,
+                hint: `Columns: ${table.columns.join(', ')}. Name the columns you're setting if you don't want to supply all of them, e.g. INSERT INTO ${table.name} (${table.columns[0]}) VALUES (...).`,
+                from: ast.values.span.from,
+                to: ast.values.span.to,
+            },
+        };
+    }
+    const heap = buildHeap(table, options.rowsPerPage);
+    const trees = buildIndexes(heap, indexSpecsOf(table), undefined, undefined, options.indexBuild, table.clusteredKey);
+    const locks = createLockManager(emit);
+    if (ast.kind === 'insert') {
+        emitInsertParseEvents(emit, ast);
+        const row = buildInsertRow(ast, table);
+        const lastPage = heap.pages[heap.pages.length - 1];
+        const insertNeedsNewPage = lastPage.rows.length >= options.rowsPerPage;
+        const pool = poolFor(pageCountFor(heap, trees) + (insertNeedsNewPage ? 1 : 0));
+        let inserted;
+        try {
+            inserted = executeInsert(row, { emit, pool, locks, heap, trees, table, options }).row;
+        }
+        catch (e) {
+            if (e instanceof UniqueViolation) {
+                const error = uniqueError(e, heap, ast.values.span);
+                emit(`INSERT is rejected — ${error.message} Nothing was changed.`, { stage: 'result', rows: [] });
+                return { events: drain(), rows: [], error };
+            }
+            throw e;
+        }
+        hooks.afterWrite?.(trees);
+        const rows = [...table.rows, inserted];
+        emit(`1 row inserted, from ${diskReads(pool)} disk read${diskReads(pool) === 1 ? '' : 's'} and ${pool.stats.writes} write${pool.stats.writes === 1 ? '' : 's'}. ${table.name} now has ${rows.length} row${rows.length === 1 ? '' : 's'}.`, { stage: 'result', rows: [inserted] });
+        return {
+            events: drain(),
+            rows: [inserted],
+            write: { kind: 'insert', table: table.name, insertedCount: 1, rows },
+        };
+    }
+    if (ast.kind === 'delete') {
+        emitDeleteParseEvents(emit, ast);
+        // Any `IN (subquery)` (plan.md §25.4 C3 slice c) runs exactly once here, before planning — the parse-stage
+        // narration above already showed the query exactly as written.
+        const resolved = resolveStatementSubqueries(ast, sql, (s) => runQuery(s, db, options));
+        if (!resolved.ok)
+            return { events: drain(), rows: [], error: resolved.error };
+        const deleteAst = resolved.value;
+        const plan = emitDeletePlanEvents(emit, deleteAst, table, options.rowsPerPage);
+        const pool = poolFor(pageCountFor(heap, trees));
+        const { deleted } = executeDelete(plan, { emit, pool, locks, heap, trees, table, options });
+        hooks.afterWrite?.(trees);
+        const removed = new Set(deleted);
+        const rows = table.rows.filter((r) => !removed.has(r));
+        emit(`${deleted.length} row${deleted.length === 1 ? '' : 's'} deleted, from ${diskReads(pool)} disk read${diskReads(pool) === 1 ? '' : 's'} and ${pool.stats.evictions} eviction${pool.stats.evictions === 1 ? '' : 's'}. ${table.name} now has ${rows.length} row${rows.length === 1 ? '' : 's'}.`, { stage: 'result', rows: deleted });
+        return {
+            events: drain(),
+            rows: deleted,
+            write: { kind: 'delete', table: table.name, deletedCount: deleted.length, rows },
+        };
+    }
+    if (ast.kind === 'update') {
+        emitUpdateParseEvents(emit, ast);
+        // Any `IN (subquery)` — in the WHERE clause or a SET value (plan.md §25.4 C3 slice c) — runs exactly once here,
+        // before planning; the parse-stage narration above already showed the query exactly as written.
+        const resolved = resolveStatementSubqueries(ast, sql, (s) => runQuery(s, db, options));
+        if (!resolved.ok)
+            return { events: drain(), rows: [], error: resolved.error };
+        const updateAst = resolved.value;
+        const plan = emitUpdatePlanEvents(emit, updateAst, table, options.rowsPerPage);
+        const pool = poolFor(pageCountFor(heap, trees));
+        let changed;
+        try {
+            changed = executeUpdate(plan, updateAst.set.assignments, { emit, pool, locks, heap, trees, table, options });
+        }
+        catch (e) {
+            if (e instanceof UniqueViolation) {
+                const error = uniqueError(e, heap, ast.set.span);
+                emit(`UPDATE is rejected — ${error.message} Nothing was changed.`, { stage: 'result', rows: [] });
+                return { events: drain(), rows: [], error };
+            }
+            throw e;
+        }
+        const { before, after } = changed;
+        hooks.afterWrite?.(trees);
+        const replacements = new Map(before.map((row, i) => [row, after[i]]));
+        const rows = table.rows.map((r) => replacements.get(r) ?? r);
+        emit(`${after.length} row${after.length === 1 ? '' : 's'} updated, from ${diskReads(pool)} disk read${diskReads(pool) === 1 ? '' : 's'} and ${pool.stats.evictions} eviction${pool.stats.evictions === 1 ? '' : 's'}.`, { stage: 'result', rows: after });
+        return {
+            events: drain(),
+            rows: after,
+            write: { kind: 'update', table: table.name, updatedCount: after.length, rows },
+        };
+    }
+    // Always the query exactly as typed — `ast` may already be the cost-reordered version by this point (plan.md
+    // §25.4 C5 slice 3), but the parse stage narrates source text, never a planning decision; `parsedAst` never was.
+    emitParseEvents(emit, parsedAst.kind === 'select' ? parsedAst : ast);
+    // Any `IN (subquery)` — in WHERE, HAVING or a computed column (plan.md §25.4 C3 slice c) — runs exactly once
+    // here, before planning; the parse-stage narration above already showed the query exactly as written.
+    const resolvedSubqueries = resolveStatementSubqueries(ast, sql, (s) => runQuery(s, db, options));
+    if (!resolvedSubqueries.ok)
+        return { events: drain(), rows: [], error: resolvedSubqueries.error };
+    const selectAst = resolvedSubqueries.value;
+    const plan = emitPlanEvents(emit, selectAst, table, options.rowsPerPage, options.aggregateStrategy ?? 'hash', joinTables, options.joinStrategy, writtenJoinOrder);
+    // Every joined table gets its own heap, its pages numbered right after whatever came before it — so all of them
+    // compete for the same buffer frames, the same way a Sort's spill pages do (plan.md §25.4 C3 slice b generalizes
+    // this from one join partner to a whole left-deep chain). Nested-loop, hash and sort-merge never consult any
+    // side's own index, so there is no B+Tree to build for a join partner unless that particular step runs
+    // index-nested-loop (plan.md §25.4 B4) — each one that does gets its one needed index built next, past every
+    // heap and every earlier probe index, so nothing collides.
+    const joinHeaps = {};
+    let pageBase = pageCountFor(heap, trees);
+    for (const j of joins) {
+        const jHeap = buildHeap(joinTables[j.table.name], options.rowsPerPage, pageBase);
+        joinHeaps[j.table.name] = jHeap;
+        pageBase += jHeap.pages.length;
+    }
+    const joinTrees = {};
+    for (const ij of findIndexNestedLoopJoins(plan)) {
+        if (ij.right.op !== 'IndexProbe')
+            continue; // unreachable: an index-nested-loop Join's own inner side is always a probe
+        const jTable = joinTables[ij.rightTable];
+        const probeIndex = findIndexSpec(jTable, ij.right.column);
+        if (!probeIndex)
+            continue; // unreachable: effectiveJoinAlgorithm already confirmed this index exists
+        const jTrees = buildIndexes(joinHeaps[ij.rightTable], [probeIndex], undefined, pageBase, options.indexBuild, jTable.clusteredKey);
+        joinTrees[ij.rightTable] = jTrees;
+        pageBase = pageCountFor(joinHeaps[ij.rightTable], jTrees);
+    }
+    // Every `sort-merge` Join in the chain needs its own two-block reservation — one per side, since each sorts
+    // independently — placed in chain order (the innermost join's scratch first, mirroring the order joins actually
+    // execute in) right after every table's heap and any probe index. A single join's worst-case left input is just
+    // the FROM table itself (`table.rows.length`, unchanged from before chains existed); a later step's worst case is
+    // the product of every earlier table's row count, since no join can ever produce more rows than that — counting an
+    // empty table as one row, because a LEFT JOIN onto it still passes every left row through, NULL-padded.
+    const sortMergeBases = new Map();
+    let worstCaseLeftRows = table.rows.length;
+    for (const j of joinsIn(plan)) {
+        const jTable = joinTables[j.rightTable];
+        if (j.algorithm === 'sort-merge') {
+            const leftSize = sortTempPageCount(worstCaseLeftRows, options.rowsPerPage, options.bufferFrames);
+            const leftBase = pageBase;
+            pageBase += leftSize;
+            const rightSize = sortTempPageCount(jTable.rows.length, options.rowsPerPage, options.bufferFrames);
+            const rightBase = pageBase;
+            pageBase += rightSize;
+            sortMergeBases.set(j, { leftBase, rightBase });
+        }
+        worstCaseLeftRows *= Math.max(1, jTable.rows.length);
+    }
+    // Every other sort the plan runs gets its own block of scratch page ids after those, in the order the sorts run —
+    // a SortAggregate's own sort, then ORDER BY's Sort above it (plan.md §26 Feature 1), then a sort-based DISTINCT
+    // above the projection (plan.md §25.4 B2) — so no two sorts ever share a page id. Each is sized for the most rows
+    // that can reach it: the whole table (a WHERE clause can only shrink it), or after a JOIN every joined table's
+    // product (an empty one counted as one row, for a LEFT JOIN's padding). Not capped: a block is only a range of ids,
+    // and the pool does not count a read or write past its last page — a cap once let a big join's sort spill there
+    // unseen. With one sort and no join this is exactly the block each sort always had, after the heap and indexes.
+    const worstCaseRows = joins.reduce((product, j) => product * Math.max(1, joinTables[j.table.name].rows.length), table.rows.length);
+    const spillFor = (present) => present ? sortTempPageCount(worstCaseRows, options.rowsPerPage, options.bufferFrames) : 0;
+    const aggregateSortBase = pageBase;
+    const sortBase = aggregateSortBase + spillFor(findSortAggregate(plan) !== null);
+    const distinctBase = sortBase + spillFor(findSort(plan) !== null);
+    const pool = poolFor(distinctBase + spillFor(findSortDistinct(plan) !== null));
+    const rows = execute(plan, {
+        emit,
+        pool,
+        locks,
+        heap,
+        trees,
+        table,
+        options,
+        aggregateSortBase,
+        sortBase,
+        distinctBase,
+        ...(joins.length > 0
+            ? {
+                joinPartners: Object.fromEntries(joins.map((j) => [
+                    j.table.name,
+                    { table: joinTables[j.table.name], heap: joinHeaps[j.table.name], trees: joinTrees[j.table.name] ?? {} },
+                ])),
+            }
+            : {}),
+        ...(sortMergeBases.size > 0 ? { sortMergeBases } : {}),
+    });
+    return { events: drain(), rows };
+}
+function referencedColumns(ast) {
+    const refs = [];
+    const push = (ref) => refs.push({ name: ref.name, ...(ref.table === undefined ? {} : { table: ref.table }), span: ref.span });
+    if (ast.kind === 'select' && ast.select.kind === 'columns') {
+        for (const item of ast.select.items) {
+            if (item.kind === 'column')
+                push(item);
+            else if (item.kind === 'expression')
+                walkExpr(item.expr, (e) => { if (e.kind === 'column')
+                    push(e); });
+            else if (item.arg.kind === 'column')
+                push(item.arg);
+        }
+    }
+    if (ast.kind !== 'insert' && ast.kind !== 'analyze' && ast.where) {
+        walkExpr(ast.where, (e) => {
+            if (e.kind === 'column')
+                push(e);
+        });
+    }
+    if (ast.kind === 'select') {
+        for (const join of ast.joins ?? []) {
+            if (join.on.left.kind === 'column')
+                push(join.on.left);
+            if (join.on.right.kind === 'column')
+                push(join.on.right);
+        }
+    }
+    if (ast.kind === 'select' && ast.groupBy)
+        refs.push(...ast.groupBy.columns);
+    if (ast.kind === 'select' && ast.having) {
+        // A HAVING predicate names grouped columns and aggregate arguments — each must exist.
+        walkExpr(ast.having, (e) => {
+            if (e.kind === 'column')
+                push(e);
+            else if (e.kind === 'aggregate' && e.arg.kind === 'column')
+                push(e.arg);
+        });
+    }
+    // An aggregate key (`SUM(amount)`) is not a column; the column it reads is.
+    if (ast.kind === 'select' && ast.orderBy?.aggregate) {
+        if (ast.orderBy.aggregate.arg.kind === 'column')
+            push(ast.orderBy.aggregate.arg);
+    }
+    else if (ast.kind === 'select' && ast.orderBy) {
+        const { column, table, span } = ast.orderBy;
+        refs.push(table === undefined ? { name: column, span } : { name: column.slice(table.length + 1), table, span });
+    }
+    if (ast.kind === 'insert' && ast.columns)
+        refs.push(...ast.columns.names);
+    if (ast.kind === 'update') {
+        refs.push(...ast.set.assignments.map((a) => ({ name: a.column, span: a.columnSpan })));
+        // A SET value can read columns (`SET n = n + 1`), and each must exist.
+        for (const a of ast.set.assignments)
+            walkExpr(a.value, (e) => { if (e.kind === 'column')
+                push(e); });
+    }
+    return refs;
+}
+/** Builds the new row: every table column defaults to `null`, then the given values overwrite it. */
+function buildInsertRow(ast, table) {
+    const row = {};
+    for (const column of table.columns)
+        row[column] = null;
+    const names = ast.columns ? ast.columns.names.map((c) => c.name) : table.columns;
+    names.forEach((name, i) => {
+        row[name] = ast.values.items[i].value;
+    });
+    return row;
+}

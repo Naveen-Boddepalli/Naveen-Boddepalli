@@ -4,7 +4,9 @@
   "role": "Full-stack & ML engineer · B.Tech CS @ VIT Vellore · Year 3",
   "status": "open to internships",
   "leetcodeSolved": "300+",
-  "excludeLanguages": ["Jupyter Notebook"],
+  "excludeLanguages": [
+    "Jupyter Notebook"
+  ],
   "about": {
     "shadow-network": "Campus file-sharing with FAISS semantic search and BART/RoBERTa summaries",
     "claude-desktop-mcp": "MCP server tools that cut Claude Desktop input and output token usage",
@@ -14,10 +16,47 @@
     "query-lens": "Toy SQL engine that animates a query from parser to B+Tree to result"
   },
   "links": [
-    { "label": "portfolio", "url": "https://naveen-boddepalli-portfolio.vercel.app/" },
-    { "label": "linkedin", "url": "https://www.linkedin.com/in/naveen-boddepalli-689056327/" },
-    { "label": "mail", "url": "mailto:1234naveenboddepalli@gmail.com" },
-    { "label": "leetcode", "url": "https://leetcode.com/u/NAVEEN2007B/" },
-    { "label": "x", "url": "https://x.com/N_Boddepalli" }
+    {
+      "label": "portfolio",
+      "url": "https://naveen-boddepalli-portfolio.vercel.app/"
+    },
+    {
+      "label": "linkedin",
+      "url": "https://www.linkedin.com/in/naveen-boddepalli-689056327/"
+    },
+    {
+      "label": "mail",
+      "url": "mailto:1234naveenboddepalli@gmail.com"
+    },
+    {
+      "label": "leetcode",
+      "url": "https://leetcode.com/u/NAVEEN2007B/"
+    },
+    {
+      "label": "x",
+      "url": "https://x.com/N_Boddepalli"
+    }
+  ],
+  "queries": [
+    {
+      "label": "projects with a live demo",
+      "sql": "SELECT name, lang FROM projects WHERE demo IS NOT NULL ORDER BY pushed_days"
+    },
+    {
+      "label": "languages by share",
+      "sql": "SELECT lang, share_pct FROM languages ORDER BY share_pct DESC"
+    },
+    {
+      "label": "merged upstream PRs",
+      "sql": "SELECT repo, title, merged FROM upstream_prs ORDER BY merged DESC"
+    },
+    {
+      "label": "projects per language",
+      "sql": "SELECT lang, COUNT(*) FROM projects GROUP BY lang"
+    },
+    {
+      "label": "explain a plan",
+      "sql": "EXPLAIN SELECT name FROM projects WHERE pinned = 1"
+    }
   ]
 }

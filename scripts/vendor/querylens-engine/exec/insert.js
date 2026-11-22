@@ -1,0 +1,75 @@
+/**
+ * Executes an `INSERT`: writes the new row onto the heap page it lands on —
+ * the last page, if it has room, or a fresh one otherwise — and, if the
+ * table is indexed, adds its key to the B+Tree with the real `insert`
+ * algorithm, real leaf/internal splits included (plan.md §22.2, the write
+ * path's second statement).
+ *
+ * There is no scan and nothing to find, so unlike `DELETE` this needs no
+ * find-then-mutate pass: one row, one page, at most one tree insert.
+ */
+import { enforceUniqueOnInsert } from "./unique.js";
+import { entryFor, height, indexNameOf, indexSpecsOf, insert, keyText, keyValuesOf, pageCountFor } from "../index/index.js";
+/** Where the new row lands: the last heap page, if it has room, or a fresh one. */
+function targetPage(ctx) {
+    const lastPage = ctx.heap.pages[ctx.heap.pages.length - 1];
+    const hasRoom = lastPage.rows.length < ctx.options.rowsPerPage;
+    return hasRoom
+        ? { pageId: lastPage.pageId, slot: lastPage.rows.length, isNewPage: false }
+        : { pageId: pageCountFor(ctx.heap, ctx.trees), slot: 0, isNewPage: true };
+}
+/**
+ * One clause summarising what the B+Tree insert had to do beyond the plain
+ * add. Exported: `exec/update.ts` reuses it for the "add the new key" half
+ * of a reindex.
+ */
+export function summarizeInsert(nodesBefore, nodesAfter, heightBefore, heightAfter) {
+    if (nodesAfter === nodesBefore)
+        return 'the leaf had room, so no split was needed';
+    const added = nodesAfter - nodesBefore;
+    return `a split added ${added} node${added === 1 ? '' : 's'}${heightAfter > heightBefore ? `, and the tree grew to height ${heightAfter}` : ''}`;
+}
+/** Adds `row`'s entry to every index the table declares, skipping one whose leading column is NULL. */
+function insertIntoIndex(ctx, row, pointer) {
+    for (const spec of indexSpecsOf(ctx.table)) {
+        const name = indexNameOf(spec.columns);
+        const tree = ctx.trees[name];
+        if (!tree)
+            continue;
+        const values = keyValuesOf(row, spec.columns);
+        if (values[0] === null)
+            continue; // a NULL leading column is never indexed — nothing to add
+        const nodesBefore = Object.keys(tree.nodes).length;
+        const heightBefore = height(tree);
+        const { key, pointer: stored } = entryFor(spec.columns, row, pointer, ctx.table.clusteredKey);
+        insert(tree, key, stored);
+        const nodesAfter = Object.keys(tree.nodes).length;
+        const heightAfter = height(tree);
+        ctx.emit(`The \`${name}\` B+Tree gets key ${keyText(values)} — ${summarizeInsert(nodesBefore, nodesAfter, heightBefore, heightAfter)}.`, { stage: 'execute', op: 'Insert', rowsProduced: 1 });
+    }
+}
+export function executeInsert(row, ctx) {
+    // A UNIQUE index is asked first — a rejected INSERT must not have touched the heap or any other tree.
+    enforceUniqueOnInsert(ctx, row);
+    const { pageId, slot, isNewPage } = targetPage(ctx);
+    ctx.locks.acquire(pageId, 'exclusive', isNewPage
+        ? `Take an exclusive lock on page ${pageId} — a fresh page for the new row, since the last one is full.`
+        : `Take an exclusive lock on page ${pageId} — INSERT is about to add a row to it.`);
+    if (isNewPage) {
+        const written = ctx.pool.write(pageId);
+        if (written)
+            ctx.pool.unpin(written.frameId);
+    }
+    else {
+        const fetched = ctx.pool.fetch(pageId);
+        if (fetched)
+            ctx.pool.unpin(fetched.frameId);
+        ctx.pool.markDirty(pageId);
+    }
+    ctx.emit(isNewPage
+        ? `Insert writes the new row onto a fresh page, ${pageId} — the last page was full.`
+        : `Insert writes the new row onto page ${pageId}, which had room for it.`, { stage: 'execute', op: 'Insert', rowsProduced: 1 });
+    ctx.locks.release(pageId, 'exclusive');
+    insertIntoIndex(ctx, row, { pageId, slot });
+    return { row };
+}
