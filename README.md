@@ -13,7 +13,7 @@
 
 <h3 align="center">
   <a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.herokuapp.com/?font=Fira+Code&weight=600&size=24&pause=1000&color=00C9FF&center=true&vCenter=true&width=750&height=50&lines=%E2%9A%A1+B.Tech+CS+%40+VIT+Vellore;%F0%9F%9A%80+Building+Resume-Analyser+%26+AutoML+Studio;%F0%9F%94%A5+300%2B+LeetCode+Problems+Conquered;%F0%9F%8C%90+GSSoC+Open-Source+Contributor" alt="Typing SVG" />
+    <img src="https://readme-typing-svg.herokuapp.com/?font=Fira+Code&weight=600&size=24&pause=1000&color=00C9FF&center=true&vCenter=true&width=750&height=50&lines=%E2%9A%A1+B.Tech+CS+%40+VIT+Vellore;%F0%9F%9A%80+Building+flowinger+%26+query-lens;%F0%9F%94%A5+300%2B+LeetCode+Problems+Conquered;%F0%9F%8C%90+GSSoC+Open-Source+Contributor" alt="Typing SVG" />
   </a>
 </h3>
 
@@ -34,7 +34,7 @@
 🧠 Role          : Full-Stack Developer & ML/AI Engineer (Year 2)
 🎓 Education     : B.Tech Computer Science @ VIT Vellore, Chennai
 💡 Focus         : Building intelligent, scalable, and resilient systems.
-🚀 Current Quests: Architecting Tessera (Market Intel) & Time-Series AutoML
+🚀 Current Quests: Shipping flowinger, query-lens & heurix
 💻 Languages     : Python, C++, TypeScript, JavaScript
 🐧 Ecosystem     : Next.js, React, FastAPI, LangGraph, MongoDB
 🏆 Milestones    : 300+ LeetCode Solutions, GSSoC Open Source Contributor
@@ -52,16 +52,6 @@
 <table bordercolor="#00C9FF">
   <tr>
     <td width="50%" valign="top">
-      <h3 align="center">📄 Resume-Analyser</h3>
-      <p align="center"><i>AI-Powered Resume Parsing</i></p>
-      <p>An intelligent tool to analyze and extract key information from resumes using advanced machine learning techniques.</p>
-      <p align="center">
-        <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
-        <img src="https://img.shields.io/badge/Jupyter-F37626?style=flat-square&logo=jupyter&logoColor=white" />
-      </p>
-      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/Resume-Analyser">Explore Repository ➔</a></b></p>
-    </td>
-    <td width="50%" valign="top">
       <h3 align="center">🕸️ shadow-network</h3>
       <p align="center"><i>Decentralized Academic File-Sharing</i></p>
       <p>Semantic-search-powered file-sharing pairing FAISS similarity search and transformer summarization (BART/RoBERTa) with a libp2p-inspired frontend, across a three-tier cloud stack.</p>
@@ -70,30 +60,66 @@
         <img src="https://img.shields.io/badge/FAISS-000000?style=flat-square&logo=meta&logoColor=white" />
         <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=flat-square&logo=mongodb&logoColor=white" />
       </p>
-      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/shadow-network">Explore Repository ➔</a></b></p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <h3 align="center">💰 Expense-Tracker</h3>
-      <p align="center"><i>Personal Finance Organizer</i></p>
-      <p>Track your monthly expenses to be organized. A comprehensive and efficient tool for monitoring and managing your personal financial data.</p>
-      <p align="center">
-        <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
-        <img src="https://img.shields.io/badge/Data_Analysis-00C9FF?style=flat-square&logo=pandas&logoColor=white" />
-      </p>
-      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/Expense-Tracker">Explore Repository ➔</a></b></p>
+      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/shadow-network">Explore Repository ➔</a> &nbsp;·&nbsp; <a href="https://shadow-network-kappa.vercel.app">Live Demo ↗</a></b></p>
     </td>
     <td width="50%" valign="top">
       <h3 align="center">🤖 claude-desktop-mcp</h3>
       <p align="center"><i>Token-Optimized MCP Server</i></p>
-      <p>MCP server tools for Claude-Desktop app, for reducing token consumption. The input tokens are reduced by MCP server tools and the output tokens are reduced by Caveman skill.</p>
+      <p>MCP server tools for the Claude Desktop app that cut token consumption: MCP tools shrink the input tokens and the Caveman skill shrinks the output tokens.</p>
       <p align="center">
         <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
         <img src="https://img.shields.io/badge/Anthropic-1a1a1a?style=flat-square&logo=anthropic&logoColor=white" />
         <img src="https://img.shields.io/badge/MCP-92FE9D?style=flat-square&logo=c&logoColor=black" />
       </p>
       <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/claude-desktop-mcp">Explore Repository ➔</a></b></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3 align="center">🧩 flowinger</h3>
+      <p align="center"><i>Dependency-Free React Flow Alternative</i></p>
+      <p>React Flow's API in ~39 kB with zero dependencies, plus free undo/redo, export and smart edges for building node editors, flowcharts and workflow UIs.</p>
+      <p align="center">
+        <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" />
+        <img src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB" />
+        <img src="https://img.shields.io/badge/Astro-BC52EE?style=flat-square&logo=astro&logoColor=white" />
+      </p>
+      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/flowinger">Explore Repository ➔</a> &nbsp;·&nbsp; <a href="https://naveen-boddepalli.github.io/flowinger/">Live Demo ↗</a></b></p>
+    </td>
+    <td width="50%" valign="top">
+      <h3 align="center">📈 time-series-autoML</h3>
+      <p align="center"><i>Wizard-Style Forecasting Studio</i></p>
+      <p>Walks a user from raw time-series data to a trained model, with a hybrid architecture that trains lightweight models directly in-browser (Pyodide + Web Workers) and offloads heavier jobs to a backend.</p>
+      <p align="center">
+        <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" />
+        <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=flat-square&logo=tensorflow&logoColor=white" />
+        <img src="https://img.shields.io/badge/Pyodide-1a1a1a?style=flat-square&logo=python&logoColor=92FE9D" />
+      </p>
+      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/time-series-autoML">Explore Repository ➔</a> &nbsp;·&nbsp; <a href="https://time-series-auto-ml.vercel.app">Live Demo ↗</a></b></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3 align="center">🔍 heurix</h3>
+      <p align="center"><i>Offline Codebase Scanner &amp; Infra Synthesizer</i></p>
+      <p><code>hx</code> is an offline-capable, pure-logic CLI that scans a codebase and synthesizes infrastructure YAML (Kubernetes, GitHub Actions), shipped as a PyPI package.</p>
+      <p align="center">
+        <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
+        <img src="https://img.shields.io/badge/Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white" />
+        <img src="https://img.shields.io/badge/PyPI-0073B7?style=flat-square&logo=pypi&logoColor=white" />
+      </p>
+      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/heurix">Explore Repository ➔</a> &nbsp;·&nbsp; <a href="https://naveen-boddepalli.github.io/heurix/">Live Demo ↗</a></b></p>
+    </td>
+    <td width="50%" valign="top">
+      <h3 align="center">🗄️ query-lens</h3>
+      <p align="center"><i>Animated In-Browser Database Engine</i></p>
+      <p>A toy relational database engine that animates a SQL query as it moves through Parser → Planner → Optimizer → Execution → Buffer Pool → B+Tree Index → Locks → Result.</p>
+      <p align="center">
+        <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" />
+        <img src="https://img.shields.io/badge/SQL-1a1a1a?style=flat-square&logo=postgresql&logoColor=00C9FF" />
+        <img src="https://img.shields.io/badge/Cloudflare_Workers-F38020?style=flat-square&logo=cloudflareworkers&logoColor=white" />
+      </p>
+      <p align="center"><b><a href="https://github.com/Naveen-Boddepalli/query-lens">Explore Repository ➔</a> &nbsp;·&nbsp; <a href="https://query-lens.1234naveenboddepalli.workers.dev">Live Demo ↗</a></b></p>
     </td>
   </tr>
 </table>
@@ -172,8 +198,8 @@
       </a>
     </td>
     <td width="50%" align="center">
-      <a href="https://github.com/Naveen-Boddepalli/Resume-Analyser">
-        <img src="https://github-readme-stats-eight-theta.vercel.app/api/pin/?username=Naveen-Boddepalli&repo=Resume-Analyser&show_icons=true&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&icon_color=92FE9D&text_color=ffffff&theme=react" width="100%" />
+      <a href="https://github.com/Naveen-Boddepalli/flowinger">
+        <img src="https://github-readme-stats-eight-theta.vercel.app/api/pin/?username=Naveen-Boddepalli&repo=flowinger&show_icons=true&hide_border=true&bg_color=0a0a0a&title_color=00C9FF&icon_color=92FE9D&text_color=ffffff&theme=react" width="100%" />
       </a>
     </td>
   </tr>
