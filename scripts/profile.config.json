@@ -1,0 +1,23 @@
+{
+  "login": "Naveen-Boddepalli",
+  "name": "Naveen Boddepalli",
+  "role": "Full-stack & ML engineer · B.Tech CS @ VIT Vellore · Year 3",
+  "status": "open to internships",
+  "leetcodeSolved": "300+",
+  "excludeLanguages": ["Jupyter Notebook"],
+  "about": {
+    "shadow-network": "Campus file-sharing with FAISS semantic search and BART/RoBERTa summaries",
+    "claude-desktop-mcp": "MCP server tools that cut Claude Desktop input and output token usage",
+    "flowinger": "React Flow's API in ~39 kB: zero deps, undo/redo, export, smart edges",
+    "time-series-autoML": "Raw time-series to trained model, with in-browser training via Pyodide",
+    "heurix": "Offline codebase scanner that synthesizes Kubernetes and Actions YAML",
+    "query-lens": "Toy SQL engine that animates a query from parser to B+Tree to result"
+  },
+  "links": [
+    { "label": "portfolio", "url": "https://naveen-boddepalli-portfolio.vercel.app/" },
+    { "label": "linkedin", "url": "https://www.linkedin.com/in/naveen-boddepalli-689056327/" },
+    { "label": "mail", "url": "mailto:1234naveenboddepalli@gmail.com" },
+    { "label": "leetcode", "url": "https://leetcode.com/u/NAVEEN2007B/" },
+    { "label": "x", "url": "https://x.com/N_Boddepalli" }
+  ]
+}
