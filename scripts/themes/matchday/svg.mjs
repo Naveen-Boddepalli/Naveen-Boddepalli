@@ -2,12 +2,9 @@
 // a floodlit night pitch, light mode a printed programme. Plain SVG with CSS /
 // SMIL animation only, so it survives GitHub's image proxy. The display face
 // is a subset of Oswald (SIL OFL 1.1, see fonts/OFL.txt) embedded as base64.
-//
-// Renderers not yet redesigned fall back to the psql theme (see `viaPsql`).
 
 import { readFileSync } from 'node:fs';
 import { esc, clip, ago } from '../common.mjs';
-import * as psql from '../psql/svg.mjs';
 import { ratings, season } from '../../ratings.mjs';
 
 export const THEMES = {
@@ -488,13 +485,7 @@ ${arrow(Math.ceil(18 + tw + 10), 16, fg)}
 <circle cx="${perf + stub / 2}" cy="${h / 2}" r="7" fill="none" stroke="${fg}" stroke-width="1.4"/>
 <path d="M ${perf + stub / 2} ${h / 2 - 3} l 2.9 2.1 -1.1 3.4 h -3.6 l -1.1 -3.4 Z" fill="${fg}"/>`;
   // no frame background: a ticket shape on a transparent canvas
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(name)}">
-<title>${esc(name)}</title>
-<style>@font-face { font-family: MatchdayDisplay; font-weight: 400 700; src: url(data:font/woff2;base64,${FONT_B64}) format('woff2'); }
-.d { font-family: ${DISPLAY}; }</style>
-${body}
-</svg>
-`;
+  return chip(w, h, name, body);
 }
 
 // ── footer: full-time scoreboard ────────────────────────────────────────────
@@ -517,8 +508,115 @@ export function footer(d, t, buildMs, files) {
   return frame({ h, t, title: `Regenerated ${stamp} UTC`, body });
 }
 
-// ── not redesigned yet: render with the psql look ──────────────────────────
-const viaPsql = (fn) => (...args) => fn(...args.map((a) => (a && a.mode && THEMES[a.mode] === a ? psql.THEMES[a.mode] : a)));
+// ── VAR review: "query my profile" ──────────────────────────────────────────
+const MONO = `ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace`;
+const MCH = 0.6; // monospace advance per px of font-size
+// The stadium screen looks the same in both modes.
+const SCREEN = { bg: '#071f17', bgLight: '#14213d', fg: '#f4f7f2', dim: '#a9b8b0', amber: '#f5c542', go: '#7ee787', red: '#ff6b6b', stripe: 'rgba(255,255,255,.05)' };
+const SQL_KW = /(\b(?:EXPLAIN|ANALYZE|SELECT|FROM|WHERE|GROUP BY|ORDER BY|LIMIT|DESC|ASC|AND|OR|NOT|IS|NULL|AS|JOIN|ON|COUNT|SUM|AVG|MIN|MAX|DISTINCT|LIKE|IN)\b)/i;
 
-export const queryButton = viaPsql(psql.queryButton);
-export const queryResult = viaPsql(psql.queryResult);
+/** Small transparent-canvas SVG with the display font, for buttons and tickets. */
+function chip(w, h, title, body) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(title)}">
+<title>${esc(title)}</title>
+<style>@font-face { font-family: MatchdayDisplay; font-weight: 400 700; src: url(data:font/woff2;base64,${FONT_B64}) format('woff2'); }
+.d { font-family: ${DISPLAY}; }</style>
+${body}
+</svg>
+`;
+}
+
+export function queryButton(name, t) {
+  const text = name.toUpperCase(), h = 36, tag = 44;
+  const tw = measure(text, 13, 500, 1);
+  const w = Math.ceil(tag + 14 + tw + 16);
+  const body = `<rect x="0.75" y="0.75" width="${w - 1.5}" height="${h - 1.5}" rx="6" fill="${t.bg}" stroke="${t.gold}" stroke-width="1.5"/>
+<path d="M 6.75 0.75 H ${tag} V ${h - 0.75} H 6.75 A 6 6 0 0 1 0.75 ${h - 6.75} V 6.75 A 6 6 0 0 1 6.75 0.75 Z" fill="${t.gold}"/>
+<text x="${tag / 2}" y="23.5" text-anchor="middle" class="d" style="font-size:14px;font-weight:700;letter-spacing:1px;fill:${t.mode === 'dark' ? t.cardInk : '#ffffff'}">VAR</text>
+<text x="${tag + 14}" y="23" class="d" style="font-size:13px;font-weight:500;letter-spacing:1px;fill:${t.fg}">${esc(text)}</text>`;
+  return chip(w, h, `Run: ${name}`, body);
+}
+
+const cell = (v) => (v === null || v === undefined ? 'NULL' : typeof v === 'number' ? String(Math.round(v * 100) / 100) : String(v));
+
+/** The last visitor query, reviewed on the stadium screen. `q` comes from scripts/query.mjs. */
+export function queryResult(q, t) {
+  const X = 32, R = W - 32, S = SCREEN, sbg = t.mode === 'dark' ? S.bg : S.bgLight;
+  const FS = 14, cw = FS * MCH, SX = X + 20, SR = R - 20;
+  const ok = !q.error;
+
+  // the incident: the SQL, wrapped onto at most two lines
+  const maxChars = Math.floor((SR - SX) / cw);
+  const words = q.sql.split(/\s+/), lines = [''];
+  for (const wd of words) {
+    const cur = lines[lines.length - 1];
+    if ((cur + ' ' + wd).trim().length > maxChars && cur) lines.push(wd);
+    else lines[lines.length - 1] = (cur + ' ' + wd).trim();
+  }
+  if (lines.length > 2) { lines.length = 2; lines[1] = clip(lines[1] + ' …', maxChars); }
+  const hl = (s) => s.split(SQL_KW).map((p, i) => (i % 2 ? `<tspan style="fill:${S.amber}">${esc(p)}</tspan>` : esc(p))).join('');
+
+  let y = 112;
+  const sqlEls = lines.map((l) => { const el = `<text x="${SX}" y="${y}" class="m">${hl(l)}</text>`; y += 22; return el; }).join('');
+  const incidentBottom = y - 8;
+  y = incidentBottom + 40;
+
+  let body = '';
+  if (!ok) {
+    body += `<text x="${SX}" y="${y + 8}" class="d" style="font-size:30px;font-weight:700;letter-spacing:2px;fill:${S.red}">NO GOAL</text>`;
+    y += 40;
+    body += `<text x="${SX}" y="${y}" style="fill:${S.fg}">${esc(clip(q.error.message, 110))}</text>`;
+    y += 22;
+    if (q.error.hint) { body += `<text x="${SX}" y="${y}" style="fill:${S.dim}">Hint: ${esc(clip(q.error.hint, 104))}</text>`; y += 22; }
+  } else {
+    const cols = (q.columns ?? []).slice(0, 6);
+    const shown = q.rows.slice(0, 8);
+    const avail = Math.floor((SR - SX) / cw);
+    const cap = cols.length <= 2 ? Math.floor(avail / Math.max(1, cols.length)) - 3 : 40;
+    const widths = cols.map((c) => Math.min(cap, Math.max(c.length, ...shown.map((r) => cell(r[c]).length))));
+    const scale = Math.min(1, avail / Math.max(1, widths.reduce((s, w) => s + w + 3, 0)));
+    const cws = widths.map((w) => Math.max(4, Math.floor(w * scale)));
+    const xs = [];
+    let x = SX;
+    for (const w of cws) { xs.push(x); x += (w + 3) * cw; }
+    const isNum = cols.map((c) => shown.length > 0 && shown.every((r) => typeof r[c] === 'number' || r[c] === null));
+    const colX = (i) => (isNum[i] ? xs[i] + cws[i] * cw : xs[i]);
+    const anchor = (i) => (isNum[i] ? ' text-anchor="end"' : '');
+    body += cols.map((c, i) => `<text x="${colX(i)}" y="${y}"${anchor(i)} class="d" style="font-size:12px;font-weight:500;letter-spacing:2px;fill:${S.amber}">${esc(clip(c.toUpperCase(), cws[i]))}</text>`).join('');
+    y += 28;
+    shown.forEach((r, ri) => {
+      const delay = (0.3 + ri * 0.07).toFixed(2);
+      body += `<g style="animation: fade .35s ease-out ${delay}s backwards">`
+        + (ri % 2 ? '' : `<rect x="${SX - 10}" y="${y - 16}" width="${SR - SX + 20}" height="22" rx="3" fill="${S.stripe}"/>`)
+        + cols.map((c, i) => `<text x="${colX(i)}" y="${y}"${anchor(i)} class="m" style="fill:${r[c] === null ? S.dim : S.fg}">${esc(clip(cell(r[c]), cws[i]))}</text>`).join('')
+        + '</g>';
+      y += 22;
+    });
+    if (!shown.length) { body += `<text x="${SX}" y="${y}" style="fill:${S.dim}">No rows matched.</text>`; y += 22; }
+    const more = q.rows.length > shown.length ? `, ${q.rows.length - shown.length} more not shown` : '';
+    body += `<text x="${SX}" y="${y + 6}" class="d" style="font-size:12px;letter-spacing:1.5px;fill:${S.dim}">${esc(`${plural(q.rows.length, 'ROW', 'ROWS')}${more.toUpperCase()}`)}</text>`;
+    y += 24;
+  }
+  const screenTop = 66, screenBottom = y + 4;
+
+  const decision = ok ? 'CHECK COMPLETE · GOAL' : 'CHECK COMPLETE · NO GOAL';
+  const dw = measure(decision, 13, 600, 1.5) + 40;
+  const who = q.author ? `requested by @${q.author}` : 'seeded by the owner';
+  const h = screenBottom + 44;
+  const all = `${heading(t, X, 40, 'VAR REVIEW', 'the last query a visitor ran on QueryLens')}
+<g transform="translate(${(R - dw).toFixed(1)} 20)">
+  <rect width="${dw.toFixed(1)}" height="28" rx="14" fill="${ok ? t.go : t.red}" fill-opacity=".14" stroke="${ok ? t.go : t.red}"/>
+  <circle cx="16" cy="14" r="4.5" fill="${ok ? t.go : t.red}" class="pulse"/>
+  <text x="28" y="19" class="d" style="font-size:13px;font-weight:600;letter-spacing:1.5px;fill:${ok ? t.go : t.red}">${decision}</text>
+</g>
+<rect x="${X}" y="${screenTop}" width="${R - X}" height="${screenBottom - screenTop}" rx="8" fill="${sbg}"/>
+<rect x="${X}" y="${screenTop}" width="${R - X}" height="${screenBottom - screenTop}" rx="8" fill="url(#scan)"/>
+<text x="${SX}" y="${screenTop + 22}" class="d" style="font-size:11.5px;font-weight:500;letter-spacing:2px;fill:${S.dim}">THE INCIDENT</text>
+${sqlEls}
+<line x1="${SX}" x2="${SR}" y1="${incidentBottom + 10}" y2="${incidentBottom + 10}" stroke="${S.fg}" stroke-opacity=".12"/>
+${body}
+<text x="${X}" y="${h - 16}" class="dim" style="font-size:12px">${esc(who)} · ${esc(q.at.slice(0, 16).replace('T', ' '))} UTC · reviewed on QueryLens${q.stages.length ? `: ${esc(q.stages.join(' → '))}` : ''} in ${q.ms.toFixed(1)} ms</text>`;
+  const defs = `<pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="1" fill="#ffffff" fill-opacity=".025"/></pattern>`;
+  const css = `.m { font-family: ${MONO}; font-size: ${FS}px; fill: ${S.fg}; }`;
+  return frame({ h, t, title: `Last visitor query: ${q.sql}`, body: all, defs, css });
+}
