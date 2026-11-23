@@ -42,6 +42,8 @@ if (flag('sample')) {
   resp = await fetchProfile(cfg.login, token, now);
 }
 const d = normalize(resp, cfg, now);
+// a theme may adjust its tokens to the data (wizarding: house colours)
+const tokens = svg.prepare?.(d, cfg, now) ?? svg.THEMES;
 
 // name -> (theme) => svg string
 const images = {
@@ -63,7 +65,7 @@ const written = [];
 for (const [name, render] of Object.entries(images)) {
   for (const theme of ['dark', 'light']) {
     const file = `${name}-${theme}.svg`;
-    await writeFile(join(out, file), render(svg.THEMES[theme]));
+    await writeFile(join(out, file), render(tokens[theme]));
     written.push(file);
   }
 }

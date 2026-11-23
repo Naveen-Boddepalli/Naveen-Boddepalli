@@ -6,6 +6,7 @@
 //   linkButton, queryButton, queryResult, footer
 // and optionally
 //   extras(d, cfg, now) -> { imageName: (t) => svgString }  for theme-only images
+//   prepare(d, cfg, now) -> { dark, light }  tokens adjusted to the data (used instead of THEMES)
 
 import { readdir } from 'node:fs/promises';
 
