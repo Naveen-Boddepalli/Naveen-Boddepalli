@@ -88,8 +88,10 @@ if (!verdict.ok) {
 
 // ── write the result image and the log ──────────────────────────────────────
 if (outcome.kind === 'ran') {
+  // a theme may adjust its tokens to the data (wizarding: house colours), as in build.mjs
+  const tokens = svg.prepare?.(data, cfg, now) ?? svg.THEMES;
   for (const theme of ['dark', 'light']) {
-    await writeFile(join(dir, `query-result-${theme}.svg`), svg.queryResult(outcome.q, svg.THEMES[theme]));
+    await writeFile(join(dir, `query-result-${theme}.svg`), svg.queryResult(outcome.q, tokens[theme]));
   }
   await writeFile(join(dir, 'last-query.json'), JSON.stringify(outcome.q, null, 2) + '\n');
 }

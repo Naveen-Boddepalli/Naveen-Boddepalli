@@ -11,17 +11,16 @@ import { readFileSync } from 'node:fs';
 import { esc, clip, ago } from '../common.mjs';
 import { results } from './owls.mjs';
 import { sortHouse } from './sorting.mjs';
-import * as psql from '../psql/svg.mjs';
 
 const BASE = {
   dark: {
     wizarding: true, mode: 'dark', bg: '#0f1021', paper: '#1a1b33', edge: '#e8b64c', fg: '#efe6cf',
-    dim: '#a9a08a', gold: '#e8b64c', wax: '#a3262a', line: '#efe6cf', lineOp: 0.14, go: '#7ee787',
+    dim: '#a9a08a', gold: '#e8b64c', wax: '#a3262a', line: '#efe6cf', lineOp: 0.14, go: '#7ee787', red: '#ff7b72',
     env: '#cdbb92', envBack: '#a8956a', envFold: '#bba77c', envInk: '#2b1d0e', texture: 0.05,
   },
   light: {
     wizarding: true, mode: 'light', bg: '#eadcbd', paper: '#f6edd8', edge: '#b8892d', fg: '#2b1d0e',
-    dim: '#6e5230', gold: '#9a7124', wax: '#9b1c1c', line: '#2b1d0e', lineOp: 0.12, go: '#1a7f37',
+    dim: '#6e5230', gold: '#9a7124', wax: '#9b1c1c', line: '#2b1d0e', lineOp: 0.12, go: '#1a7f37', red: '#a8201a',
     env: '#efe3c6', envBack: '#cbb58a', envFold: '#dfcfa8', envInk: '#2b1d0e', texture: 0.16,
   },
 };
@@ -701,7 +700,142 @@ export function footer(d, t, buildMs, files) {
   return frame({ h, t, title: `Regenerated ${stamp} UTC`, body, css });
 }
 
-// ── not redesigned yet: render in the psql look until their phase lands ─────
-const P = (fn) => (...args) => fn(...args.map((a) => (a && a.wizarding ? psql.THEMES[a.mode] : a)));
-export const queryButton = P(psql.queryButton);
-export const queryResult = P(psql.queryResult);
+// ── ask the Sorting Hat: "query my profile" ─────────────────────────────────
+const MONO = `ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace`;
+const MCH = 0.6; // monospace advance per px of font-size
+const SQL_KW = /(\b(?:EXPLAIN|ANALYZE|SELECT|FROM|WHERE|GROUP BY|ORDER BY|LIMIT|DESC|ASC|AND|OR|NOT|IS|NULL|AS|JOIN|ON|COUNT|SUM|AVG|MIN|MAX|DISTINCT|LIKE|IN)\b)/i;
+
+// A worn, pointed hat with a bent tip, base centred on (cx, by), `s` = scale.
+function hat(cx, by, s, t, { face = false } = {}) {
+  const P = (x, y) => `${(cx + x * s).toFixed(1)} ${(by + y * s).toFixed(1)}`;
+  const felt = t.mode === 'dark' ? '#7a6044' : '#6b5035', shade = t.mode === 'dark' ? '#5c4732' : '#4f3a26';
+  const cone = `M ${P(-30, -6)} C ${P(-24, -30)} ${P(-14, -58)} ${P(-2, -78)} C ${P(4, -88)} ${P(14, -94)} ${P(26, -88)} C ${P(16, -86)} ${P(10, -80)} ${P(8, -70)} C ${P(14, -50)} ${P(22, -28)} ${P(30, -6)} Z`;
+  const features = face ? `<path d="M ${P(-14, -34)} q ${4 * s} ${-4 * s} ${8 * s} 0 M ${P(6, -36)} q ${4 * s} ${-4 * s} ${8 * s} 0" fill="none" stroke="${shade}" stroke-width="${2 * s}" stroke-linecap="round"/>
+<path d="M ${P(-12, -20)} q ${12 * s} ${7 * s} ${24 * s} ${-1 * s}" fill="none" stroke="${shade}" stroke-width="${2.4 * s}" stroke-linecap="round" class="mouth"/>` : '';
+  return `<path d="${cone}" fill="${felt}" stroke="${shade}" stroke-width="${1.2 * s}"/>
+<path d="M ${P(-26, -14)} C ${P(-10, -8)} ${P(10, -8)} ${P(26, -14)} L ${P(30, -6)} C ${P(10, 0)} ${P(-10, 0)} ${P(-30, -6)} Z" fill="${shade}"/>
+<ellipse cx="${cx}" cy="${(by - 3 * s).toFixed(1)}" rx="${(44 * s).toFixed(1)}" ry="${(8 * s).toFixed(1)}" fill="${felt}" stroke="${shade}" stroke-width="${1.2 * s}"/>
+${features}`;
+}
+
+export function queryButton(name, t) {
+  const text = name.toUpperCase(), h = 36, tag = 40;
+  const tw = measure(text, 12, 700, 1.2);
+  const w = Math.ceil(tag + 14 + tw + 16);
+  const body = `<rect x="0.75" y="0.75" width="${w - 1.5}" height="${h - 1.5}" rx="6" fill="${t.paper}" stroke="${t.accent}" stroke-width="1.5"/>
+<path d="M 6.75 0.75 H ${tag} V ${h - 0.75} H 6.75 A 6 6 0 0 1 0.75 ${h - 6.75} V 6.75 A 6 6 0 0 1 6.75 0.75 Z" fill="${t.accent}"/>
+<g transform="translate(0 0)">${hat(tag / 2, 28, 0.27, t)}</g>
+<text x="${tag + 14}" y="22.5" class="d" style="font-size:12px;font-weight:700;letter-spacing:1.2px;fill:${t.fg}">${esc(text)}</text>`;
+  return chip(w, h, `Ask the Sorting Hat: ${name}`, body);
+}
+
+const cell = (v) => (v === null || v === undefined ? 'NULL' : typeof v === 'number' ? String(Math.round(v * 100) / 100) : String(v));
+
+/** The last visitor query, answered on a scroll. `q` comes from scripts/query.mjs. */
+export function queryResult(q, t) {
+  const X = 32, R = W - 32, ok = !q.error;
+  const SL = 236, SRt = R, FS = 13.5, cw = FS * MCH, IX = SL + 30, IR = SRt - 30;
+
+  // the question: the SQL, wrapped onto at most two lines
+  const maxChars = Math.floor((IR - IX) / cw);
+  const lines = [''];
+  for (const wd of q.sql.split(/\s+/)) {
+    const cur = lines[lines.length - 1];
+    if ((cur + ' ' + wd).trim().length > maxChars && cur) lines.push(wd);
+    else lines[lines.length - 1] = (cur + ' ' + wd).trim();
+  }
+  if (lines.length > 2) { lines.length = 2; lines[1] = clip(lines[1] + ' …', maxChars); }
+  const hl = (s) => s.split(SQL_KW).map((p, i) => (i % 2 ? `<tspan style="fill:${t.accent};font-weight:700">${esc(p)}</tspan>` : esc(p))).join('');
+
+  const scrollTop = 72;
+  let y = scrollTop + 46;
+  let content = label(IX, y, 'THE QUESTION', 'start', 'gold');
+  y += 26;
+  content += lines.map((l) => { const el = `<text x="${IX}" y="${y}" class="m">${hl(l)}</text>`; y += 21; return el; }).join('');
+  content += `<line x1="${IX}" x2="${IR}" y1="${y - 6}" y2="${y - 6}" stroke="${t.edge}" stroke-opacity=".45" stroke-dasharray="2 4"/>`;
+  y += 22;
+
+  if (!ok) {
+    content += label(IX, y, 'THE ANSWER', 'start', 'gold');
+    y += 34;
+    content += `<text x="${IX}" y="${y}" class="d" style="font-size:24px;font-weight:700;letter-spacing:2px;fill:${t.red}">THE HAT IS STUMPED</text>`;
+    y += 28;
+    content += `<text x="${IX}" y="${y}">${esc(clip(q.error.message, 100))}</text>`;
+    y += 22;
+    if (q.error.hint) { content += `<text x="${IX}" y="${y}" class="i dim">Hint: ${esc(clip(q.error.hint, 96))}</text>`; y += 22; }
+  } else {
+    content += label(IX, y, 'THE ANSWER', 'start', 'gold');
+    y += 30;
+    const cols = (q.columns ?? []).slice(0, 6);
+    const shown = q.rows.slice(0, 8);
+    const avail = Math.floor((IR - IX) / cw);
+    const cap = cols.length <= 2 ? Math.floor(avail / Math.max(1, cols.length)) - 3 : 40;
+    const widths = cols.map((c) => Math.min(cap, Math.max(c.length, ...shown.map((r) => cell(r[c]).length))));
+    const scale = Math.min(1, avail / Math.max(1, widths.reduce((s, w) => s + w + 3, 0)));
+    const cws = widths.map((w) => Math.max(4, Math.floor(w * scale)));
+    const xs = [];
+    let x = IX;
+    for (const w of cws) { xs.push(x); x += (w + 3) * cw; }
+    const isNum = cols.map((c) => shown.length > 0 && shown.every((r) => typeof r[c] === 'number' || r[c] === null));
+    const colX = (i) => (isNum[i] ? xs[i] + cws[i] * cw : xs[i]);
+    const anchor = (i) => (isNum[i] ? ' text-anchor="end"' : '');
+    content += cols.map((c, i) => `<text x="${colX(i)}" y="${y}"${anchor(i)} class="m" style="font-weight:700;fill:${t.gold}">${esc(clip(c, cws[i]))}</text>`).join('');
+    y += 8;
+    content += `<line x1="${IX}" x2="${IR}" y1="${y}" y2="${y}" stroke="${t.fg}" stroke-opacity=".3"/>`;
+    y += 20;
+    shown.forEach((r, ri) => {
+      content += (ri % 2 ? '' : `<rect x="${IX - 8}" y="${y - 15}" width="${IR - IX + 16}" height="21" rx="3" fill="${t.edge}" fill-opacity=".1"/>`)
+        + cols.map((c, i) => `<text x="${colX(i)}" y="${y}"${anchor(i)} class="m${r[c] === null ? ' dim' : ''}">${esc(clip(cell(r[c]), cws[i]))}</text>`).join('');
+      y += 21;
+    });
+    if (!shown.length) { content += `<text x="${IX}" y="${y}" class="i dim">No rows matched.</text>`; y += 21; }
+    const more = q.rows.length > shown.length ? `, ${q.rows.length - shown.length} more not shown` : '';
+    content += `<text x="${IX}" y="${y + 8}" class="d dim" style="font-size:11px;font-weight:700;letter-spacing:1.5px">${esc(`${plural(q.rows.length, 'row')}${more}`.toUpperCase())}</text>`;
+    y += 24;
+  }
+  const scrollBottom = Math.max(y + 10, scrollTop + 200);
+
+  // the scroll: a sheet between two rolled ends
+  const roll = (ry) => `<rect x="${SL - 8}" y="${ry - 9}" width="${SRt - SL + 16}" height="18" rx="9" fill="${t.mode === 'dark' ? '#2a2b4a' : '#e2d2ac'}" stroke="${t.edge}" stroke-opacity=".7"/>
+<rect x="${SL - 8}" y="${ry - 9}" width="${SRt - SL + 16}" height="6" rx="3" fill="#fff" fill-opacity="${t.mode === 'dark' ? 0.06 : 0.35}"/>`;
+  const scroll = `<g class="unroll">
+<rect x="${SL}" y="${scrollTop}" width="${SRt - SL}" height="${scrollBottom - scrollTop}" fill="${t.paper}"/>
+<rect x="${SL}" y="${scrollTop}" width="${SRt - SL}" height="${scrollBottom - scrollTop}" filter="url(#grain)" opacity="${t.texture * 1.4}"/>
+<rect x="${SL}" y="${scrollTop}" width="${SRt - SL}" height="${scrollBottom - scrollTop}" fill="url(#scrollVignette)"/>
+${content}
+</g>
+${roll(scrollTop)}
+<g class="roll-down">${roll(scrollBottom)}</g>`;
+
+  const decision = ok ? 'THE HAT HAS ANSWERED' : 'THE HAT IS STUMPED';
+  const dc = ok ? t.go : t.red;
+  const dw = measure(decision, 11.5, 700, 1.5) + 40;
+  const hatBy = scrollTop + 150;
+  const who = q.author ? `asked by @${q.author}` : 'asked by the owner';
+  const h = scrollBottom + 48;
+  const body = `${heading(t, X, 40, 'ASK THE SORTING HAT', 'the last question a visitor put to QueryLens')}
+<g transform="translate(${(R - dw).toFixed(1)} 20)">
+  <rect width="${dw.toFixed(1)}" height="28" rx="14" fill="${dc}" fill-opacity=".14" stroke="${dc}"/>
+  <circle cx="16" cy="14" r="4.5" fill="${dc}" class="pulse"/>
+  <text x="28" y="18.5" class="d" style="font-size:11.5px;font-weight:700;letter-spacing:1.5px;fill:${dc}">${decision}</text>
+</g>
+<ellipse cx="${X + 96}" cy="${hatBy + 4}" rx="70" ry="10" fill="#000" opacity="${t.mode === 'dark' ? 0.35 : 0.12}"/>
+<g class="sway">${hat(X + 96, hatBy, 1.45, t, { face: true })}</g>
+<text x="${X + 96}" y="${hatBy + 40}" text-anchor="middle" class="i dim" style="font-size:13px">${esc(clip(who, 26))}</text>
+${scroll}
+<text x="${X}" y="${h - 16}" class="i dim" style="font-size:12.5px">${esc(who)} · ${esc(q.at.slice(0, 16).replace('T', ' '))} UTC · answered by QueryLens${q.stages.length ? `: ${esc(q.stages.join(' → '))}` : ''} in ${q.ms.toFixed(1)} ms</text>`;
+  const defs = vignette(t, 'scroll');
+  const css = `.m { font-family: ${MONO}; font-size: ${FS}px; fill: ${t.fg}; }
+.unroll { transform-box: fill-box; transform-origin: center top; animation: unroll .9s cubic-bezier(.3,.6,.3,1) .2s backwards; }
+@keyframes unroll { from { transform: scaleY(0); } }
+.roll-down { animation: rolldown .9s cubic-bezier(.3,.6,.3,1) .2s backwards; }
+@keyframes rolldown { from { transform: translateY(${scrollTop - scrollBottom}px); } }
+.sway { transform-box: fill-box; transform-origin: center bottom; animation: sway 4s ease-in-out infinite; }
+@keyframes sway { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-2.5deg); } }
+.mouth { animation: talk 1.2s ease-in-out 3; transform-box: fill-box; transform-origin: center; }
+@keyframes talk { 50% { transform: scaleY(2.2); } }`;
+  const alt = ok
+    ? `Ask the Sorting Hat: the last visitor query, ${q.sql}, returned ${plural(q.rows.length, 'row')}.`
+    : `Ask the Sorting Hat: the last visitor query, ${q.sql}, failed: ${q.error.message}`;
+  return frame({ h, t, title: alt, body, defs, css });
+}
