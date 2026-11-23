@@ -465,9 +465,243 @@ ${rows}${empty}
   return frame({ h: footY + 26, t, title: alt, body });
 }
 
+// ── the potions cabinet: the stack, shelved ─────────────────────────────────
+// Brand colours for the potions. Unknown names get the house accent; config
+// items can also be { name, color }.
+const BRAND = {
+  'Git': '#F05032', 'PostgreSQL': '#4169E1', 'MongoDB': '#47A248', 'GitHub Actions': '#2088FF',
+  'Vercel': '#111111', 'React': '#61DAFB', 'Next.js': '#111111', 'FastAPI': '#009688',
+  'Python': '#3776AB', 'TypeScript': '#3178C6', 'C++': '#00599C', 'JavaScript': '#F7DF1E',
+  'Node.js': '#5FA04E', 'Express': '#111111', 'LangChain': '#1C3C3C', 'LangGraph': '#1C3C3C',
+  'Groq': '#F55036', 'Hugging Face': '#FFD21E', 'FAISS': '#0467DF', 'Docker': '#2496ED', 'Rust': '#DEA584',
+};
+
+const luminance = (hex) => {
+  const n = parseInt(hex.slice(1), 16);
+  return [n >> 16, (n >> 8) & 255, n & 255].reduce((s, v, i) => {
+    const c = v / 255, lin = c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    return s + lin * [0.2126, 0.7152, 0.0722][i];
+  }, 0);
+};
+
+function potion(entry, t) {
+  const e = typeof entry === 'string' ? { name: entry } : entry;
+  let color = e.color ?? BRAND[e.name] ?? t.accent;
+  // near-black brands would vanish on the night background: give them a smoky grey
+  if (t.mode === 'dark' && luminance(color) < 0.03) color = '#8d90a8';
+  return { name: e.name, color };
+}
+
+// Bottle outlines with the base centred on (cx, by): [path, liquid top, glass top].
+const BOTTLES = [
+  (cx, by) => [`M ${cx - 6} ${by - 62} V ${by - 38} A 20 20 0 1 0 ${cx + 6} ${by - 38} V ${by - 62} Z`, by - 26, by - 62],
+  (cx, by) => [`M ${cx - 7} ${by - 66} V ${by - 58} Q ${cx - 17} ${by - 53} ${cx - 17} ${by - 42} V ${by - 2} Q ${cx - 17} ${by} ${cx - 15} ${by} H ${cx + 15} Q ${cx + 17} ${by} ${cx + 17} ${by - 2} V ${by - 42} Q ${cx + 17} ${by - 53} ${cx + 7} ${by - 58} V ${by - 66} Z`, by - 34, by - 66],
+  (cx, by) => [`M ${cx - 6} ${by - 64} V ${by - 44} L ${cx - 22} ${by - 3} Q ${cx - 23} ${by} ${cx - 20} ${by} H ${cx + 20} Q ${cx + 23} ${by} ${cx + 22} ${by - 3} L ${cx + 6} ${by - 44} V ${by - 64} Z`, by - 22, by - 64],
+  (cx, by) => [`M ${cx - 8} ${by - 58} V ${by - 50} H ${cx - 17} V ${by} H ${cx + 17} V ${by - 50} H ${cx + 8} V ${by - 58} Z`, by - 30, by - 58],
+];
+
+function bottle(p, cx, by, n, t) {
+  const [path, liquid, top] = BOTTLES[n % BOTTLES.length](cx, by);
+  const id = `pt${n}`;
+  return `<g style="animation: rise .45s ease-out ${(0.2 + n * 0.05).toFixed(2)}s backwards">
+<clipPath id="${id}"><path d="${path}"/></clipPath>
+<g clip-path="url(#${id})">
+  <rect x="${cx - 24}" y="${liquid}" width="48" height="${by - liquid}" fill="${p.color}" opacity=".9"/>
+  <rect x="${cx - 24}" y="${liquid}" width="48" height="2.5" fill="#fff" opacity=".25"/>
+  <circle cx="${cx - 4}" cy="${by - 4}" r="2" fill="#fff" opacity=".5" class="bubble" style="animation-delay:${((n * 0.37) % 2.4).toFixed(2)}s"/>
+  <circle cx="${cx + 5}" cy="${by - 3}" r="1.4" fill="#fff" opacity=".5" class="bubble" style="animation-delay:${((n * 0.37 + 1.1) % 2.4).toFixed(2)}s"/>
+</g>
+<path d="${path}" fill="${t.fg}" fill-opacity=".05" stroke="${t.fg}" stroke-opacity=".6" stroke-width="1.3"/>
+<path d="M ${cx - 11} ${by - 8} V ${liquid - 6}" stroke="#fff" stroke-opacity=".22" stroke-width="2.5" stroke-linecap="round"/>
+<rect x="${cx - 7}" y="${top - 9}" width="14" height="10" rx="2" fill="#a77d4f"/>
+<text x="${cx}" y="${by + 30}" text-anchor="middle" class="d" style="font-size:${fit(p.name.toUpperCase(), 140, 11, 700, 1)}px;font-weight:700;letter-spacing:1px">${esc(p.name.toUpperCase())}</text>
+</g>`;
+}
+
+/** cfg.wizarding.cabinet, or the Matchday stack regrouped if there is none. */
+function shelves(cfg) {
+  if (cfg.wizarding?.cabinet?.length) return cfg.wizarding.cabinet;
+  const s = cfg.matchday?.stack ?? {};
+  return [
+    { shelf: 'Languages', items: s.fwd ?? [] },
+    { shelf: 'Frameworks', items: s.mid ?? [] },
+    { shelf: 'Data, cloud & CI', items: [...(s.gk ?? []), ...(s.def ?? [])] },
+    { shelf: 'Reserve stock', items: s.bench ?? [] },
+  ].filter((x) => x.items.length);
+}
+
+export function cabinet(d, t, cfg = {}) {
+  const rows = shelves(cfg);
+  const CX = 40, CW = W - 80, top = 70, rowH = 150;
+  const wood = t.mode === 'dark' ? '#3b2a1e' : '#7a5232';
+  const woodDark = t.mode === 'dark' ? '#2a1d14' : '#5e3d24';
+  const inside = t.mode === 'dark' ? '#14152a' : '#efe2c4';
+  let n = 0;
+  const shelfEls = rows.map((row, ri) => {
+    const y0 = top + 14 + ri * rowH, by = y0 + 108;
+    const items = row.items.map((e) => potion(e, t));
+    const slot = (CW - 40) / Math.max(items.length, 5);
+    const startX = CX + 20 + (CW - 40 - slot * items.length) / 2 + slot / 2;
+    const bottles = items.map((p, i) => bottle(p, startX + i * slot, by, n++, t)).join('\n');
+    const plateW = Math.ceil(measure(row.shelf.toUpperCase(), 10.5, 700, 2) + 24);
+    return `<rect x="${CX + 20}" y="${y0 + 6}" width="${plateW}" height="20" rx="3" fill="${t.edge}" fill-opacity="${t.mode === 'dark' ? 0.22 : 0.3}" stroke="${t.edge}" stroke-opacity=".6"/>
+<text x="${CX + 32}" y="${y0 + 20}" class="d" style="font-size:10.5px;font-weight:700;letter-spacing:2px">${esc(row.shelf.toUpperCase())}</text>
+${bottles}
+<rect x="${CX + 12}" y="${by}" width="${CW - 24}" height="9" fill="${wood}"/>
+<rect x="${CX + 12}" y="${by + 9}" width="${CW - 24}" height="3" fill="${woodDark}"/>`;
+  }).join('\n');
+  const h = top + 14 + rows.length * rowH + 30;
+  const body = `${heading(t, CX, 42, 'THE POTIONS CABINET', 'my stack, shelved by what it does')}
+<rect x="${CX}" y="${top}" width="${CW}" height="${h - top - 22}" rx="8" fill="${woodDark}"/>
+<rect x="${CX + 12}" y="${top + 12}" width="${CW - 24}" height="${h - top - 46}" rx="3" fill="${inside}"/>
+<rect x="${CX + 12}" y="${top + 12}" width="${CW - 24}" height="${h - top - 46}" rx="3" filter="url(#grain)" opacity="${t.texture * 1.2}"/>
+${shelfEls}`;
+  const css = `.bubble { animation: bubble 2.4s ease-in infinite; }
+@keyframes bubble { from { transform: translateY(0); opacity: .6; } to { transform: translateY(-22px); opacity: 0; } }`;
+  const alt = `My tech stack as a potions cabinet: ${rows.map((r) => `${r.shelf}: ${r.items.map((e) => e.name ?? e).join(', ')}`).join('; ')}.`;
+  return frame({ h, t, title: alt, body, css });
+}
+
+// ── candles in the Great Hall: last year's contributions ────────────────────
+// One floating candle per day, one column per week. Unlit days have no flame;
+// lit ones burn taller and brighter in four steps (quartiles of active days).
+function candleDefs(t) {
+  const wax = t.mode === 'dark' ? '#e9dfc4' : '#fbf6ea';
+  const stick = (hgt, op = 1) => `<rect x="-2.5" y="${-hgt}" width="5" height="${hgt}" rx="1" fill="${wax}" fill-opacity="${op}" stroke="${t.edge}" stroke-opacity="${0.5 * op}" stroke-width=".8"/>`;
+  const flame = (lv) => {
+    const fh = 3.5 + lv * 2, fw = 1.6 + lv * 0.55;
+    return `<path d="M 0 ${-fh} C ${fw} ${-fh * 0.45} ${fw} -1 0 0 C ${-fw} -1 ${-fw} ${-fh * 0.45} 0 ${-fh} Z" fill="${t.gold}"/>
+<path d="M 0 ${-fh * 0.55} C ${fw * 0.4} -${fh * 0.25} ${fw * 0.4} -0.6 0 0 C ${-fw * 0.4} -0.6 ${-fw * 0.4} -${fh * 0.25} 0 ${-fh * 0.55} Z" fill="#fff6d6"/>`;
+  };
+  let out = `<g id="c0">${stick(11, 0.45)}<line x1="0" x2="0" y1="-11" y2="-13" stroke="${t.fg}" stroke-opacity=".35"/></g>`;
+  for (let lv = 1; lv <= 4; lv++) {
+    const hgt = 11 + lv * 2;
+    for (const ph of [0, 1, 2]) {
+      out += `<g id="c${lv}${ph}">
+<circle cy="${-hgt - 4}" r="${3 + lv * 2.6}" fill="${t.gold}" opacity="${(0.03 + lv * 0.06).toFixed(2)}" class="halo p${ph}"/>
+${stick(hgt)}
+<g transform="translate(0 ${-hgt - 1})"><g class="fl p${ph}">${flame(lv)}</g></g>
+</g>`;
+    }
+  }
+  return out;
+}
+
+export function candles(d, t) {
+  const days = d.calendar ?? [];
+  const PX = 64, PY = 74, PW = W - PX - 40, rowH = 30, PH = rowH * 7;
+  const weeks = [];
+  days.forEach((day) => {
+    const dow = new Date(`${day.date}T00:00:00Z`).getUTCDay();
+    if (!weeks.length || dow === 0) weeks.push([]);
+    weeks[weeks.length - 1].push({ ...day, dow });
+  });
+  const counts = days.map((x) => x.count).filter((c) => c > 0).sort((a, b) => a - b);
+  const q = (f) => counts[Math.min(counts.length - 1, Math.floor(counts.length * f))] ?? 1;
+  const [q1, q2, q3] = [q(0.25), q(0.5), q(0.75)];
+  const level = (c) => (c <= 0 ? 0 : c <= q1 ? 1 : c <= q2 ? 2 : c <= q3 ? 3 : 4);
+  const cw = PW / Math.max(1, weeks.length);
+  let k = 0;
+  const cols = weeks.map((wk, wi) => {
+    const x = (PX + wi * cw + cw / 2).toFixed(1);
+    const uses = wk.map((c) => {
+      const lv = level(c.count);
+      const ref = lv ? `c${lv}${k++ % 3}` : 'c0';
+      return `<use href="#${ref}" x="${x}" y="${PY + c.dow * rowH + rowH - 4}"/>`;
+    }).join('');
+    return `<g class="bob" style="animation-delay:${(-(wi % 12) * 0.35).toFixed(2)}s">${uses}</g>`;
+  }).join('\n');
+
+  let lastMonth = -1;
+  const months = weeks.map((wk, wi) => {
+    const m = Number(wk[0].date.slice(5, 7)) - 1;
+    if (m === lastMonth) return '';
+    lastMonth = m;
+    const nextStart = weeks.findIndex((w2, j) => j > wi && Number(w2[0].date.slice(5, 7)) - 1 !== m);
+    if ((nextStart >= 0 && nextStart - wi < 3) || wi > weeks.length - 3) return '';
+    return label((PX + wi * cw + 2).toFixed(1), PY + PH + 24, MONTHS[m]);
+  }).join('');
+  const dows = [[1, 'MON'], [3, 'WED'], [5, 'FRI']].map(([i, n]) =>
+    `<text x="${PX - 12}" y="${PY + i * rowH + rowH - 6}" text-anchor="end" class="d dim" style="font-size:9.5px;font-weight:700;letter-spacing:1px">${n}</text>`).join('');
+  const total = days.reduce((s, x) => s + x.count, 0);
+  const active = days.filter((x) => x.count > 0).length;
+  const legendX = W - 40 - 190;
+  const legend = `<text x="${legendX}" y="46" class="i dim" style="font-size:12.5px">unlit</text>
+<use href="#c0" x="${legendX + 40}" y="48"/>
+${[1, 2, 3, 4].map((lv) => `<use href="#c${lv}0" x="${legendX + 40 + lv * 22}" y="48"/>`).join('')}
+<text x="${legendX + 40 + 5 * 22}" y="46" class="i dim" style="font-size:12.5px">busiest</text>`;
+  const h = PY + PH + 46;
+  const body = `${heading(t, 40, 42, 'THE GREAT HALL', `${total} contributions on ${active} days in the last year`)}
+${legend}
+${cols}
+${dows}${months}`;
+  const css = `.bob { animation: bob 6s ease-in-out infinite alternate; }
+@keyframes bob { from { transform: translateY(-1.5px); } to { transform: translateY(1.5px); } }
+.fl { transform-box: fill-box; transform-origin: center bottom; animation: flick 1.8s ease-in-out infinite; }
+.halo { animation: halo 1.8s ease-in-out infinite; }
+.p1 { animation-delay: -.6s; } .p2 { animation-delay: -1.2s; }
+@keyframes flick { 0%, 100% { transform: scale(1, 1); } 35% { transform: scale(.85, 1.12); } 70% { transform: scale(1.08, .9); } }
+@keyframes halo { 50% { opacity: .03; } }`;
+  const alt = `Candles in the Great Hall: one candle per day for the last year, lit on ${active} days with ${total} contributions in total; busier days burn brighter.`;
+  return frame({ h, t, title: alt, body, css, defs: candleDefs(t) });
+}
+
+export const extras = (d, cfg) => ({
+  cabinet: (t) => cabinet(d, t, cfg),
+  candles: (t) => candles(d, t),
+});
+
+// ── links as sealed envelopes ───────────────────────────────────────────────
+/** Small transparent-canvas SVG with the display font, for buttons and envelopes. */
+function chip(w, h, title, body) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(title)}">
+<title>${esc(title)}</title>
+<style>@font-face { font-family: WizardingDisplay; font-weight: 400 700; src: url(data:font/woff2;base64,${FONT_B64}) format('woff2'); }
+.d { font-family: ${DISPLAY}; }</style>
+${body}
+</svg>
+`;
+}
+
+export function linkButton(name, t) {
+  const text = name.toUpperCase(), h = 42;
+  const tw = measure(text, 13, 700, 2);
+  const w = Math.ceil(48 + tw + 12 + 8 + 16);
+  const ink = t.envInk;
+  const body = `<rect x="0.5" y="0.5" width="${w - 1}" height="${h - 1}" rx="3" fill="${t.env}" stroke="${t.envBack}"/>
+<path d="M 1 1 L ${w / 2} ${h * 0.55} L ${w - 1} 1" fill="none" stroke="${t.envBack}" stroke-opacity=".8"/>
+<circle cx="22" cy="${h / 2}" r="11" fill="${t.wax}"/>
+<circle cx="22" cy="${h / 2}" r="8" fill="none" stroke="#f3d9a4" stroke-opacity=".45"/>
+<path d="M 18 ${h / 2 + 4} L 26 ${h / 2 - 4} M 20.5 ${h / 2 - 4} H 26 V ${h / 2 + 1.5}" fill="none" stroke="#f3d9a4" stroke-width="1.6" stroke-linecap="round"/>
+<rect x="40" y="${h / 2 - 11}" width="${Math.ceil(tw + 30)}" height="22" rx="2" fill="${t.env}"/>
+<text x="46" y="${h / 2 + 4.5}" class="d" style="font-size:13px;font-weight:700;letter-spacing:2px;fill:${ink}">${esc(text)}</text>
+${arrow(Math.ceil(46 + tw + 8), h / 2 - 4, ink)}`;
+  return chip(w, h, name, body);
+}
+
+// ── footer: the late edition ────────────────────────────────────────────────
+/** Next 6-hourly rebuild (the profile.yml cron), as HH:MM UTC. */
+function nextEdition(now) {
+  const next = new Date(now);
+  next.setUTCMinutes(0, 0, 0);
+  next.setUTCHours(Math.floor(now.getUTCHours() / 6) * 6 + 6);
+  return next.toISOString().slice(11, 16);
+}
+
+export function footer(d, t, buildMs, files) {
+  const now = new Date(d.generatedAt);
+  const stamp = d.generatedAt.slice(0, 16).replace('T', ' ');
+  const h = 96;
+  const body = `${candle(52, 46, t, 0)}
+<text x="90" y="42" class="d" style="font-size:16px;font-weight:700;letter-spacing:2px">THE LATE EDITION · THANKS FOR STOPPING BY</text>
+<text x="90" y="66" class="i dim" style="font-size:13.5px">Reprinted ${esc(stamp)} UTC · ${files} images in ${buildMs} ms · next edition ${nextEdition(now)} UTC. Probably debugging a segfault right now.</text>`;
+  const css = `.flame { transform-box: fill-box; transform-origin: center bottom; animation: flicker 2.2s ease-in-out infinite; }
+@keyframes flicker { 0%, 100% { transform: scale(1, 1); } 30% { transform: scale(.9, 1.08) skewX(2deg); } 60% { transform: scale(1.05, .94) skewX(-2deg); } }
+.glow { animation: glow 2.2s ease-in-out infinite; } @keyframes glow { 50% { opacity: .08; } }`;
+  return frame({ h, t, title: `Regenerated ${stamp} UTC`, body, css });
+}
+
 // ── not redesigned yet: render in the psql look until their phase lands ─────
 const P = (fn) => (...args) => fn(...args.map((a) => (a && a.wizarding ? psql.THEMES[a.mode] : a)));
-export const linkButton = P(psql.linkButton);
 export const queryButton = P(psql.queryButton);
 export const queryResult = P(psql.queryResult);
-export const footer = P(psql.footer);

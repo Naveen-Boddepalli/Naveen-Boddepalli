@@ -42,6 +42,27 @@
       ]
     }
   },
+  "wizarding": {
+    "deal": "internship",
+    "cabinet": [
+      {
+        "shelf": "Core languages",
+        "items": ["Python", "TypeScript", "C++", "JavaScript"]
+      },
+      {
+        "shelf": "Frameworks",
+        "items": ["Next.js", "React", "FastAPI", "Node.js", "Express"]
+      },
+      {
+        "shelf": "Data, cloud & CI",
+        "items": ["PostgreSQL", "MongoDB", "Git", "GitHub Actions", "Vercel"]
+      },
+      {
+        "shelf": "AI & ML",
+        "items": ["LangChain", "LangGraph", "Groq", "Hugging Face", "FAISS"]
+      }
+    ]
+  },
   "excludeLanguages": [
     "Jupyter Notebook"
   ],
