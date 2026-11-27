@@ -1,19 +1,19 @@
 {
   "sql": "SELECT name, lang FROM projects WHERE demo IS NOT NULL ORDER BY pushed_days",
   "author": null,
-  "at": "2026-11-22T16:38:05.556Z",
+  "at": "2026-11-27T13:17:17.180Z",
   "rows": [
     {
       "name": "query-lens",
       "lang": "TypeScript"
     },
     {
-      "name": "heurix",
-      "lang": "Python"
-    },
-    {
       "name": "flowinger",
       "lang": "TypeScript"
+    },
+    {
+      "name": "heurix",
+      "lang": "Python"
     },
     {
       "name": "shadow-network",
@@ -66,5 +66,5 @@
     "execute",
     "result"
   ],
-  "ms": 9.8981160000003
+  "ms": 11.168124000000262
 }
