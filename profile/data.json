@@ -1,0 +1,2573 @@
+{
+  "login": "Naveen-Boddepalli",
+  "name": "Naveen Boddepalli",
+  "role": "Full-stack & ML engineer · B.Tech CS @ VIT Vellore · Year 3",
+  "status": "open to internships",
+  "leetcodeSolved": "300+",
+  "year": 2026,
+  "generatedAt": "2026-11-28T00:51:59.372Z",
+  "pinned": [
+    {
+      "name": "shadow-network",
+      "about": "Campus file-sharing with FAISS semantic search and BART/RoBERTa summaries",
+      "url": "https://github.com/Naveen-Boddepalli/shadow-network",
+      "demo": "https://shadow-network-kappa.vercel.app",
+      "stars": 0,
+      "pushedAt": "2026-11-24T03:59:45Z",
+      "lang": {
+        "name": "JavaScript",
+        "color": "#f1e05a"
+      }
+    },
+    {
+      "name": "claude-desktop-mcp",
+      "about": "MCP server tools that cut Claude Desktop input and output token usage",
+      "url": "https://github.com/Naveen-Boddepalli/claude-desktop-mcp",
+      "demo": null,
+      "stars": 0,
+      "pushedAt": "2026-04-17T05:08:32Z",
+      "lang": {
+        "name": "Python",
+        "color": "#3572A5"
+      }
+    },
+    {
+      "name": "flowinger",
+      "about": "React Flow's API in ~39 kB: zero deps, undo/redo, export, smart edges",
+      "url": "https://github.com/Naveen-Boddepalli/flowinger",
+      "demo": "https://naveen-boddepalli.github.io/flowinger/",
+      "stars": 0,
+      "pushedAt": "2026-11-26T02:22:08Z",
+      "lang": {
+        "name": "TypeScript",
+        "color": "#3178c6"
+      }
+    },
+    {
+      "name": "time-series-autoML",
+      "about": "Raw time-series to trained model, with in-browser training via Pyodide",
+      "url": "https://github.com/Naveen-Boddepalli/time-series-autoML",
+      "demo": "https://time-series-auto-ml.vercel.app",
+      "stars": 0,
+      "pushedAt": "2026-09-02T09:09:03Z",
+      "lang": {
+        "name": "TypeScript",
+        "color": "#3178c6"
+      }
+    },
+    {
+      "name": "heurix",
+      "about": "Offline codebase scanner that synthesizes Kubernetes and Actions YAML",
+      "url": "https://github.com/Naveen-Boddepalli/heurix",
+      "demo": "https://naveen-boddepalli.github.io/heurix/",
+      "stars": 0,
+      "pushedAt": "2026-11-27T15:45:05Z",
+      "lang": {
+        "name": "Python",
+        "color": "#3572A5"
+      }
+    },
+    {
+      "name": "query-lens",
+      "about": "Toy SQL engine that animates a query from parser to B+Tree to result",
+      "url": "https://github.com/Naveen-Boddepalli/query-lens",
+      "demo": "https://query-lens.1234naveenboddepalli.workers.dev",
+      "stars": 0,
+      "pushedAt": "2026-11-26T03:41:18Z",
+      "lang": {
+        "name": "TypeScript",
+        "color": "#3178c6"
+      }
+    }
+  ],
+  "ownRepos": 23,
+  "liveDemos": 12,
+  "stars": 0,
+  "contributions": 1380,
+  "commits": 1187,
+  "upstream": {
+    "prs": 57,
+    "repos": 9,
+    "list": [
+      {
+        "repo": "praneeth132006/PlanWitch",
+        "title": "fix: shift temporarily to grok api",
+        "number": 57,
+        "url": "https://github.com/praneeth132006/PlanWitch/pull/57",
+        "merged": "2026-07-21"
+      },
+      {
+        "repo": "Priyanshu-byte-coder/devtrack",
+        "title": "fix: updated themes.test.ts to cover all the cases",
+        "number": 3014,
+        "url": "https://github.com/Priyanshu-byte-coder/devtrack/pull/3014",
+        "merged": "2026-07-03"
+      },
+      {
+        "repo": "AditthyaSS/iloveAgents",
+        "title": "feat: create new agent terraform-config-generator.js",
+        "number": 705,
+        "url": "https://github.com/AditthyaSS/iloveAgents/pull/705",
+        "merged": "2026-07-02"
+      },
+      {
+        "repo": "AditthyaSS/iloveAgents",
+        "title": "fix: update git-commit-formatter-agent.js",
+        "number": 703,
+        "url": "https://github.com/AditthyaSS/iloveAgents/pull/703",
+        "merged": "2026-07-02"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix hackathonpage.js",
+        "number": 9942,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/9942",
+        "merged": "2026-06-30"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix: fixed sseMultiplexer-js",
+        "number": 9677,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/9677",
+        "merged": "2026-06-24"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix: fix setup proxy",
+        "number": 9676,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/9676",
+        "merged": "2026-06-24"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/authcontext js",
+        "number": 9650,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/9650",
+        "merged": "2026-06-24"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/useanalytcs js",
+        "number": 9649,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/9649",
+        "merged": "2026-06-24"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix: fixed useeventregistration.js",
+        "number": 9645,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/9645",
+        "merged": "2026-06-24"
+      },
+      {
+        "repo": "Priyanshu-byte-coder/devtrack",
+        "title": "Fix/documentation md",
+        "number": 2178,
+        "url": "https://github.com/Priyanshu-byte-coder/devtrack/pull/2178",
+        "merged": "2026-06-16"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix: fixed formvalidation",
+        "number": 8726,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/8726",
+        "merged": "2026-06-15"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "test: add coalesce_columns tests for default output, unrelated column…",
+        "number": 2554,
+        "url": "https://github.com/im-anishraj/arnio/pull/2554",
+        "merged": "2026-06-11"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix(service-worker): update service-worker.js",
+        "number": 8074,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/8074",
+        "merged": "2026-06-11"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "feat: add UUID, IPv4, and MACAddress semantic validators",
+        "number": 2520,
+        "url": "https://github.com/im-anishraj/arnio/pull/2520",
+        "merged": "2026-06-10"
+      },
+      {
+        "repo": "Priyanshu-byte-coder/devtrack",
+        "title": "Feat/real time dashboard",
+        "number": 2186,
+        "url": "https://github.com/Priyanshu-byte-coder/devtrack/pull/2186",
+        "merged": "2026-06-10"
+      },
+      {
+        "repo": "Priyanshu-byte-coder/devtrack",
+        "title": "Fix/pr temp md",
+        "number": 2177,
+        "url": "https://github.com/Priyanshu-byte-coder/devtrack/pull/2177",
+        "merged": "2026-06-09"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/collaboration hub fix",
+        "number": 7159,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/7159",
+        "merged": "2026-06-08"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/booknarks js fix",
+        "number": 7158,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/7158",
+        "merged": "2026-06-08"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "Feat/encode categorical",
+        "number": 2486,
+        "url": "https://github.com/im-anishraj/arnio/pull/2486",
+        "merged": "2026-06-06"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/hackathon event pages",
+        "number": 7157,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/7157",
+        "merged": "2026-06-06"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Docs/add security policy",
+        "number": 7156,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/7156",
+        "merged": "2026-06-05"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "docs: upgraded the pr template to minimal",
+        "number": 7155,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/7155",
+        "merged": "2026-06-05"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "fix: add strict/reporting mode for cast_types conversion failures",
+        "number": 2342,
+        "url": "https://github.com/im-anishraj/arnio/pull/2342",
+        "merged": "2026-06-05"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Docs/add jsdoc usedebounce",
+        "number": 6618,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/6618",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/added comprehensive blocks",
+        "number": 6614,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/6614",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "add JSDoc documentation for useEventForm hook",
+        "number": 6613,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/6613",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/login js redirect",
+        "number": 6612,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/6612",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/export csv js",
+        "number": 6610,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/6610",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/sensitive data securestorage",
+        "number": 6608,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/6608",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Docs/user reducedmotion",
+        "number": 6607,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/6607",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "docs: add JSDoc documentation for useEventRegistration hook",
+        "number": 6606,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/6606",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/contributors carousel js",
+        "number": 6552,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/6552",
+        "merged": "2026-06-03"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/signup js",
+        "number": 6551,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/6551",
+        "merged": "2026-06-03"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/fix checkin js",
+        "number": 6549,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/6549",
+        "merged": "2026-06-03"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix: fixed middleware.js",
+        "number": 6547,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/6547",
+        "merged": "2026-06-03"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix: added the missing slash in login",
+        "number": 6546,
+        "url": "https://github.com/SandeepVashishtha/Eventra/pull/6546",
+        "merged": "2026-06-03"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "fix: fixed Data loss in normalize_whitespace",
+        "number": 2321,
+        "url": "https://github.com/im-anishraj/arnio/pull/2321",
+        "merged": "2026-06-03"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "docs: add chunked_workflows.md covering streaming validation and pipe…",
+        "number": 2293,
+        "url": "https://github.com/im-anishraj/arnio/pull/2293",
+        "merged": "2026-06-02"
+      },
+      {
+        "repo": "AditthyaSS/iloveAgents",
+        "title": "fix: improved and fixed ml-experiment-autopsy",
+        "number": 393,
+        "url": "https://github.com/AditthyaSS/iloveAgents/pull/393",
+        "merged": "2026-06-02"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "fix: use frame.clone() in ArFrame.__copy__ for mutation isolation",
+        "number": 2242,
+        "url": "https://github.com/im-anishraj/arnio/pull/2242",
+        "merged": "2026-05-31"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "docs: Update README with current active URL",
+        "number": 2198,
+        "url": "https://github.com/im-anishraj/arnio/pull/2198",
+        "merged": "2026-05-31"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "bug: handle JSON errors in write_parquet",
+        "number": 2078,
+        "url": "https://github.com/im-anishraj/arnio/pull/2078",
+        "merged": "2026-05-30"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "fix: add CLI help guards to older benchmark scripts",
+        "number": 2025,
+        "url": "https://github.com/im-anishraj/arnio/pull/2025",
+        "merged": "2026-05-29"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "Feat: add redacted html export mode",
+        "number": 2016,
+        "url": "https://github.com/im-anishraj/arnio/pull/2016",
+        "merged": "2026-05-29"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "docs: aligned the labels with the live labels",
+        "number": 1946,
+        "url": "https://github.com/im-anishraj/arnio/pull/1946",
+        "merged": "2026-05-29"
+      },
+      {
+        "repo": "AditthyaSS/iloveAgents",
+        "title": "Fix/improve bug report generator",
+        "number": 361,
+        "url": "https://github.com/AditthyaSS/iloveAgents/pull/361",
+        "merged": "2026-05-27"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "fix: schema export no longer drops fields named strict or unique",
+        "number": 1506,
+        "url": "https://github.com/im-anishraj/arnio/pull/1506",
+        "merged": "2026-05-26"
+      },
+      {
+        "repo": "AditthyaSS/iloveAgents",
+        "title": "fix: Enhance dark mode transition with global CSS updates",
+        "number": 332,
+        "url": "https://github.com/AditthyaSS/iloveAgents/pull/332",
+        "merged": "2026-05-24"
+      },
+      {
+        "repo": "VyomKulshrestha/Heliox-OS",
+        "title": "Add pytest coverage and Redis cache adapter support",
+        "number": 262,
+        "url": "https://github.com/VyomKulshrestha/Heliox-OS/pull/262",
+        "merged": "2026-05-23"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "Add custom validator registration",
+        "number": 652,
+        "url": "https://github.com/im-anishraj/arnio/pull/652",
+        "merged": "2026-05-18"
+      },
+      {
+        "repo": "VyomKulshrestha/Heliox-OS",
+        "title": "test: add pytest coverage for core utility functions",
+        "number": 229,
+        "url": "https://github.com/VyomKulshrestha/Heliox-OS/pull/229",
+        "merged": "2026-05-18"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "feat: add Regex field validator to schema",
+        "number": 537,
+        "url": "https://github.com/im-anishraj/arnio/pull/537",
+        "merged": "2026-05-18"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "feat: add top_values summary for categorical columns",
+        "number": 473,
+        "url": "https://github.com/im-anishraj/arnio/pull/473",
+        "merged": "2026-05-17"
+      },
+      {
+        "repo": "steam-bell-92/python-mini-project",
+        "title": "Add: Whack-a-Mole game with web app integration",
+        "number": 111,
+        "url": "https://github.com/steam-bell-92/python-mini-project/pull/111",
+        "merged": "2026-05-15"
+      },
+      {
+        "repo": "warpdotdev/warp",
+        "title": "Fix: validate pacman signing key before allowing update",
+        "number": 9706,
+        "url": "https://github.com/warpdotdev/warp/pull/9706",
+        "merged": "2026-05-08"
+      },
+      {
+        "repo": "firstcontributions/first-contributions",
+        "title": "add naveen to contributers list",
+        "number": 116305,
+        "url": "https://github.com/firstcontributions/first-contributions/pull/116305",
+        "merged": "2026-04-29"
+      }
+    ]
+  },
+  "streak": {
+    "current": 0,
+    "best": 18
+  },
+  "calendar": [
+    {
+      "date": "2025-11-23",
+      "count": 0
+    },
+    {
+      "date": "2025-11-24",
+      "count": 0
+    },
+    {
+      "date": "2025-11-25",
+      "count": 0
+    },
+    {
+      "date": "2025-11-26",
+      "count": 0
+    },
+    {
+      "date": "2025-11-27",
+      "count": 0
+    },
+    {
+      "date": "2025-11-28",
+      "count": 0
+    },
+    {
+      "date": "2025-11-29",
+      "count": 0
+    },
+    {
+      "date": "2025-11-30",
+      "count": 0
+    },
+    {
+      "date": "2025-12-01",
+      "count": 0
+    },
+    {
+      "date": "2025-12-02",
+      "count": 0
+    },
+    {
+      "date": "2025-12-03",
+      "count": 0
+    },
+    {
+      "date": "2025-12-04",
+      "count": 0
+    },
+    {
+      "date": "2025-12-05",
+      "count": 0
+    },
+    {
+      "date": "2025-12-06",
+      "count": 0
+    },
+    {
+      "date": "2025-12-07",
+      "count": 0
+    },
+    {
+      "date": "2025-12-08",
+      "count": 0
+    },
+    {
+      "date": "2025-12-09",
+      "count": 0
+    },
+    {
+      "date": "2025-12-10",
+      "count": 0
+    },
+    {
+      "date": "2025-12-11",
+      "count": 0
+    },
+    {
+      "date": "2025-12-12",
+      "count": 0
+    },
+    {
+      "date": "2025-12-13",
+      "count": 0
+    },
+    {
+      "date": "2025-12-14",
+      "count": 0
+    },
+    {
+      "date": "2025-12-15",
+      "count": 0
+    },
+    {
+      "date": "2025-12-16",
+      "count": 0
+    },
+    {
+      "date": "2025-12-17",
+      "count": 0
+    },
+    {
+      "date": "2025-12-18",
+      "count": 0
+    },
+    {
+      "date": "2025-12-19",
+      "count": 0
+    },
+    {
+      "date": "2025-12-20",
+      "count": 0
+    },
+    {
+      "date": "2025-12-21",
+      "count": 0
+    },
+    {
+      "date": "2025-12-22",
+      "count": 0
+    },
+    {
+      "date": "2025-12-23",
+      "count": 0
+    },
+    {
+      "date": "2025-12-24",
+      "count": 0
+    },
+    {
+      "date": "2025-12-25",
+      "count": 0
+    },
+    {
+      "date": "2025-12-26",
+      "count": 0
+    },
+    {
+      "date": "2025-12-27",
+      "count": 0
+    },
+    {
+      "date": "2025-12-28",
+      "count": 0
+    },
+    {
+      "date": "2025-12-29",
+      "count": 0
+    },
+    {
+      "date": "2025-12-30",
+      "count": 0
+    },
+    {
+      "date": "2025-12-31",
+      "count": 0
+    },
+    {
+      "date": "2026-01-01",
+      "count": 0
+    },
+    {
+      "date": "2026-01-02",
+      "count": 0
+    },
+    {
+      "date": "2026-01-03",
+      "count": 0
+    },
+    {
+      "date": "2026-01-04",
+      "count": 0
+    },
+    {
+      "date": "2026-01-05",
+      "count": 0
+    },
+    {
+      "date": "2026-01-06",
+      "count": 0
+    },
+    {
+      "date": "2026-01-07",
+      "count": 0
+    },
+    {
+      "date": "2026-01-08",
+      "count": 0
+    },
+    {
+      "date": "2026-01-09",
+      "count": 0
+    },
+    {
+      "date": "2026-01-10",
+      "count": 0
+    },
+    {
+      "date": "2026-01-11",
+      "count": 0
+    },
+    {
+      "date": "2026-01-12",
+      "count": 0
+    },
+    {
+      "date": "2026-01-13",
+      "count": 0
+    },
+    {
+      "date": "2026-01-14",
+      "count": 0
+    },
+    {
+      "date": "2026-01-15",
+      "count": 0
+    },
+    {
+      "date": "2026-01-16",
+      "count": 0
+    },
+    {
+      "date": "2026-01-17",
+      "count": 0
+    },
+    {
+      "date": "2026-01-18",
+      "count": 0
+    },
+    {
+      "date": "2026-01-19",
+      "count": 0
+    },
+    {
+      "date": "2026-01-20",
+      "count": 0
+    },
+    {
+      "date": "2026-01-21",
+      "count": 0
+    },
+    {
+      "date": "2026-01-22",
+      "count": 0
+    },
+    {
+      "date": "2026-01-23",
+      "count": 0
+    },
+    {
+      "date": "2026-01-24",
+      "count": 0
+    },
+    {
+      "date": "2026-01-25",
+      "count": 0
+    },
+    {
+      "date": "2026-01-26",
+      "count": 0
+    },
+    {
+      "date": "2026-01-27",
+      "count": 0
+    },
+    {
+      "date": "2026-01-28",
+      "count": 0
+    },
+    {
+      "date": "2026-01-29",
+      "count": 0
+    },
+    {
+      "date": "2026-01-30",
+      "count": 0
+    },
+    {
+      "date": "2026-01-31",
+      "count": 0
+    },
+    {
+      "date": "2026-02-01",
+      "count": 0
+    },
+    {
+      "date": "2026-02-02",
+      "count": 0
+    },
+    {
+      "date": "2026-02-03",
+      "count": 0
+    },
+    {
+      "date": "2026-02-04",
+      "count": 0
+    },
+    {
+      "date": "2026-02-05",
+      "count": 0
+    },
+    {
+      "date": "2026-02-06",
+      "count": 0
+    },
+    {
+      "date": "2026-02-07",
+      "count": 0
+    },
+    {
+      "date": "2026-02-08",
+      "count": 0
+    },
+    {
+      "date": "2026-02-09",
+      "count": 0
+    },
+    {
+      "date": "2026-02-10",
+      "count": 0
+    },
+    {
+      "date": "2026-02-11",
+      "count": 0
+    },
+    {
+      "date": "2026-02-12",
+      "count": 0
+    },
+    {
+      "date": "2026-02-13",
+      "count": 0
+    },
+    {
+      "date": "2026-02-14",
+      "count": 0
+    },
+    {
+      "date": "2026-02-15",
+      "count": 0
+    },
+    {
+      "date": "2026-02-16",
+      "count": 0
+    },
+    {
+      "date": "2026-02-17",
+      "count": 0
+    },
+    {
+      "date": "2026-02-18",
+      "count": 0
+    },
+    {
+      "date": "2026-02-19",
+      "count": 0
+    },
+    {
+      "date": "2026-02-20",
+      "count": 0
+    },
+    {
+      "date": "2026-02-21",
+      "count": 0
+    },
+    {
+      "date": "2026-02-22",
+      "count": 0
+    },
+    {
+      "date": "2026-02-23",
+      "count": 0
+    },
+    {
+      "date": "2026-02-24",
+      "count": 0
+    },
+    {
+      "date": "2026-02-25",
+      "count": 0
+    },
+    {
+      "date": "2026-02-26",
+      "count": 0
+    },
+    {
+      "date": "2026-02-27",
+      "count": 0
+    },
+    {
+      "date": "2026-02-28",
+      "count": 0
+    },
+    {
+      "date": "2026-03-01",
+      "count": 0
+    },
+    {
+      "date": "2026-03-02",
+      "count": 0
+    },
+    {
+      "date": "2026-03-03",
+      "count": 0
+    },
+    {
+      "date": "2026-03-04",
+      "count": 0
+    },
+    {
+      "date": "2026-03-05",
+      "count": 0
+    },
+    {
+      "date": "2026-03-06",
+      "count": 0
+    },
+    {
+      "date": "2026-03-07",
+      "count": 0
+    },
+    {
+      "date": "2026-03-08",
+      "count": 0
+    },
+    {
+      "date": "2026-03-09",
+      "count": 0
+    },
+    {
+      "date": "2026-03-10",
+      "count": 0
+    },
+    {
+      "date": "2026-03-11",
+      "count": 0
+    },
+    {
+      "date": "2026-03-12",
+      "count": 0
+    },
+    {
+      "date": "2026-03-13",
+      "count": 0
+    },
+    {
+      "date": "2026-03-14",
+      "count": 0
+    },
+    {
+      "date": "2026-03-15",
+      "count": 0
+    },
+    {
+      "date": "2026-03-16",
+      "count": 0
+    },
+    {
+      "date": "2026-03-17",
+      "count": 0
+    },
+    {
+      "date": "2026-03-18",
+      "count": 0
+    },
+    {
+      "date": "2026-03-19",
+      "count": 0
+    },
+    {
+      "date": "2026-03-20",
+      "count": 0
+    },
+    {
+      "date": "2026-03-21",
+      "count": 0
+    },
+    {
+      "date": "2026-03-22",
+      "count": 0
+    },
+    {
+      "date": "2026-03-23",
+      "count": 0
+    },
+    {
+      "date": "2026-03-24",
+      "count": 0
+    },
+    {
+      "date": "2026-03-25",
+      "count": 0
+    },
+    {
+      "date": "2026-03-26",
+      "count": 0
+    },
+    {
+      "date": "2026-03-27",
+      "count": 0
+    },
+    {
+      "date": "2026-03-28",
+      "count": 0
+    },
+    {
+      "date": "2026-03-29",
+      "count": 0
+    },
+    {
+      "date": "2026-03-30",
+      "count": 0
+    },
+    {
+      "date": "2026-03-31",
+      "count": 0
+    },
+    {
+      "date": "2026-04-01",
+      "count": 0
+    },
+    {
+      "date": "2026-04-02",
+      "count": 0
+    },
+    {
+      "date": "2026-04-03",
+      "count": 0
+    },
+    {
+      "date": "2026-04-04",
+      "count": 0
+    },
+    {
+      "date": "2026-04-05",
+      "count": 4
+    },
+    {
+      "date": "2026-04-06",
+      "count": 1
+    },
+    {
+      "date": "2026-04-07",
+      "count": 2
+    },
+    {
+      "date": "2026-04-08",
+      "count": 0
+    },
+    {
+      "date": "2026-04-09",
+      "count": 0
+    },
+    {
+      "date": "2026-04-10",
+      "count": 2
+    },
+    {
+      "date": "2026-04-11",
+      "count": 0
+    },
+    {
+      "date": "2026-04-12",
+      "count": 6
+    },
+    {
+      "date": "2026-04-13",
+      "count": 1
+    },
+    {
+      "date": "2026-04-14",
+      "count": 7
+    },
+    {
+      "date": "2026-04-15",
+      "count": 0
+    },
+    {
+      "date": "2026-04-16",
+      "count": 0
+    },
+    {
+      "date": "2026-04-17",
+      "count": 4
+    },
+    {
+      "date": "2026-04-18",
+      "count": 0
+    },
+    {
+      "date": "2026-04-19",
+      "count": 0
+    },
+    {
+      "date": "2026-04-20",
+      "count": 0
+    },
+    {
+      "date": "2026-04-21",
+      "count": 1
+    },
+    {
+      "date": "2026-04-22",
+      "count": 0
+    },
+    {
+      "date": "2026-04-23",
+      "count": 0
+    },
+    {
+      "date": "2026-04-24",
+      "count": 0
+    },
+    {
+      "date": "2026-04-25",
+      "count": 0
+    },
+    {
+      "date": "2026-04-26",
+      "count": 0
+    },
+    {
+      "date": "2026-04-27",
+      "count": 0
+    },
+    {
+      "date": "2026-04-28",
+      "count": 0
+    },
+    {
+      "date": "2026-04-29",
+      "count": 3
+    },
+    {
+      "date": "2026-04-30",
+      "count": 0
+    },
+    {
+      "date": "2026-05-01",
+      "count": 2
+    },
+    {
+      "date": "2026-05-02",
+      "count": 0
+    },
+    {
+      "date": "2026-05-03",
+      "count": 0
+    },
+    {
+      "date": "2026-05-04",
+      "count": 0
+    },
+    {
+      "date": "2026-05-05",
+      "count": 6
+    },
+    {
+      "date": "2026-05-06",
+      "count": 0
+    },
+    {
+      "date": "2026-05-07",
+      "count": 2
+    },
+    {
+      "date": "2026-05-08",
+      "count": 1
+    },
+    {
+      "date": "2026-05-09",
+      "count": 4
+    },
+    {
+      "date": "2026-05-10",
+      "count": 0
+    },
+    {
+      "date": "2026-05-11",
+      "count": 0
+    },
+    {
+      "date": "2026-05-12",
+      "count": 0
+    },
+    {
+      "date": "2026-05-13",
+      "count": 2
+    },
+    {
+      "date": "2026-05-14",
+      "count": 4
+    },
+    {
+      "date": "2026-05-15",
+      "count": 11
+    },
+    {
+      "date": "2026-05-16",
+      "count": 4
+    },
+    {
+      "date": "2026-05-17",
+      "count": 6
+    },
+    {
+      "date": "2026-05-18",
+      "count": 9
+    },
+    {
+      "date": "2026-05-19",
+      "count": 1
+    },
+    {
+      "date": "2026-05-20",
+      "count": 0
+    },
+    {
+      "date": "2026-05-21",
+      "count": 2
+    },
+    {
+      "date": "2026-05-22",
+      "count": 2
+    },
+    {
+      "date": "2026-05-23",
+      "count": 0
+    },
+    {
+      "date": "2026-05-24",
+      "count": 4
+    },
+    {
+      "date": "2026-05-25",
+      "count": 0
+    },
+    {
+      "date": "2026-05-26",
+      "count": 3
+    },
+    {
+      "date": "2026-05-27",
+      "count": 2
+    },
+    {
+      "date": "2026-05-28",
+      "count": 4
+    },
+    {
+      "date": "2026-05-29",
+      "count": 9
+    },
+    {
+      "date": "2026-05-30",
+      "count": 3
+    },
+    {
+      "date": "2026-05-31",
+      "count": 12
+    },
+    {
+      "date": "2026-06-01",
+      "count": 1
+    },
+    {
+      "date": "2026-06-02",
+      "count": 5
+    },
+    {
+      "date": "2026-06-03",
+      "count": 5
+    },
+    {
+      "date": "2026-06-04",
+      "count": 29
+    },
+    {
+      "date": "2026-06-05",
+      "count": 11
+    },
+    {
+      "date": "2026-06-06",
+      "count": 2
+    },
+    {
+      "date": "2026-06-07",
+      "count": 8
+    },
+    {
+      "date": "2026-06-08",
+      "count": 3
+    },
+    {
+      "date": "2026-06-09",
+      "count": 4
+    },
+    {
+      "date": "2026-06-10",
+      "count": 10
+    },
+    {
+      "date": "2026-06-11",
+      "count": 3
+    },
+    {
+      "date": "2026-06-12",
+      "count": 0
+    },
+    {
+      "date": "2026-06-13",
+      "count": 1
+    },
+    {
+      "date": "2026-06-14",
+      "count": 2
+    },
+    {
+      "date": "2026-06-15",
+      "count": 0
+    },
+    {
+      "date": "2026-06-16",
+      "count": 2
+    },
+    {
+      "date": "2026-06-17",
+      "count": 5
+    },
+    {
+      "date": "2026-06-18",
+      "count": 22
+    },
+    {
+      "date": "2026-06-19",
+      "count": 8
+    },
+    {
+      "date": "2026-06-20",
+      "count": 3
+    },
+    {
+      "date": "2026-06-21",
+      "count": 1
+    },
+    {
+      "date": "2026-06-22",
+      "count": 0
+    },
+    {
+      "date": "2026-06-23",
+      "count": 0
+    },
+    {
+      "date": "2026-06-24",
+      "count": 12
+    },
+    {
+      "date": "2026-06-25",
+      "count": 0
+    },
+    {
+      "date": "2026-06-26",
+      "count": 0
+    },
+    {
+      "date": "2026-06-27",
+      "count": 19
+    },
+    {
+      "date": "2026-06-28",
+      "count": 0
+    },
+    {
+      "date": "2026-06-29",
+      "count": 6
+    },
+    {
+      "date": "2026-06-30",
+      "count": 3
+    },
+    {
+      "date": "2026-07-01",
+      "count": 14
+    },
+    {
+      "date": "2026-07-02",
+      "count": 8
+    },
+    {
+      "date": "2026-07-03",
+      "count": 6
+    },
+    {
+      "date": "2026-07-04",
+      "count": 0
+    },
+    {
+      "date": "2026-07-05",
+      "count": 1
+    },
+    {
+      "date": "2026-07-06",
+      "count": 2
+    },
+    {
+      "date": "2026-07-07",
+      "count": 2
+    },
+    {
+      "date": "2026-07-08",
+      "count": 9
+    },
+    {
+      "date": "2026-07-09",
+      "count": 8
+    },
+    {
+      "date": "2026-07-10",
+      "count": 3
+    },
+    {
+      "date": "2026-07-11",
+      "count": 4
+    },
+    {
+      "date": "2026-07-12",
+      "count": 4
+    },
+    {
+      "date": "2026-07-13",
+      "count": 0
+    },
+    {
+      "date": "2026-07-14",
+      "count": 1
+    },
+    {
+      "date": "2026-07-15",
+      "count": 2
+    },
+    {
+      "date": "2026-07-16",
+      "count": 6
+    },
+    {
+      "date": "2026-07-17",
+      "count": 0
+    },
+    {
+      "date": "2026-07-18",
+      "count": 2
+    },
+    {
+      "date": "2026-07-19",
+      "count": 0
+    },
+    {
+      "date": "2026-07-20",
+      "count": 5
+    },
+    {
+      "date": "2026-07-21",
+      "count": 1
+    },
+    {
+      "date": "2026-07-22",
+      "count": 0
+    },
+    {
+      "date": "2026-07-23",
+      "count": 0
+    },
+    {
+      "date": "2026-07-24",
+      "count": 2
+    },
+    {
+      "date": "2026-07-25",
+      "count": 1
+    },
+    {
+      "date": "2026-07-26",
+      "count": 0
+    },
+    {
+      "date": "2026-07-27",
+      "count": 0
+    },
+    {
+      "date": "2026-07-28",
+      "count": 6
+    },
+    {
+      "date": "2026-07-29",
+      "count": 3
+    },
+    {
+      "date": "2026-07-30",
+      "count": 0
+    },
+    {
+      "date": "2026-07-31",
+      "count": 0
+    },
+    {
+      "date": "2026-08-01",
+      "count": 0
+    },
+    {
+      "date": "2026-08-02",
+      "count": 2
+    },
+    {
+      "date": "2026-08-03",
+      "count": 0
+    },
+    {
+      "date": "2026-08-04",
+      "count": 0
+    },
+    {
+      "date": "2026-08-05",
+      "count": 0
+    },
+    {
+      "date": "2026-08-06",
+      "count": 0
+    },
+    {
+      "date": "2026-08-07",
+      "count": 0
+    },
+    {
+      "date": "2026-08-08",
+      "count": 0
+    },
+    {
+      "date": "2026-08-09",
+      "count": 0
+    },
+    {
+      "date": "2026-08-10",
+      "count": 0
+    },
+    {
+      "date": "2026-08-11",
+      "count": 0
+    },
+    {
+      "date": "2026-08-12",
+      "count": 0
+    },
+    {
+      "date": "2026-08-13",
+      "count": 0
+    },
+    {
+      "date": "2026-08-14",
+      "count": 0
+    },
+    {
+      "date": "2026-08-15",
+      "count": 0
+    },
+    {
+      "date": "2026-08-16",
+      "count": 0
+    },
+    {
+      "date": "2026-08-17",
+      "count": 0
+    },
+    {
+      "date": "2026-08-18",
+      "count": 0
+    },
+    {
+      "date": "2026-08-19",
+      "count": 0
+    },
+    {
+      "date": "2026-08-20",
+      "count": 0
+    },
+    {
+      "date": "2026-08-21",
+      "count": 0
+    },
+    {
+      "date": "2026-08-22",
+      "count": 3
+    },
+    {
+      "date": "2026-08-23",
+      "count": 4
+    },
+    {
+      "date": "2026-08-24",
+      "count": 0
+    },
+    {
+      "date": "2026-08-25",
+      "count": 0
+    },
+    {
+      "date": "2026-08-26",
+      "count": 1
+    },
+    {
+      "date": "2026-08-27",
+      "count": 0
+    },
+    {
+      "date": "2026-08-28",
+      "count": 0
+    },
+    {
+      "date": "2026-08-29",
+      "count": 13
+    },
+    {
+      "date": "2026-08-30",
+      "count": 11
+    },
+    {
+      "date": "2026-08-31",
+      "count": 4
+    },
+    {
+      "date": "2026-09-01",
+      "count": 6
+    },
+    {
+      "date": "2026-09-02",
+      "count": 8
+    },
+    {
+      "date": "2026-09-03",
+      "count": 11
+    },
+    {
+      "date": "2026-09-04",
+      "count": 7
+    },
+    {
+      "date": "2026-09-05",
+      "count": 6
+    },
+    {
+      "date": "2026-09-06",
+      "count": 2
+    },
+    {
+      "date": "2026-09-07",
+      "count": 5
+    },
+    {
+      "date": "2026-09-08",
+      "count": 5
+    },
+    {
+      "date": "2026-09-09",
+      "count": 15
+    },
+    {
+      "date": "2026-09-10",
+      "count": 4
+    },
+    {
+      "date": "2026-09-11",
+      "count": 11
+    },
+    {
+      "date": "2026-09-12",
+      "count": 6
+    },
+    {
+      "date": "2026-09-13",
+      "count": 4
+    },
+    {
+      "date": "2026-09-14",
+      "count": 8
+    },
+    {
+      "date": "2026-09-15",
+      "count": 6
+    },
+    {
+      "date": "2026-09-16",
+      "count": 0
+    },
+    {
+      "date": "2026-09-17",
+      "count": 0
+    },
+    {
+      "date": "2026-09-18",
+      "count": 0
+    },
+    {
+      "date": "2026-09-19",
+      "count": 1
+    },
+    {
+      "date": "2026-09-20",
+      "count": 6
+    },
+    {
+      "date": "2026-09-21",
+      "count": 46
+    },
+    {
+      "date": "2026-09-22",
+      "count": 20
+    },
+    {
+      "date": "2026-09-23",
+      "count": 4
+    },
+    {
+      "date": "2026-09-24",
+      "count": 3
+    },
+    {
+      "date": "2026-09-25",
+      "count": 22
+    },
+    {
+      "date": "2026-09-26",
+      "count": 0
+    },
+    {
+      "date": "2026-09-27",
+      "count": 0
+    },
+    {
+      "date": "2026-09-28",
+      "count": 2
+    },
+    {
+      "date": "2026-09-29",
+      "count": 6
+    },
+    {
+      "date": "2026-09-30",
+      "count": 2
+    },
+    {
+      "date": "2026-10-01",
+      "count": 7
+    },
+    {
+      "date": "2026-10-02",
+      "count": 5
+    },
+    {
+      "date": "2026-10-03",
+      "count": 0
+    },
+    {
+      "date": "2026-10-04",
+      "count": 12
+    },
+    {
+      "date": "2026-10-05",
+      "count": 12
+    },
+    {
+      "date": "2026-10-06",
+      "count": 1
+    },
+    {
+      "date": "2026-10-07",
+      "count": 0
+    },
+    {
+      "date": "2026-10-08",
+      "count": 1
+    },
+    {
+      "date": "2026-10-09",
+      "count": 0
+    },
+    {
+      "date": "2026-10-10",
+      "count": 74
+    },
+    {
+      "date": "2026-10-11",
+      "count": 5
+    },
+    {
+      "date": "2026-10-12",
+      "count": 21
+    },
+    {
+      "date": "2026-10-13",
+      "count": 44
+    },
+    {
+      "date": "2026-10-14",
+      "count": 31
+    },
+    {
+      "date": "2026-10-15",
+      "count": 41
+    },
+    {
+      "date": "2026-10-16",
+      "count": 6
+    },
+    {
+      "date": "2026-10-17",
+      "count": 52
+    },
+    {
+      "date": "2026-10-18",
+      "count": 7
+    },
+    {
+      "date": "2026-10-19",
+      "count": 27
+    },
+    {
+      "date": "2026-10-20",
+      "count": 6
+    },
+    {
+      "date": "2026-10-21",
+      "count": 1
+    },
+    {
+      "date": "2026-10-22",
+      "count": 2
+    },
+    {
+      "date": "2026-10-23",
+      "count": 0
+    },
+    {
+      "date": "2026-10-24",
+      "count": 2
+    },
+    {
+      "date": "2026-10-25",
+      "count": 3
+    },
+    {
+      "date": "2026-10-26",
+      "count": 0
+    },
+    {
+      "date": "2026-10-27",
+      "count": 4
+    },
+    {
+      "date": "2026-10-28",
+      "count": 17
+    },
+    {
+      "date": "2026-10-29",
+      "count": 8
+    },
+    {
+      "date": "2026-10-30",
+      "count": 0
+    },
+    {
+      "date": "2026-10-31",
+      "count": 0
+    },
+    {
+      "date": "2026-11-01",
+      "count": 0
+    },
+    {
+      "date": "2026-11-02",
+      "count": 0
+    },
+    {
+      "date": "2026-11-03",
+      "count": 0
+    },
+    {
+      "date": "2026-11-04",
+      "count": 3
+    },
+    {
+      "date": "2026-11-05",
+      "count": 2
+    },
+    {
+      "date": "2026-11-06",
+      "count": 14
+    },
+    {
+      "date": "2026-11-07",
+      "count": 8
+    },
+    {
+      "date": "2026-11-08",
+      "count": 6
+    },
+    {
+      "date": "2026-11-09",
+      "count": 0
+    },
+    {
+      "date": "2026-11-10",
+      "count": 4
+    },
+    {
+      "date": "2026-11-11",
+      "count": 6
+    },
+    {
+      "date": "2026-11-12",
+      "count": 15
+    },
+    {
+      "date": "2026-11-13",
+      "count": 8
+    },
+    {
+      "date": "2026-11-14",
+      "count": 1
+    },
+    {
+      "date": "2026-11-15",
+      "count": 25
+    },
+    {
+      "date": "2026-11-16",
+      "count": 64
+    },
+    {
+      "date": "2026-11-17",
+      "count": 9
+    },
+    {
+      "date": "2026-11-18",
+      "count": 0
+    },
+    {
+      "date": "2026-11-19",
+      "count": 35
+    },
+    {
+      "date": "2026-11-20",
+      "count": 6
+    },
+    {
+      "date": "2026-11-21",
+      "count": 25
+    },
+    {
+      "date": "2026-11-22",
+      "count": 82
+    },
+    {
+      "date": "2026-11-23",
+      "count": 10
+    },
+    {
+      "date": "2026-11-24",
+      "count": 8
+    },
+    {
+      "date": "2026-11-25",
+      "count": 10
+    },
+    {
+      "date": "2026-11-26",
+      "count": 17
+    },
+    {
+      "date": "2026-11-27",
+      "count": 0
+    },
+    {
+      "date": "2026-11-28",
+      "count": 0
+    }
+  ],
+  "languages": [
+    {
+      "name": "TypeScript",
+      "color": "#3178c6",
+      "bytes": 7516031,
+      "share": 0.639324268678063
+    },
+    {
+      "name": "Python",
+      "color": "#3572A5",
+      "bytes": 2923802,
+      "share": 0.24870274955085445
+    },
+    {
+      "name": "JavaScript",
+      "color": "#f1e05a",
+      "bytes": 564660,
+      "share": 0.048030781346132694
+    },
+    {
+      "name": "CSS",
+      "color": "#663399",
+      "bytes": 299860,
+      "share": 0.025506517363460046
+    },
+    {
+      "name": "MDX",
+      "color": "#fcb32c",
+      "bytes": 211231,
+      "share": 0.017967608781434767
+    },
+    {
+      "name": "HTML",
+      "color": "#e34c26",
+      "bytes": 112188,
+      "share": 0.009542870572840178
+    }
+  ],
+  "tables": {
+    "projects": [
+      {
+        "name": "heurix",
+        "lang": "Python",
+        "stars": 0,
+        "demo": "live",
+        "pushed_days": 0,
+        "pinned": 1
+      },
+      {
+        "name": "query-lens",
+        "lang": "TypeScript",
+        "stars": 0,
+        "demo": "live",
+        "pushed_days": 1,
+        "pinned": 1
+      },
+      {
+        "name": "flowinger",
+        "lang": "TypeScript",
+        "stars": 0,
+        "demo": "live",
+        "pushed_days": 1,
+        "pinned": 1
+      },
+      {
+        "name": "shadow-network",
+        "lang": "JavaScript",
+        "stars": 0,
+        "demo": "live",
+        "pushed_days": 3,
+        "pinned": 1
+      },
+      {
+        "name": "yt-most-viewed-trimmer",
+        "lang": "Python",
+        "stars": 0,
+        "demo": null,
+        "pushed_days": 10,
+        "pinned": 0
+      },
+      {
+        "name": "network-detective-and-self-healing-network",
+        "lang": "Python",
+        "stars": 0,
+        "demo": null,
+        "pushed_days": 29,
+        "pinned": 0
+      },
+      {
+        "name": "palisade",
+        "lang": "JavaScript",
+        "stars": 0,
+        "demo": "live",
+        "pushed_days": 29,
+        "pinned": 0
+      },
+      {
+        "name": "compiler-based-static-bug-detection-system",
+        "lang": "Python",
+        "stars": 0,
+        "demo": "live",
+        "pushed_days": 30,
+        "pinned": 0
+      },
+      {
+        "name": "Resume-Analyser",
+        "lang": "Python",
+        "stars": 0,
+        "demo": "live",
+        "pushed_days": 35,
+        "pinned": 0
+      },
+      {
+        "name": "aerodex",
+        "lang": "TypeScript",
+        "stars": 0,
+        "demo": "live",
+        "pushed_days": 36,
+        "pinned": 0
+      },
+      {
+        "name": "time-series-autoML",
+        "lang": "TypeScript",
+        "stars": 0,
+        "demo": "live",
+        "pushed_days": 86,
+        "pinned": 1
+      },
+      {
+        "name": "recover-ai",
+        "lang": "Python",
+        "stars": 0,
+        "demo": null,
+        "pushed_days": 86,
+        "pinned": 0
+      },
+      {
+        "name": "portfolio",
+        "lang": "JavaScript",
+        "stars": 0,
+        "demo": "live",
+        "pushed_days": 89,
+        "pinned": 0
+      },
+      {
+        "name": "SupportFlow",
+        "lang": "Python",
+        "stars": 0,
+        "demo": null,
+        "pushed_days": 140,
+        "pinned": 0
+      },
+      {
+        "name": "smart-tools-for-studying",
+        "lang": "JavaScript",
+        "stars": 0,
+        "demo": "live",
+        "pushed_days": 153,
+        "pinned": 0
+      },
+      {
+        "name": "Harry-Potter--Fan-Web",
+        "lang": "TypeScript",
+        "stars": 0,
+        "demo": "live",
+        "pushed_days": 157,
+        "pinned": 0
+      },
+      {
+        "name": "pdf-summarization",
+        "lang": "Python",
+        "stars": 0,
+        "demo": null,
+        "pushed_days": 172,
+        "pinned": 0
+      },
+      {
+        "name": "real-estate-price-prediction",
+        "lang": "Jupyter Notebook",
+        "stars": 0,
+        "demo": null,
+        "pushed_days": 178,
+        "pinned": 0
+      },
+      {
+        "name": "claude-desktop-mcp",
+        "lang": "Python",
+        "stars": 0,
+        "demo": null,
+        "pushed_days": 224,
+        "pinned": 1
+      },
+      {
+        "name": "Expense-Tracker",
+        "lang": "Python",
+        "stars": 0,
+        "demo": null,
+        "pushed_days": 231,
+        "pinned": 0
+      },
+      {
+        "name": "NEO-Scheduler",
+        "lang": "JavaScript",
+        "stars": 0,
+        "demo": null,
+        "pushed_days": 441,
+        "pinned": 0
+      },
+      {
+        "name": "Advanced-study-Scheduler",
+        "lang": "CSS",
+        "stars": 0,
+        "demo": null,
+        "pushed_days": 486,
+        "pinned": 0
+      },
+      {
+        "name": "localrepo",
+        "lang": "HTML",
+        "stars": 0,
+        "demo": null,
+        "pushed_days": 486,
+        "pinned": 0
+      }
+    ],
+    "languages": [
+      {
+        "lang": "TypeScript",
+        "bytes": 7516031,
+        "share_pct": 63.9
+      },
+      {
+        "lang": "Python",
+        "bytes": 2923802,
+        "share_pct": 24.9
+      },
+      {
+        "lang": "JavaScript",
+        "bytes": 564660,
+        "share_pct": 4.8
+      },
+      {
+        "lang": "CSS",
+        "bytes": 299860,
+        "share_pct": 2.6
+      },
+      {
+        "lang": "MDX",
+        "bytes": 211231,
+        "share_pct": 1.8
+      },
+      {
+        "lang": "HTML",
+        "bytes": 112188,
+        "share_pct": 1
+      },
+      {
+        "lang": "TeX",
+        "bytes": 50886,
+        "share_pct": 0.4
+      },
+      {
+        "lang": "Astro",
+        "bytes": 28752,
+        "share_pct": 0.2
+      },
+      {
+        "lang": "Jinja",
+        "bytes": 12845,
+        "share_pct": 0.1
+      },
+      {
+        "lang": "PLpgSQL",
+        "bytes": 8519,
+        "share_pct": 0.1
+      },
+      {
+        "lang": "Shell",
+        "bytes": 7860,
+        "share_pct": 0.1
+      },
+      {
+        "lang": "Dockerfile",
+        "bytes": 7323,
+        "share_pct": 0.1
+      },
+      {
+        "lang": "Ruby",
+        "bytes": 7322,
+        "share_pct": 0.1
+      },
+      {
+        "lang": "Makefile",
+        "bytes": 2533,
+        "share_pct": 0
+      },
+      {
+        "lang": "Batchfile",
+        "bytes": 2399,
+        "share_pct": 0
+      }
+    ],
+    "upstream_prs": [
+      {
+        "repo": "praneeth132006/PlanWitch",
+        "title": "fix: shift temporarily to grok api",
+        "merged": "2026-07-21"
+      },
+      {
+        "repo": "Priyanshu-byte-coder/devtrack",
+        "title": "fix: updated themes.test.ts to cover all the cases",
+        "merged": "2026-07-03"
+      },
+      {
+        "repo": "AditthyaSS/iloveAgents",
+        "title": "feat: create new agent terraform-config-generator.js",
+        "merged": "2026-07-02"
+      },
+      {
+        "repo": "AditthyaSS/iloveAgents",
+        "title": "fix: update git-commit-formatter-agent.js",
+        "merged": "2026-07-02"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix hackathonpage.js",
+        "merged": "2026-06-30"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix: fixed sseMultiplexer-js",
+        "merged": "2026-06-24"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix: fix setup proxy",
+        "merged": "2026-06-24"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/authcontext js",
+        "merged": "2026-06-24"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/useanalytcs js",
+        "merged": "2026-06-24"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix: fixed useeventregistration.js",
+        "merged": "2026-06-24"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix: fixed formvalidation",
+        "merged": "2026-06-15"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "test: add coalesce_columns tests for default output, unrelated column…",
+        "merged": "2026-06-11"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix(service-worker): update service-worker.js",
+        "merged": "2026-06-11"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "feat: add UUID, IPv4, and MACAddress semantic validators",
+        "merged": "2026-06-10"
+      },
+      {
+        "repo": "Priyanshu-byte-coder/devtrack",
+        "title": "Feat/real time dashboard",
+        "merged": "2026-06-10"
+      },
+      {
+        "repo": "Priyanshu-byte-coder/devtrack",
+        "title": "Fix/documentation md",
+        "merged": "2026-06-16"
+      },
+      {
+        "repo": "Priyanshu-byte-coder/devtrack",
+        "title": "Fix/pr temp md",
+        "merged": "2026-06-09"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "Feat/encode categorical",
+        "merged": "2026-06-06"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/collaboration hub fix",
+        "merged": "2026-06-08"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/booknarks js fix",
+        "merged": "2026-06-08"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/hackathon event pages",
+        "merged": "2026-06-06"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Docs/add security policy",
+        "merged": "2026-06-05"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "docs: upgraded the pr template to minimal",
+        "merged": "2026-06-05"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "fix: add strict/reporting mode for cast_types conversion failures",
+        "merged": "2026-06-05"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Docs/add jsdoc usedebounce",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/added comprehensive blocks",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "add JSDoc documentation for useEventForm hook",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/login js redirect",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/export csv js",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/sensitive data securestorage",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Docs/user reducedmotion",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "docs: add JSDoc documentation for useEventRegistration hook",
+        "merged": "2026-06-04"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/contributors carousel js",
+        "merged": "2026-06-03"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/signup js",
+        "merged": "2026-06-03"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "Fix/fix checkin js",
+        "merged": "2026-06-03"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix: fixed middleware.js",
+        "merged": "2026-06-03"
+      },
+      {
+        "repo": "SandeepVashishtha/Eventra",
+        "title": "fix: added the missing slash in login",
+        "merged": "2026-06-03"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "fix: fixed Data loss in normalize_whitespace",
+        "merged": "2026-06-03"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "docs: add chunked_workflows.md covering streaming validation and pipe…",
+        "merged": "2026-06-02"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "fix: use frame.clone() in ArFrame.__copy__ for mutation isolation",
+        "merged": "2026-05-31"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "docs: Update README with current active URL",
+        "merged": "2026-05-31"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "bug: handle JSON errors in write_parquet",
+        "merged": "2026-05-30"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "fix: add CLI help guards to older benchmark scripts",
+        "merged": "2026-05-29"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "Feat: add redacted html export mode",
+        "merged": "2026-05-29"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "docs: aligned the labels with the live labels",
+        "merged": "2026-05-29"
+      },
+      {
+        "repo": "AditthyaSS/iloveAgents",
+        "title": "fix: improved and fixed ml-experiment-autopsy",
+        "merged": "2026-06-02"
+      },
+      {
+        "repo": "AditthyaSS/iloveAgents",
+        "title": "Fix/improve bug report generator",
+        "merged": "2026-05-27"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "fix: schema export no longer drops fields named strict or unique",
+        "merged": "2026-05-26"
+      },
+      {
+        "repo": "AditthyaSS/iloveAgents",
+        "title": "fix: Enhance dark mode transition with global CSS updates",
+        "merged": "2026-05-24"
+      },
+      {
+        "repo": "VyomKulshrestha/Heliox-OS",
+        "title": "Add pytest coverage and Redis cache adapter support",
+        "merged": "2026-05-23"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "Add custom validator registration",
+        "merged": "2026-05-18"
+      },
+      {
+        "repo": "VyomKulshrestha/Heliox-OS",
+        "title": "test: add pytest coverage for core utility functions",
+        "merged": "2026-05-18"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "feat: add Regex field validator to schema",
+        "merged": "2026-05-18"
+      },
+      {
+        "repo": "im-anishraj/arnio",
+        "title": "feat: add top_values summary for categorical columns",
+        "merged": "2026-05-17"
+      },
+      {
+        "repo": "steam-bell-92/python-mini-project",
+        "title": "Add: Whack-a-Mole game with web app integration",
+        "merged": "2026-05-15"
+      },
+      {
+        "repo": "warpdotdev/warp",
+        "title": "Fix: validate pacman signing key before allowing update",
+        "merged": "2026-05-08"
+      },
+      {
+        "repo": "firstcontributions/first-contributions",
+        "title": "add naveen to contributers list",
+        "merged": "2026-04-29"
+      }
+    ]
+  }
+}
